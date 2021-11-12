@@ -50,6 +50,11 @@ const errorHandler = (err, req, res, next) => {
 
     /* CATEGORIES ERRORS */
 
+    /* MATERIAL ERRORS */
+    case "MaterialNotFound":
+      res.status(404).json({ message: err.message || `Material with ID ${err?.id} not found` })
+      break
+
     /* AUTHS ERRORS */
     case "LoginError":
       res.status(401).json({ message: 'Invalid email/password' })

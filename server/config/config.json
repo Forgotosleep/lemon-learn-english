@@ -3,7 +3,7 @@
     "username": "postgres",
     "password": "laripagi",
     "database": "lemon-learn-english",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "postgres"
   },
   "test": {

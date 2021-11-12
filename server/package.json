@@ -19,6 +19,7 @@
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.15",
     "pg": "^8.7.1",
+    "postgres": "^1.0.2",
     "sequelize": "^6.9.0",
     "sequelize-cli": "^6.3.0",
     "supertest": "^6.1.6"
