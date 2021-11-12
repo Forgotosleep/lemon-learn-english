@@ -47,12 +47,23 @@ const errorHandler = (err, req, res, next) => {
     /* SCORE ERRORS */
 
     /* LEVEL ERRORS */
-
-    /* CATEGORIES ERRORS */
-
-    /* MATERIAL ERRORS */
+    case "InvalidLevelId":
+    case "InvalidCategoryId":
+    case "InvalidMaterialId":
+      res.status(401).json({ message: `Please check your ID` })
+      break
     case "MaterialNotFound":
       res.status(404).json({ message: err.message || `Material with ID ${err?.id} not found` })
+      break
+
+    /* CATEGORIES ERRORS */
+    case "CategoryNotFound":
+      res.status(404).json({ message: err.message || `Category with ID ${err?.id} not found` })
+      break
+
+    /* MATERIAL ERRORS */
+    case "LevelNotFound":
+      res.status(404).json({ message: err.message || `Level with ID ${err?.id} not found` })
       break
 
     /* AUTHS ERRORS */
@@ -72,7 +83,7 @@ const errorHandler = (err, req, res, next) => {
     /* WE HAVENT HANDLED THAT ONE YET ERROR */
     default:
       // res.status(500).json(err)  // For troubleshooting
-      console.log(err, "<<< 500 ERRORHANDLER");  // For testing purpoises
+      // console.log(err, "<<< 500 ERRORHANDLER");  // For testing purpoises
       res.status(500).json({ message: 'Internal server error' })
   }
 }
