@@ -4,7 +4,7 @@ const { getPagingData } = require("../helpers/pagination");
 const { decode } = require("../helpers/bcrypt");
 const { createToken } = require("../helpers/jwt");
 class UsersController {
-  static async readAllUsers(req, res) {
+  static async readAllUsers(req, res, next) {
     try {
       const { username, email, phone, address, page, role } = req.query;
       let limit = req.query.limit || 10;
@@ -29,31 +29,28 @@ class UsersController {
       const data = getPagingData(result, page, limit);
       res.status(200).json(data);
     } catch (err) {
-      res.status(500).json({ message: "Server Error" });
+      next(err)
     }
   }
 
-  static async readOneUsers(req, res) {
+  static async readOneUsers(req, res, next) {
     try {
       const { id } = req.params;
       const result = await User.findByPk(Number(id));
-      if (!result) throw { name: "not found" };
+      if (!result) throw { name: "UserNotFound", id };
       res.status(200).json(result);
     } catch (err) {
-      if (err.name === "not found") {
-        res.status(404).json({ message: "data not found" });
-      } else {
-        res.status(500).json({ message: "server error" });
-      }
+      next(err)
     }
   }
 
-  static async updateUser(req, res) {
+  static async updateUser(req, res, next) {
     try {
       const { id } = req.params;
       const { username, email, role, name, photo, phone, address } = req.body;
       const cekUser = await User.findByPk(Number(id));
-      if (!cekUser) throw { name: "not found" };
+      // if (!cekUser) throw { name: "not found" };
+      if (!cekUser) throw { name: "UserNotFound", id };
       const result = await User.update(
         { username, name, role, photo, phone, address },
         {
@@ -69,19 +66,16 @@ class UsersController {
         result: data,
       });
     } catch (err) {
-      if (err.name === "not found") {
-        res.status(404).json({ message: "data not found" });
-      } else {
-        res.status(500).json({ message: "server error" });
-      }
+      next(err)
     }
   }
 
-  static async deleteUser(req, res) {
+  static async deleteUser(req, res, next) {
     try {
       const { id } = req.params;
       const cekUser = await User.findByPk(Number(id));
-      if (!cekUser) throw { name: "not found" };
+      // if (!cekUser) throw { name: "not found" };
+      if (!cekUser) throw { name: "UserNotFound", id };
       await User.destroy({
         where: {
           id: Number(id),
@@ -91,16 +85,11 @@ class UsersController {
         .status(200)
         .json({ message: `User with id ${cekUser["id"]} has been deleted` });
     } catch (err) {
-      console.log(err);
-      if (err.name === "not found") {
-        res.status(404).json({ message: "data not found" });
-      } else {
-        res.status(500).json({ message: "server error" });
-      }
+      next(err)
     }
   }
 
-  static async newUser(req, res) {
+  static async newUser(req, res, next) {
     try {
       const { username, email, password, role, name, photo, phone, address } =
         req.body;
@@ -126,14 +115,7 @@ class UsersController {
         address: result["address"],
       });
     } catch (err) {
-      if (err.name === "SequelizeValidationError") {
-        let message = err.errors.map((el) => el.message);
-        res.status(400).json({ messages: message });
-      } else if (err.name === "SequelizeUniqueConstraintError") {
-        res.status(400).json({ message: "email must unique" });
-      } else {
-        res.status(500).json({ message: "Server Error" });
-      }
+      next(err)
     }
   }
 

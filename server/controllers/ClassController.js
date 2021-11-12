@@ -12,8 +12,9 @@ class ClassController {
 
   static async findOneClass(req, res, next) {
     try {
-      const { id } = req.params;
-      const result = await Class.findOne(id);
+
+      const { id } = req.params
+      const result = await Class.findByPk(id)
 
       if (!result) {
         // IF CLASS NOT FOUND
@@ -30,10 +31,10 @@ class ClassController {
   static async addClass(req, res, next) {
     try {
       const { name, teacherId, levelId, categoryId, ratings } = req.body;
-
+      const { name, teacherId, levelId, categoryId } = req.body
       const result = await Class.create(
         {
-          name, teacherId, levelId, categoryId, ratings
+          name, teacherId, levelId, categoryId
         },
       )
 
@@ -74,6 +75,7 @@ class ClassController {
     try {
       const { id } = req.params;
       const result = await Class.findOne(id);
+
 
       if (!result) {
         // IF CLASS NOT FOUND
