@@ -8,10 +8,11 @@ const errorHandler = (err, req, res, next) => {
   switch (err.name) {
     /* SEQUELIZE ERRORS */
     case "SequelizeValidationError":
+      console.log(err);
       err.errors.map(error => {
         message.push(error.message)
       })
-      res.status(400).json({ message: err.errors[0].validatorArgs[0]?.message || err.errors[0].message || err })
+      res.status(400).json({ message: message || err.errors[0].validatorArgs[0]?.message || err.errors[0].message || err })
       // res.status(400).json({ message })
       // res.status(400).json(err)
       break
@@ -33,6 +34,9 @@ const errorHandler = (err, req, res, next) => {
 
     /* USER ERRORS */
     // Bisa dipisah antara Student, Teacher dan Admin errors
+    case "UserNotFound":
+      res.status(404).json({ message: err.message || `User with ID ${err?.id} not found` })
+      break
 
 
     /* CLASS ERRORS */
