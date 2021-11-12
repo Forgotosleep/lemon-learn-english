@@ -3,7 +3,6 @@ const secret = process.env.SECRETKEY;
 
 const createToken = (payload) => {
   return jwt.sign(payload, secret);
-  console.log(secret);
 };
 
 const verifyToken = (token) => {
