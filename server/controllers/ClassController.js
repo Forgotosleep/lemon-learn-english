@@ -33,7 +33,7 @@ class ClassController {
 
       const result = await Class.create(
         {
-          name, teacherId, levelId, categoryId, ratings = 0
+          name, teacherId, levelId, categoryId, ratings
         },
       )
 
@@ -51,7 +51,7 @@ class ClassController {
       const { name, teacherId, levelId, categoryId, ratings } = req.body
       const result = await Class.update(
         {
-          name, teacherId, levelId, categoryId, ratings = 0
+          name, teacherId, levelId, categoryId, ratings
         },
         {
           where: { id },
@@ -82,7 +82,7 @@ class ClassController {
       }
 
       // IF CLASS IS FOUND
-      const result = Class.destroy({
+      const destroyed = Class.destroy({
         where: { id }
       })
       res.status(200).json({ message: `Successfully deleted Class ${result.name}` })
