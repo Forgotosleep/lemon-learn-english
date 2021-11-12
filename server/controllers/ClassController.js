@@ -1,9 +1,14 @@
-const { Class } = require("../models");
+const { Class, User, Level, Category } = require("../models");
 const { getPagingData } = require("../helpers/pagination");
 class ClassController {
   static async findAllClass(req, res, next) {
     try {
-      const result = await Class.findAll();
+      const { categoryId, levelId, page, teacherName } = req.query;
+
+      let limit = req.query.limit || 10;
+      let offset = 0;
+      if (page) offset = limit * page - limit;
+
       res.status(200).json(result);
     } catch (err) {
       next(err);
@@ -29,16 +34,30 @@ class ClassController {
 
   static async addClass(req, res, next) {
     try {
-      const { name, teacherId, levelId, categoryId, ratings } = req.body;
-
+      const { name, levelId, categoryId } = req.body;
+      const teacherId = req.user.id;
+      const checkClass = await Class.findAll({
+        where: {
+          teacherId: teacherId,
+        },
+      });
+      console.log(checkClass);
+      if (checkClass.length > 0) {
+        for (const key in checkClass) {
+          if (
+            checkClass[key]["levelId"] === levelId &&
+            checkClass[key]["categoryId"] === categoryId
+          ) {
+            throw { name: "duplicate class" };
+          }
+        }
+      }
       const result = await Class.create({
         name,
         teacherId,
         levelId,
         categoryId,
-        ratings,
       });
-
       // IF CLASS IS CREATED
       res.status(201).json(result);
     } catch (err) {

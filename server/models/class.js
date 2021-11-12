@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: `levelId can't be empty` },
+          notEmpty: { msg: `levelId can't be empty` },
         },
       },
       categoryId: {
@@ -49,9 +50,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: `categoryId can't be empty` },
+          notEmpty: { msg: `categoryId can't be empty` },
         },
       },
-      ratings: DataTypes.INTEGER,
+      ratings: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
     },
     {
       sequelize,
