@@ -1,43 +1,41 @@
-async function teacherAuthz(req, res, next) {
+const authorizationAdmin = async (req, res, next) => {
   try {
-    const { role } = req.user;
-
-    if (role !== "student") {
-      throw { name: "Unauthorized" };
-    }
-
-    next();
-  } catch (err) {
-    next(err);
-  }
-}
-
-async function teacherAuthz(req, res, next) {
-  try {
-    const { role } = req.user;
-
-    if (role !== "teacher") {
-      throw { name: "Unauthorized" };
-    }
-
-    next();
-  } catch (err) {
-    next(err);
-  }
-}
-
-async function adminAuthz(req, res, next) {
-  try {
-    const { role } = req.user;
-
+    const role = req.user.role;
     if (role !== "admin") {
       throw { name: "Unauthorized" };
     }
-
     next();
   } catch (err) {
     next(err);
   }
-}
+};
 
-module.exports = { teacherAuthz, adminAuthz };
+const authorizationTeacher = async (req, res, next) => {
+  try {
+    const role = req.user.role;
+    if (role !== "teacher") {
+      throw { name: "Unauthorized" };
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+const authorizationStudent = async (req, res, next) => {
+  try {
+    const role = req.user.role;
+    if (role !== "Student") {
+      throw { name: "Unauthorized" };
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  authorizationAdmin,
+  authorizationStudent,
+  authorizationTeacher,
+};
