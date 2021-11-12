@@ -39,6 +39,9 @@ const errorHandler = (err, req, res, next) => {
 
     /* USER ERRORS */
     // Bisa dipisah antara Student, Teacher dan Admin errors
+    case "UserNotFound":
+      res.status(404).json({ message: err.message || `User with ID ${err?.id} not found` })
+      break
 
     /* CLASS ERRORS */
     case "ClassNotFound":
@@ -48,14 +51,30 @@ const errorHandler = (err, req, res, next) => {
       break;
 
     /* STUDENTCLASS ERRORS */
-
+    case "StudentClassNotFound":
+      res.status(404).json({ message: err.message || `Student Class Data with ID ${err?.id} not found` })
+      break
     /* TASK ERRORS */
 
     /* SCORE ERRORS */
 
     /* LEVEL ERRORS */
+    case "InvalidLevelId":
+    case "InvalidCategoryId":
+    case "InvalidMaterialId":
+    case "InvalidClassId":
+    case "InvalidStudentClassId":
+    case "InvalidUserId":
+      res.status(401).json({ message: `Please check your ID` })
+      break
+    case "MaterialNotFound":
+      res.status(404).json({ message: err.message || `Material with ID ${err?.id} not found` })
+      break
 
     /* CATEGORIES ERRORS */
+    case "CategoryNotFound":
+      res.status(404).json({ message: err.message || `Category with ID ${err?.id} not found` })
+      break
 
     /* MATERIAL ERRORS */
     case "MaterialNotFound":
@@ -63,6 +82,11 @@ const errorHandler = (err, req, res, next) => {
         message: err.message || `Material with ID ${err?.id} not found`,
       });
       break;
+
+    case "LevelNotFound":
+      res.status(404).json({ message: err.message || `Level with ID ${err?.id} not found` })
+      break
+
 
     /* AUTHS ERRORS */
     case "LoginError":

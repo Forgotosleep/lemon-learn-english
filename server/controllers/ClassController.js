@@ -58,8 +58,8 @@ class ClassController {
 
   static async findOneClass(req, res, next) {
     try {
-      const { id } = req.params;
-      const result = await Class.findOne(id);
+      const { id } = req.params
+      const result = await Class.findByPk(id)
 
       if (!result) {
         // IF CLASS NOT FOUND
@@ -148,6 +148,7 @@ class ClassController {
         where: { id },
       });
       res.status(200).json({ message: `Successfully deleted Class ${result.name}` });
+
     } catch (err) {
       next(err);
     }

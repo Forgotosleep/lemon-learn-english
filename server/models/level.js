@@ -15,7 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Level.init({
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Name cannot be empty!' }
+      }
+    },
   }, {
     sequelize,
     modelName: 'Level',
