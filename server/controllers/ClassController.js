@@ -1,15 +1,56 @@
 const { Class, User, Level, Category } = require("../models");
 const { getPagingData } = require("../helpers/pagination");
+const { Op } = require("sequelize");
 class ClassController {
   static async findAllClass(req, res, next) {
     try {
-      const { categoryId, levelId, page, teacherName } = req.query;
+      const { name, categoryId, levelId, page, teacherName } = req.query;
 
       let limit = req.query.limit || 10;
       let offset = 0;
       if (page) offset = limit * page - limit;
+      let option = {
+        include: [
+          {
+            model: User,
+            where: {},
+            as: "teacher",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "role", "password"],
+            },
+          },
+          {
+            model: Category,
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+          {
+            model: Level,
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+        ],
+        order: [["id", "DESC"]],
+        where: {},
+        limit: limit,
+        offset,
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      };
+      if (teacherName)
+        option["include"][0]["where"]["name"] = {
+          [Op.iLike]: `%${teacherName}%`,
+        };
+      if (categoryId) option["where"]["categoryId"] = { [Op.eq]: categoryId };
+      if (levelId) option["where"]["levelId"] = { [Op.eq]: levelId };
+      if (name) option["where"]["name"] = { [Op.iLike]: `%${name}%` };
 
-      res.status(200).json(result);
+      const result = await Class.findAndCountAll(option);
+      const data = getPagingData(result, page, limit);
+      res.status(200).json(data);
     } catch (err) {
       next(err);
     }
@@ -44,10 +85,7 @@ class ClassController {
       console.log(checkClass);
       if (checkClass.length > 0) {
         for (const key in checkClass) {
-          if (
-            checkClass[key]["levelId"] === levelId &&
-            checkClass[key]["categoryId"] === categoryId
-          ) {
+          if (checkClass[key]["levelId"] === levelId && checkClass[key]["categoryId"] === categoryId) {
             throw { name: "duplicate class" };
           }
         }
@@ -109,9 +147,7 @@ class ClassController {
       const destroyed = Class.destroy({
         where: { id },
       });
-      res
-        .status(200)
-        .json({ message: `Successfully deleted Class ${result.name}` });
+      res.status(200).json({ message: `Successfully deleted Class ${result.name}` });
     } catch (err) {
       next(err);
     }
