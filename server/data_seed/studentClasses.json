@@ -1,0 +1,12 @@
+[
+  {
+    "teacherId": 1,
+    "classId": 1,
+    "status": "complete"
+  },
+  {
+    "teacherId": 1,
+    "classId": 2,
+    "status": "hidden"
+  }
+]

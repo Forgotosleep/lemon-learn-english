@@ -6,5 +6,21 @@
     "role": "teacher",
     "name": "Mason",
     "photo": "https://cdn.onlinewebfonts.com/svg/img_181369.png"
+  },
+  {
+    "username": "soap",
+    "email": "soap@gg.com",
+    "password": "whatever",
+    "role": "admin",
+    "name": "Soap",
+    "photo": "https://www.how-to-draw-funny-cartoons.com/image-files/cartoon-soap-007.jpg"
+  },
+  {
+    "username": "mactavish",
+    "email": "mactavish@gg.com",
+    "password": "whatever",
+    "role": "student",
+    "name": "MacTavish",
+    "photo": "http://www.internationalhero.co.uk/m/mactavish1.jpg"
   }
 ]

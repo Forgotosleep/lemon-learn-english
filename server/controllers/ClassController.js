@@ -30,7 +30,6 @@ class ClassController {
 
   static async addClass(req, res, next) {
     try {
-      // const { name, teacherId, levelId, categoryId, ratings } = req.body;
       const { name, teacherId, levelId, categoryId } = req.body
       const result = await Class.create(
         {
