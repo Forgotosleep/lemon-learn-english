@@ -10,7 +10,8 @@ class TaskController {
 
       res.status(201).json({ message: "Task Created" });
     } catch (err) {
-      next(err);
+      res.status(500).json({ message: "error" });
+      // next(err);
     }
   }
 
@@ -54,7 +55,7 @@ class TaskController {
 
       await Task.update(input, { where: { id } });
 
-      res.status(201).json({ message: "Task Created" });
+      res.status(200).json({ message: "Task Updated" });
     } catch (err) {
       next(err);
     }
