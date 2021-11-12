@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next) => {
     /* SEQUELIZE ERRORS */
     case "SequelizeValidationError":
       console.log(err);
-      err.errors.map(error => {
+      err.errors?.map(error => {
         message.push(error.message)
       })
       res.status(400).json({ message: message || err.errors[0].validatorArgs[0]?.message || err.errors[0].message || err })
@@ -29,7 +29,14 @@ const errorHandler = (err, req, res, next) => {
       res.status(400).json({ message })
       break
     case "SequelizeDatabaseError":
-      res.status(400).json({ message: err })
+      err.errors?.map(error => {
+        message.push(error.message)
+      })
+      res.status(400).json({ message: message || err })
+      break
+    case "InvalidDataType":
+      console.log(err);
+      res.status(400).json({ message: `Invalid input data type` })
       break
 
     /* USER ERRORS */
@@ -47,12 +54,24 @@ const errorHandler = (err, req, res, next) => {
     /* STUDENTCLASS ERRORS */
 
     /* TASK ERRORS */
+    case "TaskNotFound":
+      res.status(404).json({ message: err.message || `Task with ID ${err?.id} not found` })
+      break
 
     /* SCORE ERRORS */
+    case "ScoreNotFound":
+      res.status(404).json({ message: err.message || `Score with ID ${err?.id} not found` })
+      break
 
     /* LEVEL ERRORS */
+    case "LevelNotFound":
+      res.status(404).json({ message: err.message || `Level with ID ${err?.id} not found` })
+      break
 
     /* CATEGORIES ERRORS */
+    case "CategoriesNotFound":
+      res.status(404).json({ message: err.message || `Categories with ID ${err?.id} not found` })
+      break
 
     /* MATERIAL ERRORS */
     case "MaterialNotFound":
