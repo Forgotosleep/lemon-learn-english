@@ -51,7 +51,10 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: `categoryId can't be empty` },
         },
       },
-      ratings: DataTypes.INTEGER,
+      ratings: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
     },
     {
       sequelize,
