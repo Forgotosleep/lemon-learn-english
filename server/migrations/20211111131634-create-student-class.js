@@ -29,7 +29,7 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       status: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
