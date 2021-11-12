@@ -1,4 +1,3 @@
-const { json } = require('stream/consumers')
 const { Class } = require('../models')
 
 class ClassController {
