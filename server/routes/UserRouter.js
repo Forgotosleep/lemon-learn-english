@@ -5,7 +5,6 @@ const UsersController = require("../controllers/UsersController");
 
 route.get("/", UsersController.readAllUsers);
 route.get("/:id", UsersController.readOneUsers);
-route.post("/register", UsersController.newUser);
 route.put("/:id", UsersController.updateUser);
 route.delete("/:id", UsersController.deleteUser);
 
