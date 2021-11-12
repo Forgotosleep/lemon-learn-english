@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: { msg: `classId can't be empty` },
+        isNumeric: { msg: `levelId has to be a number` }
       }
     }
   }, {

@@ -28,7 +28,6 @@ const authorizationStudent = async (req, res, next) => {
     if (role !== "Student") {
       throw { name: "Unauthorized" };
     }
-
     next();
   } catch (err) {
     next(err);

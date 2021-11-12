@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: { msg: `studentId can't be empty` },
+        isNumeric: { msg: `levelId has to be a number` }
       }
     },
     classId: {
@@ -28,12 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: { msg: `classId can't be empty` },
+        isNumeric: { msg: `levelId has to be a number` }
       }
     },
     status: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: false,
       validate: {
         notNull: { msg: `Class status can't be empty` },
       }

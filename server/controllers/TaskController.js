@@ -6,12 +6,13 @@ class TaskController {
       const { name, description, question, soundUrl, classId } = req.body;
       const input = { name, description, question, soundUrl, classId };
 
-      await Task.create(input);
+      const result = await Task.create(input);
 
-      res.status(201).json({ message: "Task Created" });
+      res.status(201).json({ result });
+      // res.status(201).json({ message: "Task Created" });
     } catch (err) {
-      res.status(500).json({ message: "error" });
-      // next(err);
+      next(err);
+      // res.status(500).json({ message: "error" });
     }
   }
 
@@ -30,6 +31,10 @@ class TaskController {
     try {
       const task = await Task.findByPk(id);
 
+      if (!task) {
+        throw { name: "TaskNotFound", id }
+      }
+
       res.status(200).json(task);
     } catch (err) {
       next(err);
@@ -39,9 +44,15 @@ class TaskController {
   static async delete(req, res, next) {
     const id = req.params.id;
     try {
+      const task = await Task.findByPk(id);
+
+      if (!task) {
+        throw { name: "TaskNotFound", id }
+      }
+
       await Task.destroy({ where: { id } });
 
-      res.status(200).json({ message: "Task Deleted" });
+      res.status(200).json({ message: `Task with ID ${id} Deleted` });
     } catch (err) {
       next(err);
     }
@@ -53,9 +64,15 @@ class TaskController {
       const { name, description, question, soundUrl, classId } = req.body;
       const input = { name, description, question, soundUrl, classId };
 
-      await Task.update(input, { where: { id } });
+      const result = await Task.update(input, { where: { id } });
 
-      res.status(200).json({ message: "Task Updated" });
+      // IF CLASS NOT FOUND
+      if (!result[0]) {
+        throw { name: "TaskNotFound", id };
+      }
+
+      res.status(200).json({ result, message: `Task with ID ${id} Updated` });
+      // res.status(200).json({ message: "Task Updated" });
     } catch (err) {
       next(err);
     }

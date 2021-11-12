@@ -34,8 +34,15 @@ const errorHandler = (err, req, res, next) => {
       res.status(400).json({ message });
       break;
     case "SequelizeDatabaseError":
-      res.status(400).json({ message: err });
-      break;
+      err.errors?.map(error => {
+        message.push(error.message)
+      })
+      res.status(400).json({ message: message || err })
+      break
+    case "InvalidDataType":
+      console.log(err);
+      res.status(400).json({ message: `Invalid input data type` })
+      break
 
     /* USER ERRORS */
     // Bisa dipisah antara Student, Teacher dan Admin errors
@@ -55,10 +62,20 @@ const errorHandler = (err, req, res, next) => {
       res.status(404).json({ message: err.message || `Student Class Data with ID ${err?.id} not found` })
       break
     /* TASK ERRORS */
+    case "TaskNotFound":
+      res.status(404).json({ message: err.message || `Task with ID ${err?.id} not found` })
+      break
 
     /* SCORE ERRORS */
+    case "ScoreNotFound":
+      res.status(404).json({ message: err.message || `Score with ID ${err?.id} not found` })
+      break
 
     /* LEVEL ERRORS */
+    case "LevelNotFound":
+      res.status(404).json({ message: err.message || `Level with ID ${err?.id} not found` })
+      break
+    /* INVALID ENTITY ID */
     case "InvalidLevelId":
     case "InvalidCategoryId":
     case "InvalidMaterialId":
@@ -82,11 +99,6 @@ const errorHandler = (err, req, res, next) => {
         message: err.message || `Material with ID ${err?.id} not found`,
       });
       break;
-
-    case "LevelNotFound":
-      res.status(404).json({ message: err.message || `Level with ID ${err?.id} not found` })
-      break
-
 
     /* AUTHS ERRORS */
     case "LoginError":
