@@ -1,7 +1,8 @@
 const { User } = require("../models");
 const { Op } = require("sequelize");
 const { getPagingData } = require("../helpers/pagination");
-
+const { decode } = require("../helpers/bcrypt");
+const { createToken } = require("../helpers/jwt");
 class UsersController {
   static async readAllUsers(req, res) {
     try {
@@ -133,6 +134,29 @@ class UsersController {
       } else {
         res.status(500).json({ message: "Server Error" });
       }
+    }
+  }
+
+  static async login(req, res, next) {
+    try {
+      const { email, password } = req.body;
+      const chekLogin = await User.findOne({ where: { email: email } });
+
+      if (!chekLogin || !decode(password, chekLogin.password)) {
+        throw { name: "LoginError" };
+      } else {
+        const payload = {
+          id: chekLogin.id,
+          email: chekLogin.email,
+          name: chekLogin.name,
+          role: chekLogin.role,
+        };
+
+        const token = createToken(payload);
+        res.status(200).json({ access_token: token });
+      }
+    } catch (err) {
+      next(err);
     }
   }
 }

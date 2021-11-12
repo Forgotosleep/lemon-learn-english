@@ -31,13 +31,11 @@ class ClassController {
     try {
       const { name, teacherId, levelId, categoryId, ratings } = req.body;
 
-      const result = await Class.create({
-        name,
-        teacherId,
-        levelId,
-        categoryId,
-        ratings: 0,
-      });
+      const result = await Class.create(
+        {
+          name, teacherId, levelId, categoryId, ratings
+        },
+      )
 
       // IF CLASS IS CREATED
       res.status(201).json(result);
@@ -52,11 +50,7 @@ class ClassController {
       const { name, teacherId, levelId, categoryId, ratings } = req.body;
       const result = await Class.update(
         {
-          name,
-          teacherId,
-          levelId,
-          categoryId,
-          ratings: 0,
+          name, teacherId, levelId, categoryId, ratings
         },
         {
           where: { id },
@@ -93,6 +87,7 @@ class ClassController {
       res
         .status(200)
         .json({ message: `Successfully deleted Class ${result.name}` });
+
     } catch (err) {
       next(err);
     }
