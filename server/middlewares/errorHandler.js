@@ -41,7 +41,9 @@ const errorHandler = (err, req, res, next) => {
       break
 
     /* STUDENTCLASS ERRORS */
-
+    case "StudentClassNotFound":
+      res.status(404).json({ message: err.message || `Student Class Data with ID ${err?.id} not found` })
+      break
     /* TASK ERRORS */
 
     /* SCORE ERRORS */
@@ -50,6 +52,9 @@ const errorHandler = (err, req, res, next) => {
     case "InvalidLevelId":
     case "InvalidCategoryId":
     case "InvalidMaterialId":
+    case "InvalidClassId":
+    case "InvalidStudentClassId":
+    case "InvalidUserId":
       res.status(401).json({ message: `Please check your ID` })
       break
     case "MaterialNotFound":
