@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Class.belongsTo(models.Category, { foreignKey: "categoryId" });
       Class.belongsTo(models.Level, { foreignKey: "levelId" });
-      Class.belongsTo(models.User, { foreignKey: "teacherId" });
+      Class.belongsTo(models.User, { foreignKey: "teacherId", as: "teacher" });
       Class.belongsToMany(models.User, {
         through: models.StudentClass,
         foreignKey: "classId",
@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: `levelId can't be empty` },
+          notEmpty: { msg: `levelId can't be empty` },
         },
       },
       categoryId: {
@@ -49,11 +50,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: `categoryId can't be empty` },
+          notEmpty: { msg: `categoryId can't be empty` },
         },
       },
       ratings: {
         type: DataTypes.INTEGER,
-        defaultValue: 0
+        defaultValue: 0,
       },
     },
     {

@@ -9,11 +9,11 @@ class UsersController {
       const { username, email, phone, address, page, role } = req.query;
       let limit = req.query.limit || 10;
       let offset = 0;
-
+      let order = req.query.order || "DESC";
       if (page) offset = limit * page - limit;
 
       let option = {
-        order: [["id", "DESC"]],
+        order: [["id", order]],
         where: {},
         limit: limit,
         offset,
