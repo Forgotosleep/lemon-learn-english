@@ -64,14 +64,14 @@ class TaskController {
       const { name, description, question, soundUrl, classId } = req.body;
       const input = { name, description, question, soundUrl, classId };
 
-      const result = await Task.update(input, { where: { id } });
+      const result = await Task.update(input, { where: { id }, returning: true });
 
       // IF CLASS NOT FOUND
       if (!result[0]) {
         throw { name: "TaskNotFound", id };
       }
 
-      res.status(200).json({ result, message: `Task with ID ${id} Updated` });
+      res.status(200).json({ result: result[1][0], message: `Task with ID ${id} Updated` });
       // res.status(200).json({ message: "Task Updated" });
     } catch (err) {
       next(err);
