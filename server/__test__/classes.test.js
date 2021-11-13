@@ -1,35 +1,17 @@
 const request = require("supertest");
 const app = require("../app");
 
-const { sequelize, Class } = require("../models");
-const { queryInterface } = sequelize;
-
-// beforeAll((done) => {
-//   // set initial data
-//   /*
-
-//     */
-//   // Class.create();
-// });
-
-// afterAll((done) => {
-//   // clean up
-// });
-
-// insert token
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJzYXlha2FAbWFpbC5jb20iLCJuYW1lIjoic2F5YWthIiwicm9sZSI6InRlYWNoZXIiLCJpYXQiOjE2MzY3NTk2MDV9.CiP7QMvhu1lipMFkj4YtHJSAGlcryMuwb65pC0pR1V8";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYXNvbkBtYWlsLmNvbSIsIm5hbWUiOiJNYXNvbiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNjM2NzY2MjExfQ.DVh-c1WN1SHnZcDLy9z_TiRJAMbMhoAJZZzIhf1X20k";
 
-describe("POSTS /tasks", () => {
-  test("201 success create tasks", (done) => {
+describe("POSTS /classes", () => {
+  test("201 success create class", (done) => {
     request(app)
-      .post("/tasks/add")
+      .post("/classes")
       .send({
-        name: "task one",
-        description: "task one description",
-        classId: 1,
-        soundUrl: "www.example.com",
-        question: "question",
+        name: "class test",
+        levelId: 3,
+        categoryId: 1,
       })
       .set({
         access_token: token,
@@ -37,8 +19,7 @@ describe("POSTS /tasks", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(201);
-        expect(body).toHaveProperty("result");
-        expect(body.result).toHaveProperty("name", "task one");
+        expect(body).toHaveProperty("name", "class test");
         done();
       })
       .catch((err) => {
@@ -46,14 +27,13 @@ describe("POSTS /tasks", () => {
       });
   });
 
-  test("400 failed create task bad request", (done) => {
+  test("400 failed create class", (done) => {
     request(app)
-      .post("/tasks/add")
+      .post("/classes")
       .send({
-        description: "task one description",
-        classId: 1,
-        soundUrl: "www.example.com",
-        question: "question",
+        name: "class test",
+        levelId: 3,
+        categoryId: 1,
       })
       .set({
         access_token: token,
@@ -61,7 +41,7 @@ describe("POSTS /tasks", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(400);
-        expect(body).toHaveProperty("message", ["Task name can't be empty"]);
+        expect(body).toHaveProperty("message", "duplicate class");
         done();
       })
       .catch((err) => {
@@ -70,18 +50,18 @@ describe("POSTS /tasks", () => {
   });
 });
 
-describe("GET /tasks", () => {
-  test("200 success get tasks", (done) => {
+describe("GET /classes", () => {
+  test("200 success get class", (done) => {
     request(app)
-      .get("/tasks")
+      .get("/classes")
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(Array.isArray(body)).toBeTruthy();
-        expect(body.length).toBe(3);
+        expect(body).toHaveProperty("result");
+        expect(Array.isArray(body.result)).toBeTruthy();
         done();
       })
       .catch((err) => {
@@ -89,13 +69,18 @@ describe("GET /tasks", () => {
       });
   });
 
-  test("401 failed get tasks", (done) => {
+  test("200 success get class with query teacherName", (done) => {
     request(app)
-      .get("/tasks")
+      .get("/classes?teacherName=Mason")
+      .set({
+        access_token: token,
+      })
       .then((response) => {
         const { body, status } = response;
-        expect(status).toBe(401);
-        expect(body.message).toBe("jwt must be provided");
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("result");
+        expect(Array.isArray(body.result)).toBeTruthy();
+        expect(body.result.length).toBe(3);
         done();
       })
       .catch((err) => {
@@ -104,17 +89,20 @@ describe("GET /tasks", () => {
   });
 });
 
-describe("GET /tasks/:id", () => {
-  test("200 success get task by id", (done) => {
+describe("GET /classes/:id", () => {
+  test("200 success get class by id", (done) => {
     request(app)
-      .get(`/tasks/${1}`)
+      .get("/classes/1")
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("name", "Twinkle Twinkle Little Star");
+        expect(body).toHaveProperty("id", 1);
+        expect(body).toHaveProperty("name");
+        expect(body).toHaveProperty("teacherId");
+        expect(body).toHaveProperty("levelId");
         done();
       })
       .catch((err) => {
@@ -122,16 +110,16 @@ describe("GET /tasks/:id", () => {
       });
   });
 
-  test("404 failed get task cause invalid id", (done) => {
+  test("404 failed get class by id not found", (done) => {
     request(app)
-      .get(`/tasks/${99}`)
+      .get("/classes/222")
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Task with ID 99 not found");
+        expect(body).toHaveProperty("message", "Class with ID 222 not found");
         done();
       })
       .catch((err) => {
@@ -140,40 +128,37 @@ describe("GET /tasks/:id", () => {
   });
 });
 
-describe("UPDATE /tasks", () => {
-  test("200 success update tasks", (done) => {
+describe("UPDATE /classes/:id", () => {
+  test("200 success update class", (done) => {
     request(app)
-      .put(`/tasks/${1}`)
-      .send({
-        name: "test five",
-      })
-      .set({
-        access_token: token,
-      })
-      .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Task with ID 1 Updated");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-  test("404 failed update task cause invalid id", (done) => {
-    request(app)
-      .put(`/tasks/${99}`)
+      .put("/classes/3")
       .set({
         access_token: token,
       })
       .send({
-        name: "test five",
+        name: "new class name",
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body[0]).toHaveProperty("name", "new class name");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("404 failed update class", (done) => {
+    request(app)
+      .put("/classes/222")
+      .set({
+        access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Task with ID 99 not found");
+        expect(body).toHaveProperty("message", "Class with ID 222 not found");
         done();
       })
       .catch((err) => {
@@ -182,17 +167,20 @@ describe("UPDATE /tasks", () => {
   });
 });
 
-describe("DELETE /tasks", () => {
-  test("200 success delete tasks", (done) => {
+describe("DELETE /classes/:id", () => {
+  test("200 success delete class", (done) => {
     request(app)
-      .delete(`/tasks/${1}`)
+      .delete("/classes/3")
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Task with ID 1 Deleted");
+        expect(body).toHaveProperty(
+          "message",
+          "Successfully deleted Class new class name"
+        );
         done();
       })
       .catch((err) => {
@@ -200,16 +188,16 @@ describe("DELETE /tasks", () => {
       });
   });
 
-  test("404 failed delete task cause invalid id", (done) => {
+  test("404 failed update class", (done) => {
     request(app)
-      .delete(`/tasks/${99}`)
+      .delete("/classes/222")
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Task with ID 99 not found");
+        expect(body).toHaveProperty("message", "Class with ID 222 not found");
         done();
       })
       .catch((err) => {

@@ -58,8 +58,8 @@ class ClassController {
 
   static async findOneClass(req, res, next) {
     try {
-      const { id } = req.params
-      const result = await Class.findByPk(id)
+      const { id } = req.params;
+      const result = await Class.findByPk(id);
 
       if (!result) {
         // IF CLASS NOT FOUND
@@ -85,7 +85,10 @@ class ClassController {
       console.log(checkClass);
       if (checkClass.length > 0) {
         for (const key in checkClass) {
-          if (checkClass[key]["levelId"] === levelId && checkClass[key]["categoryId"] === categoryId) {
+          if (
+            checkClass[key]["levelId"] === levelId &&
+            checkClass[key]["categoryId"] === categoryId
+          ) {
             throw { name: "duplicate class" };
           }
         }
@@ -136,7 +139,7 @@ class ClassController {
   static async deleteClass(req, res, next) {
     try {
       const { id } = req.params;
-      const result = await Class.findOne(id);
+      const result = await Class.findByPk(id);
 
       if (!result) {
         // IF CLASS NOT FOUND
@@ -147,8 +150,9 @@ class ClassController {
       const destroyed = Class.destroy({
         where: { id },
       });
-      res.status(200).json({ message: `Successfully deleted Class ${result.name}` });
-
+      res
+        .status(200)
+        .json({ message: `Successfully deleted Class ${result.name}` });
     } catch (err) {
       next(err);
     }

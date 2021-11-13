@@ -4,12 +4,12 @@ const app = require("../app");
 const token =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJzYXlha2FAbWFpbC5jb20iLCJuYW1lIjoic2F5YWthIiwicm9sZSI6InRlYWNoZXIiLCJpYXQiOjE2MzY3NTk2MDV9.CiP7QMvhu1lipMFkj4YtHJSAGlcryMuwb65pC0pR1V8";
 
-describe("POSTS /levels", () => {
-  test("201 success create level", (done) => {
+describe("POSTS /categories", () => {
+  test("201 success create category", (done) => {
     request(app)
-      .post("/levels")
+      .post("/categories")
       .send({
-        name: "very hard",
+        name: "listening",
       })
       .set({
         access_token: token,
@@ -17,7 +17,27 @@ describe("POSTS /levels", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(201);
-        expect(body).toHaveProperty("message", "Success add level");
+        expect(body).toHaveProperty("message", "Success add category");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("400 [failed] create category bad request", (done) => {
+    request(app)
+      .post("/categories")
+      .send({
+        name: "listening",
+      })
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(400);
+        expect(body).toHaveProperty("message");
         done();
       })
       .catch((err) => {
@@ -26,10 +46,10 @@ describe("POSTS /levels", () => {
   });
 });
 
-describe("GET /levels", () => {
-  test("200 success get levels", (done) => {
+describe("GET /categories", () => {
+  test("200 success get categories", (done) => {
     request(app)
-      .get("/levels")
+      .get("/categories")
       .set({
         access_token: token,
       })
@@ -37,7 +57,6 @@ describe("GET /levels", () => {
         const { body, status } = response;
         expect(status).toBe(200);
         expect(Array.isArray(body)).toBeTruthy();
-        expect(body[0]).toHaveProperty("name");
         done();
       })
       .catch((err) => {
@@ -46,10 +65,10 @@ describe("GET /levels", () => {
   });
 });
 
-describe("GET /levels/:id", () => {
-  test("200 success get levels by id", (done) => {
+describe("GET /categories/:id", () => {
+  test("200 success get categories by id", (done) => {
     request(app)
-      .get(`/levels/${1}`)
+      .get(`/categories/${1}`)
       .set({
         access_token: token,
       })
@@ -65,16 +84,16 @@ describe("GET /levels/:id", () => {
       });
   });
 
-  test("404 failed get levels because id not found", (done) => {
+  test("404 failed get categories because id not found", (done) => {
     request(app)
-      .get(`/levels/${100}`)
+      .get(`/categories/${67}`)
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Level with ID 100 not found");
+        expect(body).toHaveProperty("message", "Category with ID 67 not found");
         done();
       })
       .catch((err) => {
@@ -82,9 +101,9 @@ describe("GET /levels/:id", () => {
       });
   });
 
-  test("401 failed get levels because id not number", (done) => {
+  test("401 failed get categories because id not number", (done) => {
     request(app)
-      .get(`/levels/not_number_id`)
+      .get(`/categories/not_number_id`)
       .set({
         access_token: token,
       })
@@ -100,20 +119,20 @@ describe("GET /levels/:id", () => {
   });
 });
 
-describe("UPDATE /levels/:id", () => {
-  test("200 success update levels", (done) => {
+describe("UPDATE /categories/:id", () => {
+  test("200 success update categories", (done) => {
     request(app)
-      .put(`/levels/${3}`)
+      .put(`/categories/${3}`)
       .set({
         access_token: token,
       })
       .send({
-        name: "Very Easy",
+        name: "grammar",
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Success update level");
+        expect(body).toHaveProperty("message", "Success update category");
         done();
       })
       .catch((err) => {
@@ -121,16 +140,16 @@ describe("UPDATE /levels/:id", () => {
       });
   });
 
-  test("404 failed update level because id not found", (done) => {
+  test("404 failed update category because id not found", (done) => {
     request(app)
-      .put(`/levels/${67}`)
+      .put(`/categories/${67}`)
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Level with ID 67 not found");
+        expect(body).toHaveProperty("message", "Category with ID 67 not found");
         done();
       })
       .catch((err) => {
@@ -138,9 +157,9 @@ describe("UPDATE /levels/:id", () => {
       });
   });
 
-  test("401 failed update level because id not number", (done) => {
+  test("401 failed update category because id not number", (done) => {
     request(app)
-      .put(`/levels/not_number_id`)
+      .put(`/categories/not_number_id`)
       .set({
         access_token: token,
       })
@@ -156,17 +175,17 @@ describe("UPDATE /levels/:id", () => {
   });
 });
 
-describe("DELETE /levels/:id", () => {
-  test("200 success delete level", (done) => {
+describe("DELETE /categories/:id", () => {
+  test("200 success delete category", (done) => {
     request(app)
-      .delete(`/levels/${3}`)
+      .delete(`/categories/${3}`)
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Success delete level");
+        expect(body).toHaveProperty("message", "Success delete category");
         done();
       })
       .catch((err) => {
@@ -174,16 +193,16 @@ describe("DELETE /levels/:id", () => {
       });
   });
 
-  test("404 failed delete level because id not found", (done) => {
+  test("404 failed delete category because id not found", (done) => {
     request(app)
-      .delete(`/levels/${67}`)
+      .delete(`/categories/${67}`)
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Level with ID 67 not found");
+        expect(body).toHaveProperty("message", "Category with ID 67 not found");
         done();
       })
       .catch((err) => {
@@ -191,9 +210,9 @@ describe("DELETE /levels/:id", () => {
       });
   });
 
-  test("401 failed delete Level because id not number", (done) => {
+  test("401 failed delete category because id not number", (done) => {
     request(app)
-      .delete(`/levels/not_number_id`)
+      .delete(`/categories/not_number_id`)
       .set({
         access_token: token,
       })
