@@ -34,8 +34,24 @@ const authorizationStudent = async (req, res, next) => {
   }
 };
 
+const authorizatioUpdateUsers = async (req, res, next) => {
+  try {
+    const { id, role } = req.user;
+    const checkId = Number(req.params.id);
+    if (role.toLowerCase() !== "admin") {
+      if (checkId !== id) {
+        throw { name: "Unauthorized" };
+      }
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   authorizationAdmin,
   authorizationStudent,
   authorizationTeacher,
+  authorizatioUpdateUsers,
 };

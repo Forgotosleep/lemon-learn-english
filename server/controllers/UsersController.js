@@ -29,7 +29,7 @@ class UsersController {
       const data = getPagingData(result, page, limit);
       res.status(200).json(data);
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
@@ -40,16 +40,15 @@ class UsersController {
       if (!result) throw { name: "UserNotFound", id };
       res.status(200).json(result);
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
   static async updateUser(req, res, next) {
     try {
       const { id } = req.params;
-      const { username, email, role, name, photo, phone, address } = req.body;
+      const { username, role, name, photo, phone, address } = req.body;
       const cekUser = await User.findByPk(Number(id));
-      // if (!cekUser) throw { name: "not found" };
       if (!cekUser) throw { name: "UserNotFound", id };
       const result = await User.update(
         { username, name, role, photo, phone, address },
@@ -66,7 +65,7 @@ class UsersController {
         result: data,
       });
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
@@ -81,18 +80,15 @@ class UsersController {
           id: Number(id),
         },
       });
-      res
-        .status(200)
-        .json({ message: `User with id ${cekUser["id"]} has been deleted` });
+      res.status(200).json({ message: `User with id ${cekUser["id"]} has been deleted` });
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
   static async newUser(req, res, next) {
     try {
-      const { username, email, password, role, name, photo, phone, address } =
-        req.body;
+      const { username, email, password, role, name, photo, phone, address } = req.body;
 
       const result = await User.create({
         username,
@@ -115,7 +111,7 @@ class UsersController {
         address: result["address"],
       });
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
