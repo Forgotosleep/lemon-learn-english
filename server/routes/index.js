@@ -1,5 +1,4 @@
 const express = require("express");
-const errorHandler = require("../middlewares/errorHandler");
 const route = express.Router();
 const UsersController = require("../controllers/UsersController");
 const UserRouter = require("./UserRouter");

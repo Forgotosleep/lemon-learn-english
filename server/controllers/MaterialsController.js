@@ -1,17 +1,18 @@
-const { Material } = require('../models/index')
+const { Material, Class } = require('../models/index')
 
 class MaterialController {
   static async addMaterial(req, res, next) {
     try {
-      const { name, description, materialUrl, classID } = req.body
+      const { name, description, materialUrl, classId } = req.body
       const resp = await Material.create({
         name,
         description,
         materialUrl,
-        classID
+        classId
       })
       res.status(201).json({ message: 'Success add material' })
     } catch (err) {
+      console.log(err)
       next(err)
     }
   }
@@ -21,9 +22,14 @@ class MaterialController {
       const { id } = req.params
       if (!Number(id)) throw ({ name: "InvalidMaterialId" })
       const resp = await Material.findByPk(id, {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
         include: {
           model: Class,
-          attributes: ['name']
+          attributes: {
+            exclude: ['createdAt', 'updatedAt']
+          }
         }
       })
       if (!resp) throw ({ name: 'MaterialNotFound', id })
@@ -36,9 +42,14 @@ class MaterialController {
   static async getAllMaterial(req, res, next) {
     try {
       const resp = await Material.findAll({
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
         include: {
           model: Class,
-          attributes: ['name']
+          attributes: {
+            exclude: ['createdAt', 'updatedAt']
+          }
         }
       })
       res.status(200).json(resp)
@@ -58,7 +69,7 @@ class MaterialController {
           id
         }
       })
-      res.status(200).json(resp)
+      res.status(200).json({message: "Success delete material"})
     } catch (err) {
       next(err)
     }
