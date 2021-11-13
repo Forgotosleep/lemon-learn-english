@@ -34,7 +34,7 @@ describe("POSTS /categories", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(201);
-        expect(body).toHaveProperty("message", "Success add category");
+        expect(body).toHaveProperty("message", "Succeessfully added a new category");
         done();
       })
       .catch((err) => {
@@ -149,7 +149,7 @@ describe("UPDATE /categories/:id", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Success update category");
+        expect(body).toHaveProperty("message", "Category with ID 3 has been updated");
         done();
       })
       .catch((err) => {
@@ -202,7 +202,7 @@ describe("DELETE /categories/:id", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Success delete category");
+        expect(body).toHaveProperty("message", "Category with ID 3 has been deleted");
         done();
       })
       .catch((err) => {
