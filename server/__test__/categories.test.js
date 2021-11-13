@@ -1,8 +1,25 @@
 const request = require("supertest");
 const app = require("../app");
 
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJzYXlha2FAbWFpbC5jb20iLCJuYW1lIjoic2F5YWthIiwicm9sZSI6InRlYWNoZXIiLCJpYXQiOjE2MzY3NTk2MDV9.CiP7QMvhu1lipMFkj4YtHJSAGlcryMuwb65pC0pR1V8";
+let token;
+
+beforeAll((done) => {
+  // set initial data
+  request(app)
+    .post("/login")
+    .send({
+      email: "mason@mail.com",
+      password: "password",
+    })
+    .then((response) => {
+      const { body } = response;
+      token = body.access_token;
+      done();
+    })
+    .catch((err) => {
+      done(err);
+    });
+});
 
 describe("POSTS /categories", () => {
   test("201 success create category", (done) => {
@@ -29,7 +46,7 @@ describe("POSTS /categories", () => {
     request(app)
       .post("/categories")
       .send({
-        name: "listening",
+        name: "",
       })
       .set({
         access_token: token,

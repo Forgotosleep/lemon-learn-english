@@ -1,8 +1,25 @@
 const request = require("supertest");
 const app = require("../app");
 
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYXNvbkBtYWlsLmNvbSIsIm5hbWUiOiJNYXNvbiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNjM2NzY2MjExfQ.DVh-c1WN1SHnZcDLy9z_TiRJAMbMhoAJZZzIhf1X20k";
+let token;
+
+beforeAll((done) => {
+  // set initial data
+  request(app)
+    .post("/login")
+    .send({
+      email: "mason@mail.com",
+      password: "password",
+    })
+    .then((response) => {
+      const { body } = response;
+      token = body.access_token;
+      done();
+    })
+    .catch((err) => {
+      done(err);
+    });
+});
 
 const { User } = require("../models");
 
