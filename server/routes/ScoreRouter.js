@@ -7,8 +7,8 @@ const { authorizatioUpdateUsers } = require("../middlewares/authorization");
 // Authorization will be used here
 route.get("/", ScoresController.displayAll);
 route.get("/:id", ScoresController.displayOne);
-route.post("/", authorizatioUpdateUsers, ScoresController.updateScore);
-// route.put("/scores/:id", ScoresController.deleteUser);
-// route.delete("/scores/:id", ScoresController.delete);
+route.post("/", ScoresController.createScore);
+route.put("/:id", ScoresController.updateScore);
+route.delete("/:id", ScoresController.deleteScore);
 
 module.exports = route;
