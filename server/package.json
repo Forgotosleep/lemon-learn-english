@@ -24,5 +24,8 @@
     "sequelize": "^6.9.0",
     "sequelize-cli": "^6.3.0",
     "supertest": "^6.1.6"
+  },
+  "bin": {
+    "server": "www.js"
   }
 }

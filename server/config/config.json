@@ -8,7 +8,7 @@
   },
   "test": {
     "username": "postgres",
-    "password": "postgres",
+    "password": "LAPTOP-AI0A1C32",
     "database": "lemon-learn-english-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
