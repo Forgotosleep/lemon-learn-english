@@ -10,6 +10,7 @@ This app has :
 ## Endpoints List:
 
 - Users
+
   - `POST/register`
   - `POST/login`
   - `GET/users`
@@ -17,6 +18,50 @@ This app has :
   - `PUT/users/:id`
   - `DELETE/users/:id`
   <!-- - `POST/users/login-google` -->
+
+- Classes
+  - `GET/classes`
+  - `GET/classes/:id`
+  - `POST/classes`
+  - `PUT/classes/:id`
+  - `DELETE/classes/:id`
+- StudentClasses
+  - `GET/categories`
+  - `GET/categories/:id`
+  - `POST/categories/:id`
+  - `PUT/categories/:id`
+  - `PATCH/categories/:id`
+  - `PATCH/categories/hide/:id`
+- Levels
+  - `GET/levels`
+  - `GET/levels/:id`
+  - `POST/levels`
+  - `PUT/levels/:id`
+  - `DELETE/levels/:id`
+- Categories
+  - `GET/categories`
+  - `GET/categories/:id`
+  - `POST/categories`
+  - `PUT/categories/:id`
+  - `DELETE/categories/:id`
+- Materials
+  - `GET/materials`
+  - `GET/materials/:id`
+  - `POST/materials`
+  - `PUT/materials/:id`
+  - `DELETE/materials/:id`
+- Tasks
+  - `GET/tasks`
+  - `GET/tasks/:id`
+  - `POST/tasks`
+  - `PUT/tasks/:id`
+  - `DELETE/tasks/:id`
+- Scores
+  - `GET/scores`
+  - `GET/scores/:id`
+  - `POST/scores`
+  - `PUT/scores/:id`
+  - `DELETE/scores/:id`
 
 &nbsp;
 
@@ -403,3 +448,187 @@ _Response (500 - Internal Server Error)_
   message: Internal Server Error
 }
 ```
+
+### CLASSES
+
+### STUDENT-CLASSES
+
+### LEVELS
+
+#### GET/levels/
+
+> Gets all the Level entities.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "name": "beginner"
+    },
+    {
+        "id": 2,
+        "name": "medium"
+    },
+    ...
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### GET/levels/:id
+
+> Gets all the Level entities.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "name": "beginner"
+    },
+    {
+        "id": 2,
+        "name": "medium"
+    },
+    ...
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### POST/levels/
+
+> Gets all the Level entities.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "name": "beginner"
+    },
+    {
+        "id": 2,
+        "name": "medium"
+    },
+    ...
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+### CATEGORIES
+
+### MATERIALS
+
+### TASKS
+
+### SCORES
