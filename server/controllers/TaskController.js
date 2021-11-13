@@ -52,7 +52,7 @@ class TaskController {
 
       await Task.destroy({ where: { id } });
 
-      res.status(200).json({ message: `Task with ID ${id} Deleted` });
+      res.status(200).json({ message: `Deleted task with ID ${id}` });
     } catch (err) {
       next(err);
     }

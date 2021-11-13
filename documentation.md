@@ -457,7 +457,7 @@ _Response (500 - Internal Server Error)_
 
 #### GET/levels/
 
-> Gets all the Level entities.
+> Gets all Level entities
 
 _Request Header_
 
@@ -511,7 +511,7 @@ _Response (500 - Internal Server Error)_
 
 #### GET/levels/:id
 
-> Gets all the Level entities.
+> Gets a single Level entity based on its ID
 
 _Request Header_
 
@@ -534,17 +534,10 @@ not needed
 _Response (200)_
 
 ```
-[
-    {
-        "id": 1,
-        "name": "beginner"
-    },
-    {
-        "id": 2,
-        "name": "medium"
-    },
-    ...
-]
+{
+    "id": 1,
+    "name": "beginner"
+}
 ```
 
 _Response (401 - Internal Server Error)_
@@ -565,7 +558,125 @@ _Response (500 - Internal Server Error)_
 
 #### POST/levels/
 
-> Gets all the Level entities.
+> Create a new Level entity
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (201)_
+
+```
+{
+    "message": "Successfully added a new Level"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### UPDATE/levels/:id
+
+> Update a specific Level entity, based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+{
+  name: string
+}
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Successfully updated a level"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Level with ID 99 not found"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### DELETE/levels/:id
+
+> Delete a Level entity, based on its ID
 
 _Request Header_
 
@@ -588,17 +699,17 @@ not needed
 _Response (200)_
 
 ```
-[
-    {
-        "id": 1,
-        "name": "beginner"
-    },
-    {
-        "id": 2,
-        "name": "medium"
-    },
-    ...
-]
+{
+    "message": "Successfully deleted a level"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Level with ID 99 not found"
+}
 ```
 
 _Response (401 - Internal Server Error)_
@@ -626,6 +737,287 @@ _Response (500 - Internal Server Error)_
 ```
 
 ### CATEGORIES
+
+#### GET/categories/
+
+> Gets all Level entities
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "name": "beginner"
+    },
+    {
+        "id": 2,
+        "name": "medium"
+    },
+    ...
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### GET/categories/:id
+
+> Gets a single Level entity based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "id": 1,
+    "name": "beginner"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### POST/categories/
+
+> Create a new Level entity
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (201)_
+
+```
+{
+    "message": "Successfully added a new Level"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### UPDATE/categories/:id
+
+> Update a specific Level entity, based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+{
+  name: string
+}
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Successfully updated a level"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Level with ID 99 not found"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### DELETE/categories/:id
+
+> Delete a Level entity, based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Successfully deleted a level"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Level with ID 99 not found"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
 
 ### MATERIALS
 

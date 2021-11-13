@@ -32,7 +32,7 @@ const authorizationTaskMaterial = async (req, res, next) => {  // This is so tha
     const classId = req.params.id
 
     const teacherClass = await Class.findByPk(classId)
-    console.log(teacherClass, "<<< TEACHER CLASS");
+    // console.log(teacherClass, "<<< TEACHER CLASS");
 
     if (teacherClass.teacherId === teacherId) {
       next()
