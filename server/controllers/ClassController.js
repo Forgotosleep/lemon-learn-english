@@ -86,7 +86,7 @@ class ClassController {
             },
           },
         ],
-        order: [["id", "DESC"]],
+        order: [["ratings", "ASC"]],
         where: { status: "active" },
         limit: limit,
         offset,
