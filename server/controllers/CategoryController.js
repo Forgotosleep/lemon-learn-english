@@ -23,7 +23,6 @@ class CategoryController {
       if (!resp) throw { name: "CategoryNotFound", id };
       res.status(200).json(resp);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -56,7 +55,7 @@ class CategoryController {
           },
         }
       );
-      res.status(200).json({ message: "Success update category" });
+      res.status(200).json({ message: `category with id ${category["id"]} has updated` });
     } catch (err) {
       next(err);
     }
@@ -73,7 +72,7 @@ class CategoryController {
           id,
         },
       });
-      res.status(200).json({ message: "Success delete category" });
+      res.status(200).json({ message: `category with id ${category["id"]} has deleted` });
     } catch (err) {
       next(err);
     }
