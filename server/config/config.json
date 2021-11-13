@@ -1,14 +1,14 @@
 {
   "development": {
     "username": "postgres",
-    "password": "laripagi",
+    "password": "LAPTOP-AI0A1C32",
     "database": "lemon-learn-english1",
     "host": "localhost",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "postgres",
+    "password": "LAPTOP-AI0A1C32",
     "database": "lemon-learn-english-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
