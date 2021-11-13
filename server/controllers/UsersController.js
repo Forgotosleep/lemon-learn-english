@@ -17,6 +17,9 @@ class UsersController {
         where: {},
         limit: limit,
         offset,
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "role", "password"],
+        },
       };
 
       if (username) option.where["username"] = { [Op.iLike]: `%${username}%` };
@@ -36,7 +39,11 @@ class UsersController {
   static async readOneUsers(req, res, next) {
     try {
       const { id } = req.params;
-      const result = await User.findByPk(Number(id));
+      const result = await User.findByPk(Number(id), {
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "role", "password"],
+        },
+      });
       if (!result) throw { name: "UserNotFound", id };
       res.status(200).json(result);
     } catch (err) {
@@ -56,13 +63,17 @@ class UsersController {
           where: {
             id: Number(id),
           },
-          returning: true,
-        }
+
+          // returning: true,
+        },
+
       );
-      const data = result[1][0];
+
+      // const data = result[1][0];
+
       res.status(200).json({
         message: `User with id ${cekUser["id"]} has been updated`,
-        result: data,
+        // result: data,
       });
     } catch (err) {
       next(err);

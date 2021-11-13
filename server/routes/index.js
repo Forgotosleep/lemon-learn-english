@@ -8,6 +8,7 @@ const ClassRouter = require("./ClassRouter");
 const MaterialRouter = require("./MaterialRouter");
 const LevelRouter = require("./LevelRouter");
 const CategoryRouter = require("./CategoryRouter");
+const StudentClassRouter = require("./StudentClassRouter");
 const authentication = require("../middlewares/authentication");
 
 route.post("/register", UsersController.newUser);
@@ -19,6 +20,7 @@ route.use("/classes", ClassRouter);
 route.use("/materials", MaterialRouter);
 route.use("/levels", LevelRouter);
 route.use("/categories", CategoryRouter);
+route.use("/student-class", StudentClassRouter);
 
 route.use(errorHandler);
 
