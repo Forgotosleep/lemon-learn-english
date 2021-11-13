@@ -134,11 +134,16 @@ const errorHandler = (err, req, res, next) => {
     case "duplicate class":
       res.status(400).json({ message: err.name });
       break;
-
+    case "maxStudentClass":
+      res.status(400).json({ message: "Class Over Student" });
+      break;
     case "notCompletedClass":
       res
         .status(400)
         .json({ message: "your status is not completed for this class" });
+      break;
+    case "register":
+      res.status(400).json({ message: "User is already enrolled in the class" });
       break;
     /* WE HAVENT HANDLED THAT ONE YET ERROR */
     default:
