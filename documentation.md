@@ -522,7 +522,7 @@ access_token
 _Params_
 
 ```
-not needed
+id
 ```
 
 _Request Body_
@@ -633,7 +633,7 @@ access_token
 _Params_
 
 ```
-not needed
+id
 ```
 
 _Request Body_
@@ -697,7 +697,7 @@ access_token
 _Params_
 
 ```
-not needed
+id
 ```
 
 _Request Body_
@@ -814,7 +814,7 @@ access_token
 _Params_
 
 ```
-not needed
+id
 ```
 
 _Request Body_
@@ -939,7 +939,7 @@ access_token
 _Params_
 
 ```
-not needed
+id
 ```
 
 _Request Body_
@@ -1010,7 +1010,7 @@ access_token
 _Params_
 
 ```
-not needed
+id
 ```
 
 _Request Body_
@@ -1150,7 +1150,7 @@ access_token
 _Params_
 
 ```
-not needed
+id
 ```
 
 _Request Body_
@@ -1298,7 +1298,7 @@ access_token
 _Params_
 
 ```
-not needed
+id
 ```
 
 _Request Body_
@@ -1372,7 +1372,7 @@ access_token
 _Params_
 
 ```
-not needed
+id
 ```
 
 _Request Body_
@@ -1435,5 +1435,380 @@ _Response (500 - Internal Server Error)_
 ```
 
 ### TASKS
+
+#### GET/tasks/
+
+> Gets all Task entities
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "name": "Twinkle Twinkle Little Star",
+        "description": "A popular song for children, easy to listen and a good song to start your listening with",
+        "classId": 1,
+        "question": "Sing-a-long!",
+        "soundUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+        "createdAt": "2021-11-13T12:09:27.364Z",
+        "updatedAt": "2021-11-13T12:09:27.364Z"
+    },
+    {
+        "id": 2,
+        "name": "Pi-Pi-Pi-Pi☆Pikachu! ",
+        "description": "A song about Pikachu and his/her friends",
+        "classId": 1,
+        "question": "Sing-a-long!",
+        "soundUrl": "https://www.youtube.com/watch?v=h4-ftQE3zEQ",
+        "createdAt": "2021-11-13T12:09:27.364Z",
+        "updatedAt": "2021-11-13T12:09:27.364Z"
+    }
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### GET/tasks/:id
+
+> Gets a single Task entity based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "id": 1,
+    "name": "Twinkle Twinkle Little Star",
+    "description": "A popular song for children, easy to listen and a good song to start your listening with",
+    "classId": 1,
+    "question": "Sing-a-long!",
+    "soundUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+    "createdAt": "2021-11-13T12:09:27.364Z",
+    "updatedAt": "2021-11-13T12:09:27.364Z"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### POST/tasks/
+
+> Create a new Task entity
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+{
+  name: string required,
+  description: string required,
+  classId: integer required,
+  question: string,
+  soundUrl: string
+}
+```
+
+_Response (201)_
+
+```
+{
+    "result": {
+        "id": 3,
+        "name": "I believe I can fly",
+        "description": "R.Kelly's most famous work. Somewhat of a meme song",
+        "question": "Sing-a-long!",
+        "soundUrl": "https://www.youtube.com/watch?v=LbUpPVOEkdA",
+        "classId": 1,
+        "updatedAt": "2021-11-13T18:19:01.113Z",
+        "createdAt": "2021-11-13T18:19:01.113Z"
+    }
+}
+```
+
+_Response (400 - Bad Request)_
+
+```
+{
+    "message": [
+        "Task name can't be empty",
+        "Description can't be empty",
+        "classId can't be empty"
+    ]
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### UPDATE/tasks/:id
+
+> Update a specific Task entity, based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+{
+  name: string,
+  description: string,
+  classId: integer,
+  question: string,
+  soundUrl: string
+}
+```
+
+_Response (200)_
+
+```
+{
+    "result": {
+        "id": 3,
+        "name": "I believe I can fly",
+        "description": "R.Kelly's most famous work. Somewhat of a meme song",
+        "classId": 1,
+        "question": "Come and Sing-a-long!",
+        "soundUrl": "https://www.youtube.com/watch?v=LbUpPVOEkdA",
+        "createdAt": "2021-11-13T18:19:01.113Z",
+        "updatedAt": "2021-11-13T18:48:39.612Z"
+    },
+    "message": "Task with ID 3 Updated"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### DELETE/tasks/:id
+
+> Delete a Task entity, based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Deleted task with ID 3"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
 
 ### SCORES

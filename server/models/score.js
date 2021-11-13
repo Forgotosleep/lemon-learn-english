@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
       validate: {
         notNull: { msg: `Score can't be empty` },
-        isNumeric: { msg: `levelId has to be a number` }
+        isNumeric: { msg: `Score has to be a number` }
       }
     },
     studentId: {
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: { msg: `studentId can't be empty` },
-        isNumeric: { msg: `levelId has to be a number` }
+        isNumeric: { msg: `studentId has to be a number` }
       }
     },
     taskId: {
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: { msg: `taskId can't be empty` },
-        isNumeric: { msg: `levelId has to be a number` }
+        isNumeric: { msg: `taskId has to be a number` }
       }
     },
     answer: { type: DataTypes.STRING, },

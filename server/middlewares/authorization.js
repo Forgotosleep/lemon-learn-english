@@ -1,4 +1,4 @@
-const { User, Class, Task } = require("../models");
+const { User, Class, Task, Material } = require("../models");
 
 const authorizationAdmin = async (req, res, next) => {
   try {
@@ -26,14 +26,49 @@ const authorizationTeacher = async (req, res, next) => {
   }
 };
 
-const authorizationTaskMaterial = async (req, res, next) => {  // This is so that other Teachers can't edit or delete another teacher's tasks
+const authorizationTask = async (req, res, next) => {  // This is so that other Teachers can't edit or delete another teacher's tasks
   try {
     const teacherId = req.user.id
-    const classId = req.params.id
+    const taskId = req.params.id
+    const task = await Task.findByPk(taskId)
+
+    if (!task) {
+      throw { name: "Unauthorized" };
+    }
+
+    const classId = task.classId
+    const teacherClass = await Class.findByPk(classId)
+    // const user = await User.findByPk(teacherId)
+    console.log(teacherClass, "<<< TEACHER CLASS");
+    console.log(req.user, "<<< REQ USER");
+
+    if (teacherClass?.teacherId === teacherId || req.user?.role.toLowerCase() === "admin") {
+      next()
+    }
+    else {
+      throw { name: "Unauthorized" };
+    }
+
+  } catch (err) {
+    next(err)
+  }
+}
+
+const authorizationMaterial = async (req, res, next) => {  // This is so that other Teachers can't edit or delete another teacher's tasks
+  try {
+    const teacherId = req.user.id
+    const materialId = req.params.id
+    const material = await Material.findByPk(materialId)
+
+    if (!material) {
+      throw { name: "Unauthorized" };
+    }
+
+    const classId = material.classId
 
     const teacherClass = await Class.findByPk(classId)
     // const user = await User.findByPk(teacherId)
-    // console.log(teacherClass, "<<< TEACHER CLASS");
+    console.log(teacherClass, "<<< TEACHER CLASS");
     console.log(req.user, "<<< REQ USER");
 
     if (teacherClass?.teacherId === teacherId || req.user?.role.toLowerCase() === "admin") {
@@ -82,5 +117,6 @@ module.exports = {
   authorizationStudent,
   authorizationTeacher,
   authorizatioUpdateUsers,
-  authorizationTaskMaterial,
+  authorizationTask,
+  authorizationMaterial
 };

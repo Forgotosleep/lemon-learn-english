@@ -76,7 +76,7 @@ const errorHandler = (err, req, res, next) => {
     case "InvalidClassId":
     case "InvalidStudentClassId":
     case "InvalidUserId":
-      res.status(401).json({ message: `Please check your ID` });
+      res.status(400).json({ message: `Please check your ID` });
       break;
     case "MaterialNotFound":
       res.status(404).json({ message: err.message || `Material with ID ${err?.id} not found` });
