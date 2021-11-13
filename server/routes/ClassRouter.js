@@ -6,8 +6,9 @@ const { authorizationTeacher } = require("../middlewares/authorization");
 
 route.get("/", ClassController.findAllClass);
 route.get("/:id", ClassController.findOneClass);
+// Teachers get to Create, Update and Delete classes
 route.post("/", authorizationTeacher, ClassController.addClass);
-route.put("/:id", ClassController.updateClass);
-route.delete("/:id", ClassController.deleteClass);
+route.put("/:id", authorizationTeacher, ClassController.updateClass);
+route.delete("/:id", authorizationTeacher, ClassController.deleteClass);
 
 module.exports = route;

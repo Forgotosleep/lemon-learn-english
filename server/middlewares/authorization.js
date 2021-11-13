@@ -26,7 +26,7 @@ const authorizationTeacher = async (req, res, next) => {
   }
 };
 
-const authorizationTask = async (req, res, next) => {  // This is so that other Teachers can't edit or delete another teacher's tasks
+const authorizationTaskMaterial = async (req, res, next) => {  // This is so that other Teachers can't edit or delete another teacher's tasks
   try {
     const teacherId = req.user.id
     const classId = req.params.id
@@ -64,5 +64,5 @@ module.exports = {
   authorizationAdmin,
   authorizationStudent,
   authorizationTeacher,
-  authorizationTask,
+  authorizationTaskMaterial,
 };
