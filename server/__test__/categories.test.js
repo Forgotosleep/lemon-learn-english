@@ -1,21 +1,6 @@
 const request = require("supertest");
 const app = require("../app");
 
-const { sequelize, Class } = require("../models");
-const { queryInterface } = sequelize;
-
-// beforeAll((done) => {
-//   // set initial data
-//   /*
-
-//     */
-//   // Class.create();
-// });
-
-// afterAll((done) => {
-//   // clean up
-// });
-
 let token;
 
 beforeAll((done) => {
@@ -35,16 +20,13 @@ beforeAll((done) => {
       done(err);
     });
 });
-describe("POSTS /tasks", () => {
-  test("201 success create tasks", (done) => {
+
+describe("POSTS /categories", () => {
+  test("201 success create category", (done) => {
     request(app)
-      .post("/tasks/add")
+      .post("/categories")
       .send({
-        name: "task one",
-        description: "task one description",
-        classId: 1,
-        soundUrl: "www.example.com",
-        question: "question",
+        name: "listening",
       })
       .set({
         access_token: token,
@@ -52,8 +34,7 @@ describe("POSTS /tasks", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(201);
-        expect(body).toHaveProperty("result");
-        expect(body.result).toHaveProperty("name", "task one");
+        expect(body).toHaveProperty("message", "Success add category");
         done();
       })
       .catch((err) => {
@@ -61,14 +42,11 @@ describe("POSTS /tasks", () => {
       });
   });
 
-  test("400 failed create task bad request", (done) => {
+  test("400 [failed] create category bad request", (done) => {
     request(app)
-      .post("/tasks/add")
+      .post("/categories")
       .send({
-        description: "task one description",
-        classId: 1,
-        soundUrl: "www.example.com",
-        question: "question",
+        name: "",
       })
       .set({
         access_token: token,
@@ -76,7 +54,7 @@ describe("POSTS /tasks", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(400);
-        expect(body).toHaveProperty("message", ["Task name can't be empty"]);
+        expect(body).toHaveProperty("message");
         done();
       })
       .catch((err) => {
@@ -85,10 +63,10 @@ describe("POSTS /tasks", () => {
   });
 });
 
-describe("GET /tasks", () => {
-  test("200 success get tasks", (done) => {
+describe("GET /categories", () => {
+  test("200 success get categories", (done) => {
     request(app)
-      .get("/tasks")
+      .get("/categories")
       .set({
         access_token: token,
       })
@@ -96,7 +74,26 @@ describe("GET /tasks", () => {
         const { body, status } = response;
         expect(status).toBe(200);
         expect(Array.isArray(body)).toBeTruthy();
-        expect(body.length).toBe(3);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+
+describe("GET /categories/:id", () => {
+  test("200 success get categories by id", (done) => {
+    request(app)
+      .get(`/categories/${1}`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("id");
+        expect(body).toHaveProperty("name");
         done();
       })
       .catch((err) => {
@@ -104,13 +101,33 @@ describe("GET /tasks", () => {
       });
   });
 
-  test("401 failed get tasks", (done) => {
+  test("404 failed get categories because id not found", (done) => {
     request(app)
-      .get("/tasks")
+      .get(`/categories/${67}`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(404);
+        expect(body).toHaveProperty("message", "Category with ID 67 not found");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("401 failed get categories because id not number", (done) => {
+    request(app)
+      .get(`/categories/not_number_id`)
+      .set({
+        access_token: token,
+      })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(401);
-        expect(body.message).toBe("jwt must be provided");
+        expect(body).toHaveProperty("message", "Please check your ID");
         done();
       })
       .catch((err) => {
@@ -119,76 +136,54 @@ describe("GET /tasks", () => {
   });
 });
 
-describe("GET /tasks/:id", () => {
-  test("200 success get task by id", (done) => {
+describe("UPDATE /categories/:id", () => {
+  test("200 success update categories", (done) => {
     request(app)
-      .get(`/tasks/${1}`)
-      .set({
-        access_token: token,
-      })
-      .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(200);
-        expect(body).toHaveProperty("name", "Twinkle Twinkle Little Star");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-  test("404 failed get task cause invalid id", (done) => {
-    request(app)
-      .get(`/tasks/${99}`)
-      .set({
-        access_token: token,
-      })
-      .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Task with ID 99 not found");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-});
-
-describe("UPDATE /tasks", () => {
-  test("200 success update tasks", (done) => {
-    request(app)
-      .put(`/tasks/${1}`)
-      .send({
-        name: "test five",
-      })
-      .set({
-        access_token: token,
-      })
-      .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Task with ID 1 Updated");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-  test("404 failed update task cause invalid id", (done) => {
-    request(app)
-      .put(`/tasks/${99}`)
+      .put(`/categories/${3}`)
       .set({
         access_token: token,
       })
       .send({
-        name: "test five",
+        name: "grammar",
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("message", "Success update category");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("404 failed update category because id not found", (done) => {
+    request(app)
+      .put(`/categories/${67}`)
+      .set({
+        access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Task with ID 99 not found");
+        expect(body).toHaveProperty("message", "Category with ID 67 not found");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("401 failed update category because id not number", (done) => {
+    request(app)
+      .put(`/categories/not_number_id`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "Please check your ID");
         done();
       })
       .catch((err) => {
@@ -197,17 +192,17 @@ describe("UPDATE /tasks", () => {
   });
 });
 
-describe("DELETE /tasks", () => {
-  test("200 success delete tasks", (done) => {
+describe("DELETE /categories/:id", () => {
+  test("200 success delete category", (done) => {
     request(app)
-      .delete(`/tasks/${1}`)
+      .delete(`/categories/${3}`)
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Task with ID 1 Deleted");
+        expect(body).toHaveProperty("message", "Success delete category");
         done();
       })
       .catch((err) => {
@@ -215,16 +210,33 @@ describe("DELETE /tasks", () => {
       });
   });
 
-  test("404 failed delete task cause invalid id", (done) => {
+  test("404 failed delete category because id not found", (done) => {
     request(app)
-      .delete(`/tasks/${99}`)
+      .delete(`/categories/${67}`)
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Task with ID 99 not found");
+        expect(body).toHaveProperty("message", "Category with ID 67 not found");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("401 failed delete category because id not number", (done) => {
+    request(app)
+      .delete(`/categories/not_number_id`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "Please check your ID");
         done();
       })
       .catch((err) => {
