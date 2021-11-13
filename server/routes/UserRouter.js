@@ -8,7 +8,6 @@ const UsersController = require("../controllers/UsersController");
 route.get("/", authorizationAdmin, UsersController.readAllUsers);
 route.get("/:id", UsersController.readOneUsers);
 route.put("/:id", UsersController.updateUser);
-// The same goes for deleting users. It's an Admin-only privillege
-route.delete("/:id", authorizationAdmin, UsersController.deleteUser);
+route.delete("/:id", UsersController.deleteUser);
 
 module.exports = route;
