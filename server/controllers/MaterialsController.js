@@ -10,7 +10,7 @@ class MaterialController {
         materialUrl,
         classId,
       });
-      res.status(201).json({ message: "Success add material" });
+      res.status(201).json({ message: "Succeessfully added a new material" });
     } catch (err) {
       next(err);
     }
@@ -84,7 +84,7 @@ class MaterialController {
           },
         }
       );
-      res.status(200).json({ message: "Success update material" });
+      res.status(200).json({ message: "Succeessfully updated a material" });
     } catch (err) {
       next(err);
     }

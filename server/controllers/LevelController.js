@@ -5,7 +5,7 @@ class LevelController {
     try {
       const { name } = req.body
       const resp = await Level.create({ name })
-      res.status(201).json({ message: 'Success add level' })
+      res.status(201).json({ message: 'Successfully added a new Level' })
     } catch (err) {
       next(err)
     }
@@ -14,7 +14,7 @@ class LevelController {
   static async getLevelByID(req, res, next) {
     try {
       const { id } = req.params
-      if (!Number(id)) throw({name:'InvalidLevelId'})
+      if (!Number(id)) throw ({ name: 'InvalidLevelId' })
       const resp = await Level.findByPk(id, {
         attributes: ['id', 'name']
       })
@@ -39,7 +39,7 @@ class LevelController {
   static async updateLevelById(req, res, next) {
     try {
       const { id } = req.params
-      if (!Number(id)) throw({name:'InvalidLevelId'})
+      if (!Number(id)) throw ({ name: 'InvalidLevelId' })
       const { name } = req.body
       const level = await Level.findByPk(id)
       if (!level) throw ({ name: "LevelNotFound", id })
@@ -50,7 +50,7 @@ class LevelController {
           id
         }
       })
-      res.status(200).json({ message: "Success update level" })
+      res.status(200).json({ message: "Successfully updated a level" })
     } catch (err) {
       next(err)
     }
@@ -59,7 +59,7 @@ class LevelController {
   static async deleteLevelById(req, res, next) {
     try {
       const { id } = req.params
-      if (!Number(id)) throw({name:'InvalidLevelId'})
+      if (!Number(id)) throw ({ name: 'InvalidLevelId' })
       const level = await Level.findByPk(id)
       if (!level) throw ({ name: "LevelNotFound", id })
       const resp = await Level.destroy({
@@ -67,7 +67,7 @@ class LevelController {
           id
         }
       })
-      res.status(200).json({ message: "Success delete level" })
+      res.status(200).json({ message: "Successfully deleted a level" })
     } catch (err) {
       next(err)
     }
