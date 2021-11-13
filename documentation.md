@@ -548,6 +548,14 @@ _Response (401 - Internal Server Error)_
 }
 ```
 
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Level with ID 99 not found"
+}
+```
+
 _Response (500 - Internal Server Error)_
 
 ```
@@ -575,7 +583,9 @@ not needed
 _Request Body_
 
 ```
-not needed
+{
+  name: string
+}
 ```
 
 _Response (201)_
@@ -740,7 +750,7 @@ _Response (500 - Internal Server Error)_
 
 #### GET/categories/
 
-> Gets all Level entities
+> Gets all Category entities
 
 _Request Header_
 
@@ -766,13 +776,12 @@ _Response (200)_
 [
     {
         "id": 1,
-        "name": "beginner"
+        "name": "listening"
     },
     {
         "id": 2,
-        "name": "medium"
-    },
-    ...
+        "name": "speaking"
+    }
 ]
 ```
 
@@ -794,7 +803,7 @@ _Response (500 - Internal Server Error)_
 
 #### GET/categories/:id
 
-> Gets a single Level entity based on its ID
+> Gets a single Category entity based on its ID
 
 _Request Header_
 
@@ -819,7 +828,7 @@ _Response (200)_
 ```
 {
     "id": 1,
-    "name": "beginner"
+    "name": "listening"
 }
 ```
 
@@ -828,6 +837,21 @@ _Response (401 - Internal Server Error)_
 ```
 {
   "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Category with ID 99 not found"
 }
 ```
 
@@ -841,7 +865,7 @@ _Response (500 - Internal Server Error)_
 
 #### POST/categories/
 
-> Create a new Level entity
+> Create a new Category entity
 
 _Request Header_
 
@@ -858,14 +882,16 @@ not needed
 _Request Body_
 
 ```
-not needed
+{
+  name: string
+}
 ```
 
 _Response (201)_
 
 ```
 {
-    "message": "Successfully added a new Level"
+    "message": "Succeessfully added a new category"
 }
 ```
 
@@ -875,6 +901,13 @@ _Response (401 - Internal Server Error)_
 {
   "message": "jwt must be provided"
 }
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
 ```
 
 _Response (403 - Forbidden)_
@@ -895,7 +928,7 @@ _Response (500 - Internal Server Error)_
 
 #### UPDATE/categories/:id
 
-> Update a specific Level entity, based on its ID
+> Update a specific Category entity, based on its ID
 
 _Request Header_
 
@@ -921,7 +954,7 @@ _Response (200)_
 
 ```
 {
-    "message": "Successfully updated a level"
+    "message": "Category with ID 4 has been updated"
 }
 ```
 
@@ -929,7 +962,7 @@ _Response (404 - Not Found)_
 
 ```
 {
-    "message": "Level with ID 99 not found"
+    "message": "Category with ID 99 not found"
 }
 ```
 
@@ -939,6 +972,13 @@ _Response (401 - Internal Server Error)_
 {
   "message": "jwt must be provided"
 }
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
 ```
 
 _Response (403 - Forbidden)_
@@ -959,7 +999,7 @@ _Response (500 - Internal Server Error)_
 
 #### DELETE/categories/:id
 
-> Delete a Level entity, based on its ID
+> Delete a Category entity, based on its ID
 
 _Request Header_
 
@@ -983,7 +1023,7 @@ _Response (200)_
 
 ```
 {
-    "message": "Successfully deleted a level"
+    "message": "Category with ID 4 has been deleted"
 }
 ```
 
@@ -991,7 +1031,7 @@ _Response (404 - Not Found)_
 
 ```
 {
-    "message": "Level with ID 99 not found"
+    "message": "Category with ID 99 not found"
 }
 ```
 
@@ -1001,6 +1041,13 @@ _Response (401 - Internal Server Error)_
 {
   "message": "jwt must be provided"
 }
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
 ```
 
 _Response (403 - Forbidden)_

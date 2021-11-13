@@ -7,7 +7,7 @@ class CategoryController {
       const resp = await Category.create({
         name,
       });
-      res.status(201).json({ message: "Success add category" });
+      res.status(201).json({ message: "Succeessfully added a new category" });
     } catch (err) {
       next(err);
     }
@@ -55,7 +55,7 @@ class CategoryController {
           },
         }
       );
-      res.status(200).json({ message: `category with id ${category["id"]} has updated` });
+      res.status(200).json({ message: `Category with ID ${category["id"]} has been updated` });
     } catch (err) {
       next(err);
     }
@@ -72,7 +72,7 @@ class CategoryController {
           id,
         },
       });
-      res.status(200).json({ message: `category with id ${category["id"]} has deleted` });
+      res.status(200).json({ message: `Category with ID ${category["id"]} has been deleted` });
     } catch (err) {
       next(err);
     }
