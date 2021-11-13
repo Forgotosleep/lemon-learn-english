@@ -584,7 +584,7 @@ _Request Body_
 
 ```
 {
-  name: string
+  name: string required
 }
 ```
 
@@ -883,7 +883,7 @@ _Request Body_
 
 ```
 {
-  name: string
+  name: string required
 }
 ```
 
@@ -1067,6 +1067,372 @@ _Response (500 - Internal Server Error)_
 ```
 
 ### MATERIALS
+
+#### GET/materials/
+
+> Gets all Material entities
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "name": "Twinkle Twinkle Little Star",
+        "description": "A popular song for children, easy to listen and a good song to start your listening with",
+        "materialUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+        "classId": 1,
+        "createdAt": "2021-11-13T12:09:27.364Z",
+        "updatedAt": "2021-11-13T12:09:27.364Z",
+        "Class": {
+            "name": "Beginner Listening"
+        }
+    },
+    {
+        "id": 2,
+        "name": "Pi-Pi-Pi-Pi☆Pikachu! ",
+        "description": "A song about Pikachu and his/her friends",
+        "materialUrl": "https://www.youtube.com/watch?v=h4-ftQE3zEQ",
+        "classId": 1,
+        "createdAt": "2021-11-13T12:09:27.364Z",
+        "updatedAt": "2021-11-13T12:09:27.364Z",
+        "Class": {
+            "name": "Beginner Listening"
+        }
+    }
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### GET/materials/:id
+
+> Gets a single Material entity based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "id": 1,
+    "name": "Twinkle Twinkle Little Star",
+    "description": "A popular song for children, easy to listen and a good song to start your listening with",
+    "materialUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+    "classId": 1,
+    "createdAt": "2021-11-13T12:09:27.364Z",
+    "updatedAt": "2021-11-13T12:09:27.364Z",
+    "Class": {
+        "name": "Beginner Listening"
+    }
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### POST/materials/
+
+> Create a new Material entity
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+{
+  name: string required,
+  description: string required,
+  materialUrl: string,
+  classId: integer required,
+}
+```
+
+_Response (201)_
+
+```
+{
+    "message": "Succeessfully added a new material"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```
+{
+    "message": [
+        "Name can't be empty",
+        "Description can't be empty",
+        "classId can't be empty"
+    ]
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### UPDATE/materials/:id
+
+> Update a specific Material entity, based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+{
+  name: string,
+  description: string,
+  materialUrl: string,
+  classId: integer,
+}
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Material with ID 4 has been updated"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### DELETE/materials/:id
+
+> Delete a Material entity, based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "id": 3,
+    "name": "Mraz Best Compilation",
+    "description": "Best of Jason Mraz. For testing purpoises.",
+    "materialUrl": "https://www.youtube.com/watch?v=E105OqrWcjI",
+    "classId": 1,
+    "createdAt": "2021-11-13T13:25:01.031Z",
+    "updatedAt": "2021-11-13T13:38:52.847Z"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
 
 ### TASKS
 

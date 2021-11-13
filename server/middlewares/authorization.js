@@ -32,9 +32,11 @@ const authorizationTaskMaterial = async (req, res, next) => {  // This is so tha
     const classId = req.params.id
 
     const teacherClass = await Class.findByPk(classId)
+    // const user = await User.findByPk(teacherId)
     // console.log(teacherClass, "<<< TEACHER CLASS");
+    console.log(req.user, "<<< REQ USER");
 
-    if (teacherClass.teacherId === teacherId) {
+    if (teacherClass?.teacherId === teacherId || req.user?.role.toLowerCase() === "admin") {
       next()
     }
     else {
