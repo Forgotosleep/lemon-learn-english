@@ -12,11 +12,7 @@ const errorHandler = (err, req, res, next) => {
         message.push(error.message);
       });
       res.status(400).json({
-        message:
-          message ||
-          err.errors[0].validatorArgs[0]?.message ||
-          err.errors[0].message ||
-          err,
+        message: message || err.errors[0].validatorArgs[0]?.message || err.errors[0].message || err,
       });
       // res.status(400).json({ message })
       // res.status(400).json(err)
@@ -34,47 +30,45 @@ const errorHandler = (err, req, res, next) => {
       res.status(400).json({ message });
       break;
     case "SequelizeDatabaseError":
-      err.errors?.map(error => {
-        message.push(error.message)
-      })
-      res.status(400).json({ message: message || err })
-      break
+      err.errors?.map((error) => {
+        message.push(error.message);
+      });
+      res.status(400).json({ message: message || err });
+      break;
     case "InvalidDataType":
       console.log(err);
-      res.status(400).json({ message: `Invalid input data type` })
-      break
+      res.status(400).json({ message: `Invalid input data type` });
+      break;
 
     /* USER ERRORS */
     // Bisa dipisah antara Student, Teacher dan Admin errors
     case "UserNotFound":
-      res.status(404).json({ message: err.message || `User with ID ${err?.id} not found` })
-      break
+      res.status(404).json({ message: err.message || `User with ID ${err?.id} not found` });
+      break;
 
     /* CLASS ERRORS */
     case "ClassNotFound":
-      res
-        .status(404)
-        .json({ message: err.message || `Class with ID ${err?.id} not found` });
+      res.status(404).json({ message: err.message || `Class with ID ${err?.id} not found` });
       break;
 
     /* STUDENTCLASS ERRORS */
     case "StudentClassNotFound":
-      res.status(404).json({ message: err.message || `Student Class Data with ID ${err?.id} not found` })
-      break
+      res.status(404).json({ message: err.message || `Student Class Data with ID ${err?.id} not found` });
+      break;
     /* TASK ERRORS */
     case "TaskNotFound":
-      res.status(404).json({ message: err.message || `Task with ID ${err?.id} not found` })
-      break
+      res.status(404).json({ message: err.message || `Task with ID ${err?.id} not found` });
+      break;
 
     /* SCORE ERRORS */
     case "ScoreNotFound":
-      res.status(404).json({ message: err.message || `Score with ID ${err?.id} not found` })
-      break
+      res.status(404).json({ message: err.message || `Score with ID ${err?.id} not found` });
+      break;
 
     /* LEVEL ERRORS */
     case "LevelNotFound":
-      res.status(404).json({ message: err.message || `Level with ID ${err?.id} not found` })
-      break
+      res.status(404).json({ message: err.message || `Level with ID ${err?.id} not found` });
+      break;
     /* INVALID ENTITY ID */
     case "InvalidLevelId":
     case "InvalidCategoryId":
@@ -82,16 +76,16 @@ const errorHandler = (err, req, res, next) => {
     case "InvalidClassId":
     case "InvalidStudentClassId":
     case "InvalidUserId":
-      res.status(401).json({ message: `Please check your ID` })
-      break
+      res.status(401).json({ message: `Please check your ID` });
+      break;
     case "MaterialNotFound":
-      res.status(404).json({ message: err.message || `Material with ID ${err?.id} not found` })
-      break
+      res.status(404).json({ message: err.message || `Material with ID ${err?.id} not found` });
+      break;
 
     /* CATEGORIES ERRORS */
     case "CategoryNotFound":
-      res.status(404).json({ message: err.message || `Category with ID ${err?.id} not found` })
-      break
+      res.status(404).json({ message: err.message || `Category with ID ${err?.id} not found` });
+      break;
 
     /* MATERIAL ERRORS */
     case "MaterialNotFound":
@@ -120,6 +114,9 @@ const errorHandler = (err, req, res, next) => {
       res.status(400).json({ message: err.name });
       break;
 
+    case "notCompletedClass":
+      res.status(400).json({ message: "your status is not completed for this class" });
+      break;
     /* WE HAVENT HANDLED THAT ONE YET ERROR */
     default:
       // res.status(500).json(err)  // For troubleshooting
