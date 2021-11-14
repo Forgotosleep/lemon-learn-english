@@ -451,7 +451,1195 @@ _Response (500 - Internal Server Error)_
 
 ### CLASSES
 
+#### GET/classes/
+
+> Gets all Class entities
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Query_
+
+```
+name,
+categoryId,
+levelId,
+page,
+teacherName
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "totalItems": 2,
+    "result": [
+        {
+            "id": 2,
+            "name": "Speaking Intermediate English",
+            "teacherId": 1,
+            "levelId": 2,
+            "categoryId": 2,
+            "ratings": null,
+            "status": null,
+            "teacher": {
+                "id": 1,
+                "username": "Mason",
+                "email": "mason@mail.com",
+                "name": "Mason",
+                "photo": "https://cdn.onlinewebfonts.com/svg/img_181369.png",
+                "phone": null,
+                "address": null
+            },
+            "Category": {
+                "id": 2,
+                "name": "speaking"
+            },
+            "Level": {
+                "id": 2,
+                "name": "medium"
+            }
+        },
+        {
+            "id": 1,
+            "name": "Beginner Listening",
+            "teacherId": 1,
+            "levelId": 1,
+            "categoryId": 1,
+            "ratings": null,
+            "status": null,
+            "teacher": {
+                "id": 1,
+                "username": "Mason",
+                "email": "mason@mail.com",
+                "name": "Mason",
+                "photo": "https://cdn.onlinewebfonts.com/svg/img_181369.png",
+                "phone": null,
+                "address": null
+            },
+            "Category": {
+                "id": 1,
+                "name": "listening"
+            },
+            "Level": {
+                "id": 1,
+                "name": "beginner"
+            }
+        }
+    ],
+    "totalPages": 1,
+    "currentPage": 1
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "jwt malformed"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### GET/classes/:id
+
+> Gets a single Class entity based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "id": 1,
+    "name": "Beginner Listening",
+    "teacherId": 1,
+    "levelId": 1,
+    "categoryId": 1,
+    "ratings": null,
+    "status": null,
+    "createdAt": "2021-11-13T12:09:27.364Z",
+    "updatedAt": "2021-11-13T12:09:27.364Z"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```
+{
+    "message": "Invalid input data type"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### GET/classes/teacherClasses/
+
+> Gets Class entities based on current logged in Teacher's ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "name": "Beginner Listening",
+        "teacherId": 1,
+        "levelId": 1,
+        "categoryId": 1,
+        "ratings": null,
+        "status": null,
+        "Category": {
+            "id": 1,
+            "name": "listening"
+        },
+        "Level": {
+            "id": 1,
+            "name": "beginner"
+        }
+    },
+    {
+        "id": 2,
+        "name": "Speaking Intermediate English",
+        "teacherId": 1,
+        "levelId": 2,
+        "categoryId": 2,
+        "ratings": null,
+        "status": null,
+        "Category": {
+            "id": 2,
+            "name": "speaking"
+        },
+        "Level": {
+            "id": 2,
+            "name": "medium"
+        }
+    }
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### GET/classes/active/
+
+> Gets Class entities with 'active' status
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "totalItems": 1,
+    "result": [
+        {
+            "id": 1,
+            "name": "Beginner Listening",
+            "teacherId": 1,
+            "levelId": 1,
+            "categoryId": 1,
+            "ratings": null,
+            "status": "active",
+            "teacher": {
+                "id": 1,
+                "username": "Mason",
+                "email": "mason@mail.com",
+                "name": "Mason",
+                "photo": "https://cdn.onlinewebfonts.com/svg/img_181369.png",
+                "phone": null,
+                "address": null
+            },
+            "Category": {
+                "id": 1,
+                "name": "listening"
+            },
+            "Level": {
+                "id": 1,
+                "name": "beginner"
+            }
+        }
+    ],
+    "totalPages": 1,
+    "currentPage": 1
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### POST/classes/
+
+> Create a new Class entity
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+{
+  name: string required,
+  levelId: integer required,
+  categoryId: integer required,
+}
+```
+
+_Response (201)_
+
+```
+{
+    "ratings": 0,
+    "status": "active",
+    "id": 3,
+    "name": "Beginner's Guide to Ears",
+    "teacherId": 1,
+    "levelId": 1,
+    "categoryId": 1,
+    "updatedAt": "2021-11-14T13:49:17.773Z",
+    "createdAt": "2021-11-14T13:49:17.773Z"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```
+{
+    "message": [
+        "Class name can't be empty",
+        "levelId can't be empty",
+        "categoryId can't be empty"
+    ]
+}
+--OR--
+{
+    "message": [
+        "levelId has to be a number",
+        "categoryId has to be a number"
+    ]
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### UPDATE/classes/:id
+
+> Update a specific Class entity, based on its ID
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+{
+  name: string,
+  levelId: integer,
+  categoryId: integer,
+}
+```
+
+_Response (200)_
+
+```
+{
+    "id": 3,
+    "name": "Beginner's Guide to Ears",
+    "teacherId": 1,
+    "levelId": 1,
+    "categoryId": 2,
+    "ratings": 0,
+    "status": "active",
+    "createdAt": "2021-11-14T13:49:17.773Z",
+    "updatedAt": "2021-11-14T13:55:13.008Z"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Class with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### PATCH/classes/status/:id
+
+> Update a specific Class entity's status, based on its ID. Restricted to the teacher that owns the class.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+{
+  status: string
+}
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Your class status has been updated"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Class with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### PATCH/classes/:id
+
+> Update a specific Class entity's ratings, adding the new rating given by the student to the total that is in the table; based on its ID. Restricted to the students that have _completed_ the class.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+{
+  status: string
+}
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Succeess in rating class Beginner Listening"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Class with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### DELETE/classes/:id
+
+> Delete a Class entity, based on its ID. Restricted to the teacher that owns the class.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Successfully deleted Class Beginner's Guide to Ears"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Material with ID 99 not found"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
 ### STUDENT-CLASSES
+
+#### GET/student-class/
+
+> Gets all classes that a logged-in student is enrolled in.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Query_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "studentId": 3,
+        "classId": 1,
+        "status": "complete",
+        "createdAt": "2021-11-13T12:09:27.364Z",
+        "updatedAt": "2021-11-13T12:09:27.364Z",
+        "Class": {
+            "id": 1,
+            "name": "Beginner Listening",
+            "teacherId": 1,
+            "levelId": 1,
+            "categoryId": 1,
+            "ratings": 342,
+            "status": "active",
+            "createdAt": "2021-11-13T12:09:27.364Z",
+            "updatedAt": "2021-11-14T14:40:03.656Z"
+        }
+    },
+    {
+        "id": 2,
+        "studentId": 3,
+        "classId": 2,
+        "status": "hidden",
+        "createdAt": "2021-11-13T12:09:27.364Z",
+        "updatedAt": "2021-11-13T12:09:27.364Z",
+        "Class": {
+            "id": 2,
+            "name": "Speaking Intermediate English",
+            "teacherId": 1,
+            "levelId": 2,
+            "categoryId": 2,
+            "ratings": 0,
+            "status": null,
+            "createdAt": "2021-11-13T12:09:27.364Z",
+            "updatedAt": "2021-11-13T12:09:27.364Z"
+        }
+    }
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "jwt malformed"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### GET/student-class/:classId
+
+> Gets all classes that a logged-in student is enrolled in. Students only.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Query_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "studentId": 3,
+        "classId": 1,
+        "status": "complete",
+        "createdAt": "2021-11-13T12:09:27.364Z",
+        "updatedAt": "2021-11-13T12:09:27.364Z",
+        "Class": {
+            "id": 1,
+            "name": "Beginner Listening",
+            "teacherId": 1,
+            "levelId": 1,
+            "categoryId": 1,
+            "ratings": 342,
+            "status": "active",
+            "createdAt": "2021-11-13T12:09:27.364Z",
+            "updatedAt": "2021-11-14T14:40:03.656Z"
+        }
+    },
+    {
+        "id": 2,
+        "studentId": 3,
+        "classId": 2,
+        "status": "hidden",
+        "createdAt": "2021-11-13T12:09:27.364Z",
+        "updatedAt": "2021-11-13T12:09:27.364Z",
+        "Class": {
+            "id": 2,
+            "name": "Speaking Intermediate English",
+            "teacherId": 1,
+            "levelId": 2,
+            "categoryId": 2,
+            "ratings": 0,
+            "status": null,
+            "createdAt": "2021-11-13T12:09:27.364Z",
+            "updatedAt": "2021-11-13T12:09:27.364Z"
+        }
+    }
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "jwt malformed"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### POST/student-class/:classId
+
+> Registers the logged-in student to a class, based on its class ID.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+{
+  name: string required,
+  levelId: integer required,
+  categoryId: integer required,
+}
+```
+
+_Response (201)_
+
+```
+{
+    "ratings": 0,
+    "status": "active",
+    "id": 3,
+    "name": "Beginner's Guide to Ears",
+    "teacherId": 1,
+    "levelId": 1,
+    "categoryId": 1,
+    "updatedAt": "2021-11-14T13:49:17.773Z",
+    "createdAt": "2021-11-14T13:49:17.773Z"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```
+{
+    "message": [
+        "Class name can't be empty",
+        "levelId can't be empty",
+        "categoryId can't be empty"
+    ]
+}
+--OR--
+{
+    "message": [
+        "levelId has to be a number",
+        "categoryId has to be a number"
+    ]
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### PATCH/student-class/hide/:id
+
+> Changes the status of a student that is enrolled in a class into 'hidden'. This endpoint is meant to be hit if a student wants to quit from the class. Students only.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+{
+  status: string
+}
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Success updating student's status"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Class with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### PATCH/student-class/:id
+
+> Changes the status of a student that is enrolled in a class into 'incomplete'. This endpoint is meant to be hit if a student that has quit a class and wants to enroll again in the same class. The progress is saved and returned as is to the student. Students only.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+{
+  status: string
+}
+```
+
+_Response (200)_
+
+```
+{
+    "message": "Success updating student's status"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+
+--OR--
+
+{
+    "message": "Please check your ID"
+}
+
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Class with ID 99 not found"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
 
 ### LEVELS
 
