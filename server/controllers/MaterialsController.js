@@ -1,26 +1,26 @@
-const { Material, Class } = require('../models/index')
+const { Material, Class } = require("../models/index");
 
 class MaterialController {
   static async addMaterial(req, res, next) {
     try {
-      const { name, description, materialUrl, classId } = req.body
+
+      const { name, description, materialUrl, classId } = req.body;
       const resp = await Material.create({
         name,
         description,
         materialUrl,
-        classId
-      })
-      res.status(201).json({ message: 'Success add material' })
+        classId,
+      });
+      res.status(201).json({ message: "Succeessfully added a new material" });
     } catch (err) {
-      console.log(err)
-      next(err)
+      next(err);
     }
   }
 
   static async getMaterialById(req, res, next) {
     try {
-      const { id } = req.params
-      if (!Number(id)) throw ({ name: "InvalidMaterialId" })
+      const { id } = req.params;
+      if (!Number(id)) throw { name: "InvalidMaterialId" };
       const resp = await Material.findByPk(id, {
         attributes: {
           exclude: ['createdAt', 'updatedAt']
@@ -35,7 +35,7 @@ class MaterialController {
       if (!resp) throw ({ name: 'MaterialNotFound', id })
       res.status(200).json(resp)
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
@@ -54,53 +54,52 @@ class MaterialController {
       })
       res.status(200).json(resp)
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
   static async deleteMaterialByID(req, res, next) {
     try {
-      const { id } = req.params
-      if (!Number(id)) throw ({ name: "InvalidMaterialId" })
-      const resp = await Material.findByPk(id)
-      if (!resp) throw ({ name: 'MaterialNotFound', id })
+      const { id } = req.params;
+      if (!Number(id)) throw { name: "InvalidMaterialId" };
+      const resp = await Material.findByPk(id);
+      if (!resp) throw { name: "MaterialNotFound", id };
       await Material.destroy({
         where: {
-          id
-        }
-      })
-      res.status(200).json({message: "Success delete material"})
+          id,
+        },
+      });
+      res.status(200).json(resp);
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
-
 
   static async updateMaterial(req, res, next) {
     try {
-      const { id } = req.params
-      if (!Number(id)) throw ({ name: "InvalidMaterialId" })
-      const { name, description, materialUrl, classID } = req.body
-      const material = await Material.findByPk(id)
-      if (!material) throw ({ name: 'MaterialNotFound', id})
-      const resp = await Material.update({
-        name,
-        description,
-        materialUrl,
-        classID
-      }, {
-        where: {
-          id
+      const { id } = req.params;
+      if (!Number(id)) throw { name: "InvalidMaterialId" };
+      const { name, description, materialUrl, classID } = req.body;
+      const material = await Material.findByPk(id);
+      if (!material) throw { name: "MaterialNotFound", id };
+      const resp = await Material.update(
+        {
+          name,
+          description,
+          materialUrl,
+          classID,
+        },
+        {
+          where: {
+            id,
+          },
         }
-      })
-      res.status(200).json({ message: 'Success update material' })
+      );
+      res.status(200).json({ message: "Succeessfully updated a material" });
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
-
-
 }
 
-
-module.exports = MaterialController
+module.exports = MaterialController;

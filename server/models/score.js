@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Score extends Model {
     /**
@@ -11,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Score.belongsTo(models.Task, { foreignKey: 'classId' })
-      Score.belongsTo(models.User, { foreignKey: 'studentId' })
+      Score.belongsTo(models.Task, { foreignKey: "taskId" });
+      Score.belongsTo(models.User, { foreignKey: "studentId" });
     }
   };
   Score.init({
@@ -22,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
       validate: {
         notNull: { msg: `Score can't be empty` },
+        isNumeric: { msg: `Score has to be a number` }
       }
     },
     studentId: {
@@ -29,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: { msg: `studentId can't be empty` },
+        isNumeric: { msg: `studentId has to be a number` }
       }
     },
     taskId: {
@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: { msg: `taskId can't be empty` },
+        isNumeric: { msg: `taskId has to be a number` }
       }
     },
     answer: { type: DataTypes.STRING, },

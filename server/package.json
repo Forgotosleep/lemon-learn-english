@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npx jest --detectOpenHandles --verbose --collect-coverage",
     "migrate": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all"
+    "start": "npx nodemon bin/www"
   },
   "keywords": [],
   "author": "",
@@ -27,5 +28,8 @@
     "sequelize": "^6.9.0",
     "sequelize-cli": "^6.3.0",
     "supertest": "^6.1.6"
+  },
+  "bin": {
+    "server": "www.js"
   }
 }

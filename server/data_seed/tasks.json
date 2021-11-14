@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Twinkle Twinkle Little Star",
+    "description": "A popular song for children, easy to listen and a good song to start your listening with",
+    "classId": 1,
+    "soundUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+    "question": "Sing-a-long!"
+  },
+  {
+    "name": "Pi-Pi-Pi-Pi☆Pikachu! ",
+    "description": "A song about Pikachu and his/her friends",
+    "classId": 1,
+    "soundUrl": "https://www.youtube.com/watch?v=h4-ftQE3zEQ",
+    "question": "Sing-a-long!"
+  }
+]

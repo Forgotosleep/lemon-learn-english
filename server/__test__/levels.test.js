@@ -1,21 +1,6 @@
 const request = require("supertest");
 const app = require("../app");
 
-const { sequelize, Class } = require("../models");
-const { queryInterface } = sequelize;
-
-// beforeAll((done) => {
-//   // set initial data
-//   /*
-
-//     */
-//   // Class.create();
-// });
-
-// afterAll((done) => {
-//   // clean up
-// });
-
 let token;
 
 beforeAll((done) => {
@@ -35,16 +20,13 @@ beforeAll((done) => {
       done(err);
     });
 });
-describe("POSTS /tasks", () => {
-  test("201 success create tasks", (done) => {
+
+describe("POSTS /levels", () => {
+  test("201 success create level", (done) => {
     request(app)
-      .post("/tasks/add")
+      .post("/levels")
       .send({
-        name: "task one",
-        description: "task one description",
-        classId: 1,
-        soundUrl: "www.example.com",
-        question: "question",
+        name: "very hard",
       })
       .set({
         access_token: token,
@@ -52,31 +34,7 @@ describe("POSTS /tasks", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(201);
-        expect(body).toHaveProperty("result");
-        expect(body.result).toHaveProperty("name", "task one");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-  test("400 failed create task bad request", (done) => {
-    request(app)
-      .post("/tasks/add")
-      .send({
-        description: "task one description",
-        classId: 1,
-        soundUrl: "www.example.com",
-        question: "question",
-      })
-      .set({
-        access_token: token,
-      })
-      .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(400);
-        expect(body).toHaveProperty("message", ["Task name can't be empty"]);
+        expect(body).toHaveProperty("message", "Successfully added a new Level");
         done();
       })
       .catch((err) => {
@@ -85,10 +43,10 @@ describe("POSTS /tasks", () => {
   });
 });
 
-describe("GET /tasks", () => {
-  test("200 success get tasks", (done) => {
+describe("GET /levels", () => {
+  test("200 success get levels", (done) => {
     request(app)
-      .get("/tasks")
+      .get("/levels")
       .set({
         access_token: token,
       })
@@ -96,7 +54,27 @@ describe("GET /tasks", () => {
         const { body, status } = response;
         expect(status).toBe(200);
         expect(Array.isArray(body)).toBeTruthy();
-        expect(body.length).toBe(3);
+        expect(body[0]).toHaveProperty("name");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+
+describe("GET /levels/:id", () => {
+  test("200 success get levels by id", (done) => {
+    request(app)
+      .get(`/levels/${1}`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("id");
+        expect(body).toHaveProperty("name");
         done();
       })
       .catch((err) => {
@@ -104,13 +82,33 @@ describe("GET /tasks", () => {
       });
   });
 
-  test("401 failed get tasks", (done) => {
+  test("404 failed get levels because id not found", (done) => {
     request(app)
-      .get("/tasks")
+      .get(`/levels/${100}`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(404);
+        expect(body).toHaveProperty("message", "Level with ID 100 not found");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("401 failed get levels because id not number", (done) => {
+    request(app)
+      .get(`/levels/not_number_id`)
+      .set({
+        access_token: token,
+      })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(401);
-        expect(body.message).toBe("jwt must be provided");
+        expect(body).toHaveProperty("message", "Please check your ID");
         done();
       })
       .catch((err) => {
@@ -119,76 +117,54 @@ describe("GET /tasks", () => {
   });
 });
 
-describe("GET /tasks/:id", () => {
-  test("200 success get task by id", (done) => {
+describe("UPDATE /levels/:id", () => {
+  test("200 success update levels", (done) => {
     request(app)
-      .get(`/tasks/${1}`)
-      .set({
-        access_token: token,
-      })
-      .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(200);
-        expect(body).toHaveProperty("name", "Twinkle Twinkle Little Star");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-  test("404 failed get task cause invalid id", (done) => {
-    request(app)
-      .get(`/tasks/${99}`)
-      .set({
-        access_token: token,
-      })
-      .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Task with ID 99 not found");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-});
-
-describe("UPDATE /tasks", () => {
-  test("200 success update tasks", (done) => {
-    request(app)
-      .put(`/tasks/${1}`)
-      .send({
-        name: "test five",
-      })
-      .set({
-        access_token: token,
-      })
-      .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Task with ID 1 Updated");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
-
-  test("404 failed update task cause invalid id", (done) => {
-    request(app)
-      .put(`/tasks/${99}`)
+      .put(`/levels/${3}`)
       .set({
         access_token: token,
       })
       .send({
-        name: "test five",
+        name: "Very Easy",
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("message", "Successfully updated a level");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("404 failed update level because id not found", (done) => {
+    request(app)
+      .put(`/levels/${67}`)
+      .set({
+        access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Task with ID 99 not found");
+        expect(body).toHaveProperty("message", "Level with ID 67 not found");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("401 failed update level because id not number", (done) => {
+    request(app)
+      .put(`/levels/not_number_id`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "Please check your ID");
         done();
       })
       .catch((err) => {
@@ -197,17 +173,17 @@ describe("UPDATE /tasks", () => {
   });
 });
 
-describe("DELETE /tasks", () => {
-  test("200 success delete tasks", (done) => {
+describe("DELETE /levels/:id", () => {
+  test("200 success delete level", (done) => {
     request(app)
-      .delete(`/tasks/${1}`)
+      .delete(`/levels/${3}`)
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Task with ID 1 Deleted");
+        expect(body).toHaveProperty("message", "Successfully deleted a level");
         done();
       })
       .catch((err) => {
@@ -215,16 +191,33 @@ describe("DELETE /tasks", () => {
       });
   });
 
-  test("404 failed delete task cause invalid id", (done) => {
+  test("404 failed delete level because id not found", (done) => {
     request(app)
-      .delete(`/tasks/${99}`)
+      .delete(`/levels/${67}`)
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "Task with ID 99 not found");
+        expect(body).toHaveProperty("message", "Level with ID 67 not found");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("401 failed delete Level because id not number", (done) => {
+    request(app)
+      .delete(`/levels/not_number_id`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "Please check your ID");
         done();
       })
       .catch((err) => {
