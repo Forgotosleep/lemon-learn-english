@@ -144,7 +144,7 @@ const errorHandler = (err, req, res, next) => {
     default:
       // res.status(500).json(err)  // For troubleshooting
       console.log(err, "<<< 500 ERRORHANDLER"); // For testing purpoises
-      console.log(err.name, "<<<>>>> Name of error");
+      console.log(err.name, "<<<>>>> Name of error"); //Display error name
       res.status(500).json({ message: "Internal server error" });
   }
 };

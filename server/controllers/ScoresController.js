@@ -49,6 +49,7 @@ class ScoresController {
   static async deleteScore(req, res, next) {
     try {
       const { id } = req.params;
+      console.log("masukskksksksnojansoxnj");
       const deleted = await Score.findOne({ where: { id } });
       const resp = await Score.destroy({
         where: { id },
