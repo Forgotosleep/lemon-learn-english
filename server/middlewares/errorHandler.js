@@ -34,13 +34,14 @@ const errorHandler = (err, req, res, next) => {
       res.status(400).json({ message });
       break;
     case "SequelizeDatabaseError":
+      console.log(err, "<<< SEQ DATABASE ERR");
       err.errors?.map((error) => {
         message.push(error.message);
       });
-      res.status(400).json({ message: message || err });
+      res.status(400).json({ message: message.length ? message : `Invalid input data type` });
       break;
     case "InvalidDataType":
-      console.log(err);
+      console.log(err, "<<< INVALID DATA TYPE");
       res.status(400).json({ message: `Invalid input data type` });
       break;
 

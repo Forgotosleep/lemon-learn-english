@@ -20,7 +20,7 @@ class StudentClassController {
         classId,
         status: "incomplete",
       });
-      res.status(201).json({ message: "Success add student to the class" });
+      res.status(201).json({ message: "Success adding student to the class" });
     } catch (err) {
       next(err);
     }
@@ -44,7 +44,7 @@ class StudentClassController {
           },
         }
       );
-      res.status(200).json({ messsage: "Success update status" });
+      res.status(200).json({ messsage: "Success updating student's status" });
     } catch (err) {
       next(err);
     }
