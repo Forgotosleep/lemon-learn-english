@@ -10,8 +10,16 @@ export default function () {
 
   return (
     <>
-      <h3 className="mb-4">Manage Class</h3>
-      <button onClick={onAddClass}>Add New Class</button>
+      <h3 className="mb-4" style={{ float: "left" }}>
+        Manage Class
+      </h3>
+      <button
+        class="btn btn-primary me-4"
+        onClick={onAddClass}
+        style={{ float: "right" }}
+      >
+        Add New Class
+      </button>
       <ClassList />
     </>
   );

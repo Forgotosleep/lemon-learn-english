@@ -1,14 +1,29 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { getCategories } from "../../store/actions/category";
 import { addClass } from "../../store/actions/class";
+import { getLevels } from "../../store/actions/level";
 
 export default function () {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { data: categories, loading: catLoading } = useSelector(
+    (state) => state.category
+  );
+  const { data: levels, loading: lvlLoading } = useSelector(
+    (state) => state.level
+  );
   const [formData, setFormData] = useState({
     name: "",
-    levelId: 1,
-    categoryId: 1,
+    levelId: 0,
+    categoryId: 0,
   });
+
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getLevels());
+  }, []);
 
   function onChange(e) {
     const name = e.target.name;
@@ -23,20 +38,26 @@ export default function () {
   function onSubmit(e) {
     e.preventDefault();
 
-    dispatch(addClass(formData));
+    dispatch(addClass(formData)).then(() => {
+      navigate("/dashboard/class");
+    });
   }
 
   return (
     <>
-      <h3 className="mb-4">Add Class</h3>
-      <form style={{ width: "500px", margin: "auto" }} onSubmit={onSubmit}>
+      <form
+        style={{ width: "500px", margin: "auto", textAlign: "left" }}
+        onSubmit={onSubmit}
+      >
+        <h3 className="mb-4">Add Class</h3>
         <div class="form-group mt-4">
-          {/* <label for="formGroupExampleInput">Example label</label> */}
+          <label for="name" className="mb-3">
+            Class Name
+          </label>
           <input
             type="text"
             class="form-control"
             id="name"
-            placeholder="Class Name"
             name="name"
             onChange={onChange}
             value={formData.name}
@@ -53,7 +74,19 @@ export default function () {
             onChange={onChange}
             value={formData.levelId}
           >
-            <option value={1}>beginner</option>
+            <option value={0} selected disabled>
+              Choose..
+            </option>
+            {lvlLoading ? (
+              <></>
+            ) : (
+              levels?.map((l) => (
+                <option key={l.id} value={l.id}>
+                  {l.name}
+                </option>
+              ))
+            )}
+            {/* <option value={1}>beginner</option> */}
           </select>
         </div>
 
@@ -68,8 +101,20 @@ export default function () {
             onChange={onChange}
             value={formData.categoryId}
           >
-            <option value={1}>listening</option>
-            <option value={2}>Speaking</option>
+            <option value={0} selected disabled>
+              Choose..
+            </option>
+            {catLoading ? (
+              <></>
+            ) : (
+              categories?.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))
+            )}
+            {/* <option value={1}>listening</option>
+            <option value={2}>Speaking</option> */}
           </select>
         </div>
 

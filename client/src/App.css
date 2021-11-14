@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +31,30 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* mixin for multiline */
+.ms-text-truncate {
+  overflow: hidden;
+  position: relative;
+  line-height: 1.2em;
+  max-height: 6em;
+  text-align: justify;
+  margin-right: -1em;
+  padding-right: 1em;
+}
+.ms-text-truncate:before {
+  content: "...";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.ms-text-truncate:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+  background: white;
 }

@@ -23,7 +23,70 @@ export default function () {
 
   return (
     <>
-      <table className="table">
+      <div
+        class="row"
+        style={{
+          width: "100%",
+          margin: "2rem auto",
+          padding: "1rem",
+          textAlign: "left",
+          // backgroundColor: "cyan",
+        }}
+      >
+        {classes?.length ? (
+          classes.map((c) => (
+            <div class="col-3">
+              <div
+                key={c.id}
+                class="card mt-4"
+                style={{ width: "18rem", height: "9rem", cursor: "pointer" }}
+              >
+                <div class="card-body">
+                  <div class="">
+                    <h5
+                      class="card-title"
+                      style={{ height: "50px", textOverflow: "ellipsis" }}
+                    >
+                      {c.name}
+                    </h5>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <h6 class="card-subtitle mt-4  mb-2 text-muted">
+                      {c.Category.name}
+                    </h6>
+                    <h6 class="card-subtitle mt-4 mb-2 text-muted">
+                      {c.Level.name}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <></>
+        )}
+        <div class="col-3">
+          <div class="card mt-4" style={{ width: "18rem", height: "9rem" }}>
+            <div class="card-body">
+              <h5
+                class="card-title"
+                style={{
+                  height: "50px",
+                  overflow: "hidden",
+                }}
+              >
+                Class Name very long that it will note fit in the class name
+                normal field
+              </h5>
+              <div class="d-flex justify-content-between">
+                <h6 class="card-subtitle mt-4  mb-2 text-muted">Category</h6>
+                <h6 class="card-subtitle mt-4 mb-2 text-muted">Level</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <table className="table">
         <thead>
           <tr>
             <th>Name</th>
@@ -32,15 +95,15 @@ export default function () {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {/* <tr>
+        <tbody> */}
+      {/* <tr>
             <td>Class One</td>
             <td>Beginner</td>
             <td>Listening</td>
             <td></td>
           </tr> */}
 
-          {classes?.length ? (
+      {/* {classes?.length ? (
             classes.map((c) => (
               <tr key={c.id}>
                 <td>{c.name}</td>
@@ -64,9 +127,9 @@ export default function () {
             ))
           ) : (
             <></>
-          )}
+          )} 
         </tbody>
-      </table>
+      </table>*/}
     </>
   );
 }
