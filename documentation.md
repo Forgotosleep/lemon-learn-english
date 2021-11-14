@@ -1812,3 +1812,346 @@ _Response (500 - Internal Server Error)_
 ```
 
 ### SCORES
+
+#### GET /scores/
+
+> Gets all the scores. Admin ONLY.
+> _Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+[
+    {
+        "id": 1,
+        "score": 90,
+        "studentId": 3,
+        "taskId": 1,
+        "answer": "Twinkle Twinkle Little Star",
+        "soundUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+        "createdAt": "2021-11-13T16:09:08.588Z",
+        "updatedAt": "2021-11-13T16:09:08.588Z"
+    },
+    {
+        "id": 2,
+        "score": 100,
+        "studentId": 3,
+        "taskId": 2,
+        "answer": "Pi-Pi-Pi-Pi☆Pikachu! ",
+        "soundUrl": "https://www.youtube.com/watch?v=h4-ftQE3zEQ",
+        "createdAt": "2021-11-13T16:09:08.588Z",
+        "updatedAt": "2021-11-13T16:09:08.588Z"
+    },
+    {
+        "id": 3,
+        "score": 85,
+        "studentId": 1,
+        "taskId": 1,
+        "answer": "https://www.youtube.com/watch?v=IIZn_cEP9Jg\n",
+        "soundUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+        "createdAt": "2021-11-13T17:43:54.063Z",
+        "updatedAt": "2021-11-14T03:20:18.522Z"
+    }
+]
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### GET/scores/:id
+
+> Gets one specific score.
+
+_Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+id
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "id": 1,
+    "score": 90,
+    "studentId": 3,
+    "taskId": 1,
+    "answer": "Twinkle Twinkle Little Star",
+    "soundUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+    "createdAt": "2021-11-13T16:09:08.588Z",
+    "updatedAt": "2021-11-13T16:09:08.588Z"
+}
+```
+
+_Response (404 - Not Found)_
+
+```
+{
+    "message": "Score with ID 5 not found"
+}
+
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```
+{
+    "message": "Invalid token"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### POST /scores
+
+> Registers a new scores entity
+
+_Request Header_
+
+```
+access_token
+```
+
+_Request Body_
+
+```
+{
+  "score": integer,
+  "studentId": integer required,
+  "taskId": integer required,
+  "soundUrl": string required,
+  "answer": string required,
+}
+```
+
+_Response (201)_
+
+```
+{
+    "id": 3,
+    "score": 90,
+    "studentId": 1,
+    "taskId": 1,
+    "soundUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+    "answer": "https://www.youtube.com/watch?v=IIZn_cEP9Jg\n",
+    "createdAt": "2021-11-13T17:43:54.063Z",
+    "updatedAt": "2021-11-13T17:43:54.063Z"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```
+{
+    "message": [
+        "Score can't be empty",
+        "Student Id can't be empty",
+        "Task Id can't be empty"
+    ]
+}
+
+--OR--
+
+{
+    "message": [
+        "Please enter a valid email"
+    ]
+}
+
+--OR--
+
+
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### PUT /scores/:id
+
+> Edit a registered score data
+
+> _Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```
+{
+    "id": 3,
+    "score": 85,
+    "studentId": 1,
+    "taskId": 1,
+    "answer": "https://www.youtube.com/watch?v=IIZn_cEP9Jg\n",
+    "soundUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+    "createdAt": "2021-11-13T17:43:54.063Z",
+    "updatedAt": "2021-11-14T03:20:18.522Z"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
+
+#### DELETE /scores/:id
+
+> Delete a score by id. Admin ONLY.
+
+> _Request Header_
+
+```
+access_token
+```
+
+_Params_
+
+```
+not needed
+```
+
+_Request Body_
+
+```
+access_token
+```
+
+_Response (200)_
+
+```
+{
+    "id": 3,
+    "score": 85,
+    "studentId": 1,
+    "taskId": 1,
+    "answer": "https://www.youtube.com/watch?v=IIZn_cEP9Jg\n",
+    "soundUrl": "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
+    "createdAt": "2021-11-13T17:43:54.063Z",
+    "updatedAt": "2021-11-14T03:20:18.522Z"
+}
+```
+
+_Response (401 - Internal Server Error)_
+
+```
+{
+  "message": "jwt must be provided"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```
+{
+    "message": "Unauthorized access"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+  message: Internal Server Error
+}
+```
