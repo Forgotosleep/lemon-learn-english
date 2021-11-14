@@ -5,7 +5,7 @@ class LevelController {
     try {
       const { name } = req.body;
       const resp = await Level.create({ name });
-      res.status(201).json({ message: "Success add level" });
+      res.status(201).json({ message: "Successfully added a new Level" });
     } catch (err) {
       next(err);
     }
@@ -53,7 +53,7 @@ class LevelController {
           },
         }
       );
-      res.status(200).json({ message: "Success update level" });
+      res.status(200).json({ message: "Successfully updated a level" });
     } catch (err) {
       next(err);
     }
@@ -70,7 +70,7 @@ class LevelController {
           id,
         },
       });
-      res.status(200).json({ message: "Success delete level" });
+      res.status(200).json({ message: "Successfully deleted a level" });
     } catch (err) {
       next(err);
     }

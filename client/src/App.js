@@ -2,7 +2,37 @@ import logo from "./logo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Dashboard from "./pages/teachers/Dashboard";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate, Navigate } from "react-router-dom";
+import Login from "./pages/teachers/Login";
+import { useEffect } from "react";
+
+function RequireAuth({ children, ...rest }) {
+  const token = localStorage.getItem("access_token");
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  // });
+  return (
+    <>{!token ? <Navigate to="/login"></Navigate> : children}</>
+    // <Route
+    //   {...rest}
+    //   render={({ location }) =>
+    //     token ? (
+    //       children
+    //     ) : (
+    //       <Route
+    //         to={{
+    //           pathname: "/login",
+    //           state: { from: location },
+    //         }}
+    //       />
+    //     )
+    //   }
+    // />
+  );
+}
 
 function App() {
   return (
@@ -10,16 +40,23 @@ function App() {
       {/* <h1>Start Page</h1> */}
 
       <Routes>
-        <Route path="/dashboard/*" element={<Dashboard />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route
+          path="/dashboard/*"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        ></Route>
 
         {/* start page should be login page if not loged in, else go to /dashboard */}
         <Route
           path="/"
           element={
-            <>
-              <h1>Start Page (gonna be login page)</h1>
-              <Link to="/dashboard">Dashboard</Link>
-            </>
+            <RequireAuth>
+              <Navigate to="/dashboard"></Navigate>
+            </RequireAuth>
           }
         ></Route>
       </Routes>

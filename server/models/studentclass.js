@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class StudentClass extends Model {
     /**
@@ -11,37 +9,45 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      StudentClass.belongsTo(models.User, { foreignKey: 'studentId' })
-      StudentClass.belongsTo(models.Class, { foreignKey: 'classId' })
+      StudentClass.belongsTo(models.User, { foreignKey: "studentId", as: "student" });
+      StudentClass.belongsTo(models.Class, { foreignKey: "classId" });
     }
-  };
-  StudentClass.init({
-    studentId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: `studentId can't be empty` },
-        isNumeric: { msg: `levelId has to be a number` }
-      }
+  }
+  StudentClass.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      studentId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: { msg: `studentId can't be empty` },
+          isNumeric: { msg: `levelId has to be a number` },
+        },
+      },
+      classId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: { msg: `classId can't be empty` },
+          isNumeric: { msg: `levelId has to be a number` },
+        },
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: `Class status can't be empty` },
+        },
+      },
     },
-    classId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: { msg: `classId can't be empty` },
-        isNumeric: { msg: `levelId has to be a number` }
-      }
-    },
-    status: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: { msg: `Class status can't be empty` },
-      }
-    },
-  }, {
-    sequelize,
-    modelName: 'StudentClass',
-  });
+    {
+      sequelize,
+      modelName: "StudentClass",
+    }
+  );
   return StudentClass;
 };

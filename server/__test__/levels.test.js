@@ -34,7 +34,7 @@ describe("POSTS /levels", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(201);
-        expect(body).toHaveProperty("message", "Success add level");
+        expect(body).toHaveProperty("message", "Successfully added a new Level");
         done();
       })
       .catch((err) => {
@@ -130,7 +130,7 @@ describe("UPDATE /levels/:id", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Success update level");
+        expect(body).toHaveProperty("message", "Successfully updated a level");
         done();
       })
       .catch((err) => {
@@ -183,7 +183,7 @@ describe("DELETE /levels/:id", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Success delete level");
+        expect(body).toHaveProperty("message", "Successfully deleted a level");
         done();
       })
       .catch((err) => {

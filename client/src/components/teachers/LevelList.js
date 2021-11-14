@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getLevels } from "../../store/actions/level";
+import { deleteLevel, getLevels } from "../../store/actions/level";
 
 export default function ({ onEdit }) {
   const dispatch = useDispatch();
@@ -14,7 +14,10 @@ export default function ({ onEdit }) {
     onEdit({ id: data.id, name: data.name }, "Level");
   }
 
-  function onDelete(e, id) {}
+  async function onDelete(e, id) {
+    await dispatch(deleteLevel(id));
+    dispatch(getLevels());
+  }
 
   return (
     <>

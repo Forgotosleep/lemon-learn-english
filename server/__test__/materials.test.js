@@ -37,7 +37,7 @@ describe("POST /materials", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(201);
-        expect(body).toHaveProperty("message", "Success add material");
+        expect(body).toHaveProperty("message", "Succeessfully added a new material");
         done();
       })
       .catch((err) => {
@@ -142,7 +142,7 @@ describe("UPDATE /materials/:id", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Success update material");
+        expect(body).toHaveProperty("message", "Succeessfully updated a material");
         done();
       })
       .catch((err) => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategories } from "../../store/actions/category";
+import { deleteCategory, getCategories } from "../../store/actions/category";
 
 export default function ({ onEdit }) {
   const dispatch = useDispatch();
@@ -20,7 +20,10 @@ export default function ({ onEdit }) {
     onEdit({ id: data.id, name: data.name }, "Category");
   }
 
-  function onDelete(e, id) {}
+  async function onDelete(e, id) {
+    await dispatch(deleteCategory(id));
+    dispatch(getCategories());
+  }
 
   return (
     <>
