@@ -76,6 +76,7 @@ class ClassController {
   static async addClass(req, res, next) {
     try {
       const { name, levelId, categoryId } = req.body;
+      console.log("addClass", req.body);
       const teacherId = req.user.id;
       const checkClass = await Class.findAll({
         where: {
