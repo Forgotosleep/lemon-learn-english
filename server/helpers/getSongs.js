@@ -50,7 +50,7 @@ async function getSongDetailById(id) {  // returns an object containing the orig
   }
 }
 
-function convertLyricsToQuestion(song, index) {
+function convertLyricsToQuestion(song, index) {  // This function accepts a song object (the result from getSongDetailById func) and the intentionally emptied out parts' index. Based on its index, the parts of the splitLyrics is replaced with a fixed character (underscores atm), and then returns the splitLyrics (now question) as an Array of Strings.
   const { lyrics, splitLyrics, media } = song
   let count = 0
   let question = splitLyrics.map((row, i) => {
@@ -66,7 +66,7 @@ function convertLyricsToQuestion(song, index) {
   return question
 }
 
-function getListeningScore(splitLyrics, answer, index) {
+function getListeningScore(splitLyrics, answer, index) {  // This function accepts splitLyrics (Array of Strings), the student's answer (Array of Strings), and the missing lyric part's index (array of Number). The way it works is that the function grabs parts of splitLyrics based on the index params, splits them into each words, and compare each words to those of the answers (within the same index). A score is produced for each line, which is then averaged and rounded, then returned. Voila!
   const scores = []
 
   index.forEach((i1, i2) => {
@@ -87,4 +87,4 @@ function getListeningScore(splitLyrics, answer, index) {
   return avgScore
 }
 
-module.exports = { searchSongs, getSongDetailById, convertLyricsToQuestion }
+module.exports = { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore }
