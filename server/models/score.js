@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       Score.belongsTo(models.Task, { foreignKey: "taskId" });
       Score.belongsTo(models.User, { foreignKey: "studentId" });
     }
-  };
+  }
   Score.init({
     score: {
       type: DataTypes.INTEGER,

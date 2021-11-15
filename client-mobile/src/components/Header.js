@@ -22,12 +22,14 @@ export default function Header() {
   }, [location.pathname]);
   const displayDesktop = () => {
     return (
+      <>
       <Toolbar>
         <Icon sx={{ mr: 2 }}>
           <img src={psyduck} alt="psyduck" height={25} width={25} />
         </Icon>
         <strong>{value}</strong>
       </Toolbar>
+      </>
     );
   };
 

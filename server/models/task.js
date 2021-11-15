@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
           isNumeric: { msg: `classId has to be a number` },
         },
       },
-      question: { type: DataTypes.STRING },
+      question: { type: DataTypes.TEXT },
       soundUrl: { type: DataTypes.STRING },
     },
     {
