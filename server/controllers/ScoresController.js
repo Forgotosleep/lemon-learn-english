@@ -39,8 +39,9 @@ class ScoresController {
     try {
       const { id } = req.params;
       const { score } = req.body;
-      const resp = await Score.update({ score }, { where: { id } });
       const newitem = await Score.findOne({ where: { id } });
+      if (!newitem) throw { name: "ScoreNotFound", id };
+      const resp = await Score.update({ score }, { where: { id } });
       res.status(200).json(newitem);
     } catch (err) {
       next(err);
