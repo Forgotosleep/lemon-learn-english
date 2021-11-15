@@ -1,19 +1,17 @@
 {
   "development": {
     "username": "postgres",
-    "password": "postgres",
-    "database": "lemon-learn-english",
+    "password": "laripagi",
+    "database": "lemon-learn-english1",
     "host": "localhost",
-    "dialect": "postgres",
-    "port": "5433"
+    "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "postgres",
     "database": "lemon-learn-english-test",
     "host": "127.0.0.1",
-    "dialect": "postgres",
-    "port": "5433"
+    "dialect": "postgres"
   },
   "production": {
     "use_env_variable": "DATABASE_URL",
