@@ -130,7 +130,6 @@ class UsersController {
     try {
       const { email, password } = req.body;
       const chekLogin = await User.findOne({ where: { email: email } });
-
       if (!chekLogin || !decode(password, chekLogin.password)) {
         throw { name: "LoginError" };
       } else {

@@ -1,5 +1,4 @@
 const express = require("express");
-const errorHandler = require("../middlewares/errorHandler");
 const route = express.Router();
 const UsersController = require("../controllers/UsersController");
 const UserRouter = require("./UserRouter");
@@ -14,7 +13,7 @@ const authentication = require("../middlewares/authentication");
 
 route.post("/register", UsersController.newUser);
 route.post("/login", UsersController.login);
-route.use(authentication);
+// route.use(authentication);
 route.use("/users", UserRouter);
 route.use("/tasks", TaskRouter);
 route.use("/classes", ClassRouter);

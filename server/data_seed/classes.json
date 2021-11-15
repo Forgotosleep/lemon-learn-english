@@ -4,13 +4,15 @@
     "teacherId": 1,
     "categoryId": 1,
     "levelId": 1,
-    "status": "active"
+    "status": "active",
+    "ratings": 0
   },
   {
     "name": "Speaking Intermediate English",
     "teacherId": 1,
     "categoryId": 2,
     "levelId": 2,
-    "status": "active"
+    "status": "active",
+    "ratings": 0
   }
 ]
