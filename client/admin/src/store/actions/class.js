@@ -1,9 +1,21 @@
 import server from "../../apis/server";
-import { SET_CLASSES, SET_CLASSESERROR, SET_CLASSESLOADING } from "./type";
+import {
+  SET_CLASSES,
+  SET_CLASSESDETAILS,
+  SET_CLASSESERROR,
+  SET_CLASSESLOADING,
+} from "./type";
 
 export function setClasses(payload) {
   return {
     type: SET_CLASSES,
+    payload,
+  };
+}
+
+export function setClassDetails(payload) {
+  return {
+    type: SET_CLASSESDETAILS,
     payload,
   };
 }
@@ -45,27 +57,27 @@ export function getClasses() {
   };
 }
 
-// export function getClassDetails(id) {
-//   return async (dispatch, getState) => {
-//     dispatch(setClassesLoading(true));
-//     try {
-//       const resp = await server({
-//         url: `/classes/${id}`,
-//         method: "GET",
-//         headers: {
-//           access_token: localStorage.getItem("access_token"),
-//         },
-//       });
+export function getClassDetails(id) {
+  return async (dispatch, getState) => {
+    dispatch(setClassesLoading(true));
+    try {
+      const resp = await server({
+        url: `/classes/${id}`,
+        method: "GET",
+        headers: {
+          access_token: localStorage.getItem("access_token"),
+        },
+      });
 
-//       dispatch(setClasses(resp.data));
-//     } catch (err) {
-//       dispatch(setClassesError(true));
-//       console.log("errors", err);
-//     } finally {
-//       dispatch(setClassesLoading(false));
-//     }
-//   };
-// }
+      dispatch(setClassDetails(resp.data));
+    } catch (err) {
+      dispatch(setClassesError(true));
+      console.log("errors", err);
+    } finally {
+      dispatch(setClassesLoading(false));
+    }
+  };
+}
 
 export function addClass(payload) {
   return async (dispatch, getState) => {
