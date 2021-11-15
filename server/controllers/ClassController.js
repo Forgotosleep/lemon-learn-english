@@ -155,16 +155,17 @@ class ClassController {
       });
 
       if (!checkStatus) {
-        console.log('error handling required');
+        console.log("error handling required");
       }
 
-      if (checkStatus["status"].toLowerCase() !== "complete") throw { name: "notCompletedClass" };
+      if (checkStatus["status"].toLowerCase() !== "complete")
+        throw { name: "notCompletedClass" };
 
       const result = await Class.findByPk(+id);
       if (!result) throw { name: "ClassNotFound", id };
 
       // Later in Client-side, the total ratings (ratings in the table) will be divided with the total number of students that has completed the class
-      let newRatings = Number(result.ratings) + Number(ratings)
+      let newRatings = Number(result.ratings) + Number(ratings);
 
       await Class.update(
         {
@@ -176,7 +177,9 @@ class ClassController {
           },
         }
       );
-      res.status(200).json({ message: `Succeess in rating class ${result["name"]}` });
+      res
+        .status(200)
+        .json({ message: `Succeess in rating class ${result["name"]}` });
     } catch (err) {
       next(err);
     }
@@ -202,6 +205,7 @@ class ClassController {
   static async addClass(req, res, next) {
     try {
       const { name, levelId, categoryId } = req.body;
+      console.log("addClass", req.body);
       const teacherId = req.user.id;
       const checkClass = await Class.findAll({
         where: {
@@ -211,7 +215,10 @@ class ClassController {
       console.log(checkClass, "<<< Check before Add Class");
       if (checkClass.length > 0) {
         for (const key in checkClass) {
-          if (checkClass[key]["levelId"] === levelId && checkClass[key]["categoryId"] === categoryId) {
+          if (
+            checkClass[key]["levelId"] === levelId &&
+            checkClass[key]["categoryId"] === categoryId
+          ) {
             throw { name: "duplicate class" };
           }
         }
@@ -289,7 +296,7 @@ class ClassController {
   static async deleteClass(req, res, next) {
     try {
       const { id } = req.params;
-      const teacherId = req.user.id
+      const teacherId = req.user.id;
       const result = await Class.findByPk(id);
 
       if (!result) {
@@ -305,7 +312,9 @@ class ClassController {
       const destroyed = Class.destroy({
         where: { id },
       });
-      res.status(200).json({ message: `Successfully deleted Class ${result.name}` });
+      res
+        .status(200)
+        .json({ message: `Successfully deleted Class ${result.name}` });
     } catch (err) {
       next(err);
     }

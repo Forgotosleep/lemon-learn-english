@@ -106,6 +106,46 @@ describe("GET /classes", () => {
   });
 });
 
+describe("GET /classes/active", () => {
+  test("200 success get class with active status", (done) => {
+    request(app)
+      .get("/classes/active")
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("result");
+        expect(Array.isArray(body.result)).toBeTruthy();
+        expect(body.result[0]).toHaveProperty("status", "active");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("200 success get active class with query teacherName", (done) => {
+    request(app)
+      .get("/classes/active?teacherName=Mason")
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("result");
+        expect(Array.isArray(body.result)).toBeTruthy();
+        expect(body.result.length).toBe(3);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+
 describe("GET /classes/:id", () => {
   test("200 success get class by id", (done) => {
     request(app)
@@ -145,6 +185,45 @@ describe("GET /classes/:id", () => {
   });
 });
 
+describe("GET /teacherClasses", () => {
+  test("200 success get class by teacher id", (done) => {
+    request(app)
+      .get("/classes/teacherClasses")
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(Array.isArray(body)).toBeTruthy();
+        expect(body[0]).toHaveProperty("id");
+        expect(body[0]).toHaveProperty("name");
+        expect(body[0]).toHaveProperty("teacherId");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  // test("404 failed get class by id not found", (done) => {
+  //   request(app)
+  //     .get("/classes/222")
+  //     .set({
+  //       access_token: token,
+  //     })
+  //     .then((response) => {
+  //       const { body, status } = response;
+  //       expect(status).toBe(404);
+  //       expect(body).toHaveProperty("message", "Class with ID 222 not found");
+  //       done();
+  //     })
+  //     .catch((err) => {
+  //       done(err);
+  //     });
+  // });
+});
+
 describe("UPDATE /classes/:id", () => {
   test("200 success update class", (done) => {
     request(app)
@@ -158,7 +237,7 @@ describe("UPDATE /classes/:id", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body[0]).toHaveProperty("name", "new class name");
+        expect(body).toHaveProperty("name", "new class name");
         done();
       })
       .catch((err) => {
@@ -222,3 +301,45 @@ describe("DELETE /classes/:id", () => {
       });
   });
 });
+
+// describe("PATCH /classes/:id", () => {
+//   test("200 success give rate to a class", (done) => {
+//     request(app)
+//       .patch("/classes/3")
+//       .set({
+//         access_token: token,
+//       })
+//       .send({
+//         ratings: 4,
+//       })
+//       .then((response) => {
+//         const { body, status } = response;
+//         expect(status).toBe(200);
+//         expect(body).toHaveProperty(
+//           "message",
+//           "Successfully deleted Class new class name"
+//         );
+//         done();
+//       })
+//       .catch((err) => {
+//         done(err);
+//       });
+//   });
+
+//   test("404 failed update class", (done) => {
+//     request(app)
+//       .delete("/classes/222")
+//       .set({
+//         access_token: token,
+//       })
+//       .then((response) => {
+//         const { body, status } = response;
+//         expect(status).toBe(404);
+//         expect(body).toHaveProperty("message", "Class with ID 222 not found");
+//         done();
+//       })
+//       .catch((err) => {
+//         done(err);
+//       });
+//   });
+// });

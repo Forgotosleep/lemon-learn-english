@@ -37,7 +37,10 @@ describe("POST /materials", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(201);
-        expect(body).toHaveProperty("message", "Succeessfully added a new material");
+        expect(body).toHaveProperty(
+          "message",
+          "Succeessfully added a new material"
+        );
         done();
       })
       .catch((err) => {
@@ -142,7 +145,10 @@ describe("UPDATE /materials/:id", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Succeessfully updated a material");
+        expect(body).toHaveProperty(
+          "message",
+          "Succeessfully updated a material"
+        );
         done();
       })
       .catch((err) => {
@@ -167,7 +173,7 @@ describe("UPDATE /materials/:id", () => {
       });
   });
 
-  test("401 failed update material because id not number", (done) => {
+  test("400 failed update material because id not number", (done) => {
     request(app)
       .put(`/materials/not_number_id`)
       .set({
@@ -175,8 +181,8 @@ describe("UPDATE /materials/:id", () => {
       })
       .then((response) => {
         const { body, status } = response;
-        expect(status).toBe(401);
-        expect(body).toHaveProperty("message", "Please check your ID");
+        expect(status).toBe(400);
+        expect(body).toHaveProperty("message", "Invalid input data type");
         done();
       })
       .catch((err) => {
@@ -224,7 +230,7 @@ describe("DELETE /materials/:id", () => {
       });
   });
 
-  test("401 failed delete material because id not number", (done) => {
+  test("400 failed delete material because id not number", (done) => {
     request(app)
       .delete(`/materials/not_number_id`)
       .set({
@@ -232,8 +238,8 @@ describe("DELETE /materials/:id", () => {
       })
       .then((response) => {
         const { body, status } = response;
-        expect(status).toBe(401);
-        expect(body).toHaveProperty("message", "Please check your ID");
+        expect(status).toBe(400);
+        expect(body).toHaveProperty("message", "Invalid input data type");
         done();
       })
       .catch((err) => {

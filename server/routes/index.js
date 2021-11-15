@@ -10,11 +10,12 @@ const CategoryRouter = require("./CategoryRouter");
 const StudentClassRouter = require("./StudentClassRouter");
 const ScoreRouter = require("./ScoreRouter");
 const authentication = require("../middlewares/authentication");
-const errorHandler = require('../middlewares/errorHandler')
+const errorHandler = require("../middlewares/errorhandler");
+
 
 route.post("/register", UsersController.newUser);
 route.post("/login", UsersController.login);
-// route.use(authentication);
+route.use(authentication);
 route.use("/users", UserRouter);
 route.use("/tasks", TaskRouter);
 route.use("/classes", ClassRouter);

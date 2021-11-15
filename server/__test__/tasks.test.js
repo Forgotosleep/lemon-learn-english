@@ -38,7 +38,7 @@ beforeAll((done) => {
 describe("POSTS /tasks", () => {
   test("201 success create tasks", (done) => {
     request(app)
-      .post("/tasks/add")
+      .post("/tasks")
       .send({
         name: "task one",
         description: "task one description",
@@ -63,7 +63,7 @@ describe("POSTS /tasks", () => {
 
   test("400 failed create task bad request", (done) => {
     request(app)
-      .post("/tasks/add")
+      .post("/tasks")
       .send({
         description: "task one description",
         classId: 1,
@@ -207,7 +207,7 @@ describe("DELETE /tasks", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Task with ID 1 Deleted");
+        expect(body).toHaveProperty("message", "Deleted task with ID 1");
         done();
       })
       .catch((err) => {

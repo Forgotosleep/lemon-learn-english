@@ -23,15 +23,15 @@ class ScoresController {
   }
   static async createScore(req, res, next) {
     try {
-      const soundUrl = await uploadAudio(req.file)
+      const soundUrl = await uploadAudio(req.file);
       // const { score, studentId, taskId, soundUrl, answer } = req.body;
-      const { score } = req.body;  // harcode ver
+      const { score } = req.body; // harcode ver
       const resp = await Score.create({
         score,
-        studentId : 1,  // harcode req.user.id (student)
-        taskId : 1,   // harcode
+        studentId: 1, // harcode req.user.id (student)
+        taskId: 1, // harcode
         soundUrl,
-        answer : 'ngasal',  // harcode
+        answer: "ngasal", // harcode
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -43,11 +43,11 @@ class ScoresController {
 
   static async getScore(req, res, next) {
     try {
-      const file = req.file
-      const resp = await getScore(file)
-      res.status(200).json(resp)
+      const file = req.file;
+      const resp = await getScore(file);
+      res.status(200).json(resp);
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
