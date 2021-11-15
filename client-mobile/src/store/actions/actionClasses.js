@@ -1,23 +1,33 @@
-import {
-  SET_CLASSES,
-  SET_ISLOADING,
-  SET_ISERROR
-} from "../actionTypes";
+import { SET_CLASSES, SET_ISLOADING, SET_ISERROR, SET_MESSAGE_CLASSES, SET_ERROR_CLASSES } from "../actionTypes";
 
 import ApiServer from "../api/axios";
+
+export function setErrorClasses(payload) {
+  return {
+    type: SET_ERROR_CLASSES,
+    payload,
+  };
+}
 
 export function setIsError(payload) {
   return {
     type: SET_ISERROR,
-    payload
-  }
+    payload,
+  };
+}
+
+export function setMessageClasses(payload) {
+  return {
+    type: SET_MESSAGE_CLASSES,
+    payload,
+  };
 }
 
 export function setIsLoading(payload) {
   return {
     type: SET_ISLOADING,
-    payload
-  }
+    payload,
+  };
 }
 
 export function setClasses(payload) {
@@ -30,7 +40,7 @@ export function setClasses(payload) {
 export function getClassesActive(payload) {
   return (dispatch, getState) => {
     return new Promise((resolve, rejectF) => {
-      dispatch(setIsLoading(true))
+      dispatch(setIsLoading(true));
       let params = {};
       if (payload) {
         params = payload;
@@ -39,7 +49,7 @@ export function getClassesActive(payload) {
         url: "/classes/active",
         method: "GET",
         headers: {
-          access_token: localStorage.getItem('access_token')
+          access_token: localStorage.getItem("access_token"),
         },
         params,
       })
@@ -47,32 +57,29 @@ export function getClassesActive(payload) {
           dispatch(setClasses(data));
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
         })
         .finally(() => {
-          dispatch(setIsLoading(false))
-        })
+          dispatch(setIsLoading(false));
+        });
+    });
+  };
+}
 
-    })
-
-    // try {
-    //   dispatch(setIsLoading(true))
-    //   let params = {};
-    //   if (payload) {
-    //     params = payload;
-    //   }
-    //   const { data } = await ApiServer({
-    //     url: "/classes/active",
-    //     method: "GET",
-    //     headers: {
-    //       access_token: token,
-    //     },
-    //     params,
-    //   });
-    //   dispatch(setClasses(data));
-    //   if (data)dispatch(setIsLoading(false))
-    // } catch (err) {
-    //   console.log(err);
-    // }
+export function joinClass(payload) {
+  return async (dispatch, getState) => {
+    try {
+      const id = Number(payload);
+      const { data } = await ApiServer({
+        method: "POST",
+        url: "/student-class/" + id,
+        headers: {
+          access_token: localStorage.getItem("access_token"),
+        },
+      });
+      dispatch(setMessageClasses(data["message"]));
+    } catch (err) {
+      dispatch(setErrorClasses(err.response.data.message));
+    }
   };
 }

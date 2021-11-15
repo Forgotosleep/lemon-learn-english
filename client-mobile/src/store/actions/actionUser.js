@@ -1,13 +1,6 @@
-import {
-  SET_USER,
-  SET_ISLOGGEDIN,
-  SET_ISLOADING,
-  SET_ISERROR
-} from "../actionTypes";
+import { SET_USER, SET_ISLOGGEDIN, SET_ISLOADING, SET_ISERROR } from "../actionTypes";
 
 import ApiServer from "../api/axios";
-
-const token = localStorage.getItem("access_token");
 
 export function setUser(payload) {
   return {
@@ -23,7 +16,7 @@ export function getUser() {
         url: "/users/detail",
         method: "GET",
         headers: {
-          access_token: token,
+          access_token: localStorage.getItem("access_token"),
         },
       });
       dispatch(setUser(data));
@@ -36,67 +29,66 @@ export function getUser() {
 export function setIsLoggedIn(payload) {
   return {
     type: SET_ISLOGGEDIN,
-    payload
-  }
+    payload,
+  };
 }
 
 export function setIsError(payload) {
   return {
     type: SET_ISERROR,
-    payload
-  }
+    payload,
+  };
 }
 
 export function setIsLoading(payload) {
   return {
     type: SET_ISLOADING,
-    payload
-  }
+    payload,
+  };
 }
 
 export function fetchLogin(payload) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      dispatch(setIsLoading(true))
+      dispatch(setIsLoading(true));
       ApiServer({
-        url: '/login',
-        method: 'POST',
-        data: payload
+        url: "/login",
+        method: "POST",
+        data: payload,
       })
         .then(({ data }) => {
-          localStorage.setItem('access_token', data.access_token)
-          dispatch(setIsLoggedIn(true))
-          resolve()
+          localStorage.setItem("access_token", data.access_token);
+          dispatch(setIsLoggedIn(true));
+          resolve();
         })
         .catch((err) => {
-          reject(err)
+          reject(err);
         })
         .finally(() => {
-          dispatch(setIsLoading(false))
-        })
-    })
-  }
+          dispatch(setIsLoading(false));
+        });
+    });
+  };
 }
 
 export function fetchRegister(payload) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      dispatch(setIsLoading(true))
+      dispatch(setIsLoading(true));
       ApiServer({
-        url: '/register',
-        method: 'POST',
-        data: payload
+        url: "/register",
+        method: "POST",
+        data: payload,
       })
         .then(({ data }) => {
-          resolve()
+          resolve();
         })
         .catch((err) => {
-          reject(err.response.data.message)
+          reject(err.response.data.message);
         })
         .finally(() => {
-          setIsLoading(false)
-        })
-    })
-  }
+          setIsLoading(false);
+        });
+    });
+  };
 }
-

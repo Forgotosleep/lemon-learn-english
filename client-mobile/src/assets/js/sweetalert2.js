@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 
 export function alertSuccess(text) {
   Swal.fire({
-    title: `<strong>${text}</strong>`,
+    title: text,
     icon: "success",
     timer: 2000,
     showConfirmButton: false,
@@ -11,7 +11,7 @@ export function alertSuccess(text) {
 
 export function alertError(text) {
   Swal.fire({
-    title: "<strong>{text}</strong>",
+    title: text,
     icon: "error",
     timer: 2000,
     showConfirmButton: false,
@@ -25,7 +25,7 @@ export async function alertSure() {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yakin",
+    confirmButtonText: "Sure",
   });
   return result;
 }
