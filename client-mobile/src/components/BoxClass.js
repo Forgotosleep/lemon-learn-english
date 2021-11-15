@@ -24,7 +24,11 @@ function BoxClass(props) {
       }
     }
     let star = data.ratings / temp;
-    return <Rating name="read-only" value={star === Infinity ? 0 : star} readOnly precision={0.5} />;
+    return (
+      <>
+        <Rating name="read-only" value={star === Infinity ? 0 : star} readOnly precision={0.5} /> <p style={{ fontSize: "2vmax" }}>({temp})</p>
+      </>
+    );
   };
 
   const checkLevel = () => {

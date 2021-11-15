@@ -6,7 +6,7 @@ import Class from "./Class";
 import Profile from "./Profile";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUser } from "../store/actions/actionUser";
 function App() {
   const location = useLocation();
