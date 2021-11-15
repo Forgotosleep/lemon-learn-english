@@ -62,9 +62,29 @@ function convertLyricsToQuestion(song, index) {
       return '__________'  // this is ten underscores
     }
   })
-
   // const questionPacket = { question }
   return question
+}
+
+function getListeningScore(splitLyrics, answer, index) {
+  const scores = []
+
+  index.forEach((i1, i2) => {
+    const trueAnswers = splitLyrics[i1].split(" ")
+    const studentAnswers = answer[i2].split(" ")
+    let correctMatch = 0
+
+    trueAnswers.forEach((word, index) => {
+      if (studentAnswers[index] === word) {
+        correctMatch++
+      }
+    });
+
+    scores.push(correctMatch / trueAnswers.length)
+  });
+
+  let avgScore = (scores.reduce((total, num) => total += num)) / scores.length
+  return avgScore
 }
 
 module.exports = { searchSongs, getSongDetailById, convertLyricsToQuestion }
