@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../app");
 
 let token;
+let studentToken;
 
 beforeAll((done) => {
   // set initial data
@@ -14,6 +15,14 @@ beforeAll((done) => {
     .then((response) => {
       const { body } = response;
       token = body.access_token;
+      return request(app).post("/login").send({
+        email: "mactavish@mail.com",
+        password: "password",
+      });
+    })
+    .then((response) => {
+      const { body } = response;
+      studentToken = body.access_token;
       done();
     })
     .catch((err) => {
@@ -302,44 +311,47 @@ describe("DELETE /classes/:id", () => {
   });
 });
 
-// describe("PATCH /classes/:id", () => {
-//   test("200 success give rate to a class", (done) => {
-//     request(app)
-//       .patch("/classes/3")
-//       .set({
-//         access_token: token,
-//       })
-//       .send({
-//         ratings: 4,
-//       })
-//       .then((response) => {
-//         const { body, status } = response;
-//         expect(status).toBe(200);
-//         expect(body).toHaveProperty(
-//           "message",
-//           "Successfully deleted Class new class name"
-//         );
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
+describe("PATCH /classes/:id", () => {
+  test("200 success give rate to a class", (done) => {
+    request(app)
+      .patch("/classes/1")
+      .set({
+        access_token: studentToken,
+      })
+      .send({
+        ratings: 4,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty(
+          "message",
+          "Succeess in rating class Beginner Listening"
+        );
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
 
-//   test("404 failed update class", (done) => {
-//     request(app)
-//       .delete("/classes/222")
-//       .set({
-//         access_token: token,
-//       })
-//       .then((response) => {
-//         const { body, status } = response;
-//         expect(status).toBe(404);
-//         expect(body).toHaveProperty("message", "Class with ID 222 not found");
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
-// });
+  test("403 failed rate class forbidden", (done) => {
+    request(app)
+      .patch("/classes/1")
+      .set({
+        access_token: token, // using teacher token
+      })
+      .send({
+        ratings: 10,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(403);
+        expect(body).toHaveProperty("message", "Unauthorized access");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});

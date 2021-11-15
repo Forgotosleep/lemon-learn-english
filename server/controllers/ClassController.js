@@ -154,9 +154,10 @@ class ClassController {
         },
       });
 
-      if (!checkStatus) {
-        console.log("error handling required");
-      }
+      // if (!checkStatus) {
+      //   // console.log("error handling required");
+      //   throw { name: "UserNotFound" };
+      // }
 
       if (checkStatus["status"].toLowerCase() !== "complete")
         throw { name: "notCompletedClass" };
