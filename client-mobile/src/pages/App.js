@@ -1,36 +1,45 @@
 import { Container } from "@mui/material";
 import Nav from "../components/Nav";
 import Home from "./Home";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Class from "./Class";
 import Profile from "./Profile";
 import Header from "../components/Header";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getUser } from "../store/actions/actionUser";
+import LoginPage from "./LoginPage";
+import RegisterPage from "./RegisterPage";
+import { useSelector } from "react-redux";
 function App() {
-  const location = useLocation();
-  const dispatch = useDispatch();
-  const [path, setPath] = useState("");
-  useEffect(() => {
-    setPath(location.pathname);
-    if (path !== "/login") {
-      dispatch(getUser());
-    }
-  }, [path]);
+  const access_token = localStorage.getItem('access_token')
+  const { isLoggedIn, isLoading, isError } = useSelector(state => state.user)
   return (
     <>
-      <Header />
+      {
+        access_token ? <Header /> : ''
+      }
       <Container sx={{ mt: 13, mb: 8 }} fixed>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/class" element={<Class />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/" element={
+            access_token ? <Home /> : <Navigate to="/login" />
+          } />
+          <Route path="/class" element={
+            access_token ? <Class /> : <Navigate to="/login" />
+          } />
+          <Route path="/profile" element={
+            access_token ? <Profile /> : <Navigate to="/login" />
+          } />
+          <Route path="/login" element={
+            access_token ? <Navigate to="/" /> : <LoginPage />
+          } />
+          <Route path="/register" element={
+            access_token ? <Navigate to="/" /> : <RegisterPage />
+          } />
         </Routes>
       </Container>
-      <Container fixed>
-        <Nav />
-      </Container>
+      {
+        access_token ? (<Container fixed>
+          <Nav />
+        </Container>) : ''
+      }
     </>
   );
 }
