@@ -5,14 +5,16 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { brown } from "@mui/material/colors";
-import { alertSuccess, alertSure } from "../assets/js/sweetalert2";
+import { alertError, alertSuccess, alertSure } from "../assets/js/sweetalert2";
+import { useSelector, useDispatch } from "react-redux";
+import { setErrorClasses, setMessageClasses, joinClass } from "../store/actions/actionClasses";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "55vmin",
+  width: "55vh",
   bgcolor: "background.paper",
   border: "1px solid #000",
   boxShadow: 20,
@@ -22,32 +24,37 @@ const style = {
 };
 
 function ModalDetailClass(props) {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { data } = props;
+  const { messageSuccess, messageError } = useSelector((state) => state["classes"]);
 
   const handleJoin = async () => {
     setOpen(false);
     const result = await alertSure();
     if (result.value) {
-      alertSuccess(data.id);
+      dispatch(joinClass(data.id));
     }
   };
+
+  React.useEffect(() => {
+    if (messageError) {
+      console.log(messageError);
+      alertError(messageError);
+      dispatch(setErrorClasses(""));
+    }
+    if (messageSuccess) {
+      alertSuccess(messageSuccess);
+      dispatch(setMessageClasses(""));
+    }
+  }, [messageError, messageSuccess]);
 
   const incomplete = () => {
     let temp = 0;
     for (const key in data.StudentClasses) {
       if (data.StudentClasses[key].status === "incomplete") {
-        temp += 1;
-      }
-    }
-    return temp;
-  };
-  const complete = () => {
-    let temp = 0;
-    for (const key in data.StudentClasses) {
-      if (data.StudentClasses[key].status === "complete") {
         temp += 1;
       }
     }
