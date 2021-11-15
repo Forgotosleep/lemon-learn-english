@@ -188,7 +188,29 @@ class ClassController {
   static async findOneClass(req, res, next) {
     try {
       const { id } = req.params;
-      const result = await Class.findByPk(id);
+      const result = await Class.findByPk(id, {
+        include: [
+          {
+            model: User,
+            as: "teacher",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "role", "password"],
+            },
+          },
+          {
+            model: Category,
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+          {
+            model: Level,
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+        ],
+      });
 
       if (!result) {
         // IF CLASS NOT FOUND

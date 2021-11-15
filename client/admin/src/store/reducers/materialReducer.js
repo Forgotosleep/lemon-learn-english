@@ -1,34 +1,29 @@
 import {
-  SET_CLASSES,
-  SET_CLASSESDETAILS,
-  SET_CLASSESERROR,
-  SET_CLASSESLOADING,
+  SET_MATERIALS,
+  SET_MATERIALSDETAILS,
+  SET_MATERIALSLOADING,
+  SET_MATERIALSERROR,
 } from "../actions/type";
 
 const initialState = {
   data: [],
-  classDetails: {},
   loading: false,
   error: false,
 };
 
-function classReducer(state = initialState, action) {
+function materialReducer(state = initialState, action) {
   let newState = { ...state };
 
   switch (action.type) {
-    case SET_CLASSES:
+    case SET_MATERIALS:
       newState.data = action.payload;
       break;
 
-    case SET_CLASSESDETAILS:
-      newState.classDetails = action.payload;
-      break;
-
-    case SET_CLASSESLOADING:
+    case SET_MATERIALSLOADING:
       newState.loading = action.payload;
       break;
 
-    case SET_CLASSESERROR:
+    case SET_MATERIALSERROR:
       newState.error = action.payload;
       break;
   }
@@ -36,4 +31,4 @@ function classReducer(state = initialState, action) {
   return newState;
 }
 
-export default classReducer;
+export default materialReducer;
