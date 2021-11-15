@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "npx jest --detectOpenHandles --verbose --collect-coverage",
-    "migrate": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all"
+    "migrate": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "start": "npx nodemon bin/www"
   },
   "keywords": [],

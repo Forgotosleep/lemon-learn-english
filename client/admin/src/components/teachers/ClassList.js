@@ -65,26 +65,6 @@ export default function () {
         ) : (
           <></>
         )}
-        <div class="col-3">
-          <div class="card mt-4" style={{ width: "18rem", height: "9rem" }}>
-            <div class="card-body">
-              <h5
-                class="card-title"
-                style={{
-                  height: "50px",
-                  overflow: "hidden",
-                }}
-              >
-                Class Name very long that it will note fit in the class name
-                normal field
-              </h5>
-              <div class="d-flex justify-content-between">
-                <h6 class="card-subtitle mt-4  mb-2 text-muted">Category</h6>
-                <h6 class="card-subtitle mt-4 mb-2 text-muted">Level</h6>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       {/* <table className="table">
         <thead>

@@ -7,8 +7,8 @@ import ManageLevel from "./ManageLevel";
 
 export default function () {
   return (
-    <div className="container">
-      <h1>Admin dashboard</h1>
+    <div className="container p-5">
+      {/* <h1>Admin dashboard</h1> */}
 
       <Link to={`/dashboard`} className="me-4 btn">
         home

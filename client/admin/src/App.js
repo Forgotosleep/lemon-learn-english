@@ -5,33 +5,11 @@ import Dashboard from "./pages/teachers/Dashboard";
 import { Routes, Route, Link, useNavigate, Navigate } from "react-router-dom";
 import Login from "./pages/teachers/Login";
 import { useEffect } from "react";
+import Navbar from "./components/Navbar";
 
 function RequireAuth({ children, ...rest }) {
   const token = localStorage.getItem("access_token");
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate("/login");
-  //   }
-  // });
-  return (
-    <>{!token ? <Navigate to="/login"></Navigate> : children}</>
-    // <Route
-    //   {...rest}
-    //   render={({ location }) =>
-    //     token ? (
-    //       children
-    //     ) : (
-    //       <Route
-    //         to={{
-    //           pathname: "/login",
-    //           state: { from: location },
-    //         }}
-    //       />
-    //     )
-    //   }
-    // />
-  );
+  return <>{!token ? <Navigate to="/login"></Navigate> : children}</>;
 }
 
 function App() {
@@ -45,6 +23,7 @@ function App() {
           path="/dashboard/*"
           element={
             <RequireAuth>
+              <Navbar />
               <Dashboard />
             </RequireAuth>
           }

@@ -155,16 +155,17 @@ class ClassController {
       });
 
       if (!checkStatus) {
-        console.log('error handling required');
+        console.log("error handling required");
       }
 
-      if (checkStatus["status"].toLowerCase() !== "complete") throw { name: "notCompletedClass" };
+      if (checkStatus["status"].toLowerCase() !== "complete")
+        throw { name: "notCompletedClass" };
 
       const result = await Class.findByPk(+id);
       if (!result) throw { name: "ClassNotFound", id };
 
       // Later in Client-side, the total ratings (ratings in the table) will be divided with the total number of students that has completed the class
-      let newRatings = Number(result.ratings) + Number(ratings)
+      let newRatings = Number(result.ratings) + Number(ratings);
 
       await Class.update(
         {
@@ -176,7 +177,9 @@ class ClassController {
           },
         }
       );
-      res.status(200).json({ message: `Succeess in rating class ${result["name"]}` });
+      res
+        .status(200)
+        .json({ message: `Succeess in rating class ${result["name"]}` });
     } catch (err) {
       next(err);
     }
@@ -293,7 +296,7 @@ class ClassController {
   static async deleteClass(req, res, next) {
     try {
       const { id } = req.params;
-      const teacherId = req.user.id
+      const teacherId = req.user.id;
       const result = await Class.findByPk(id);
 
       if (!result) {

@@ -8,7 +8,7 @@ beforeAll((done) => {
   request(app)
     .post("/login")
     .send({
-      email: "mason@mail.com",
+      email: "soap@mail.com",
       password: "password",
     })
     .then((response) => {
@@ -26,7 +26,7 @@ describe("POSTS /categories", () => {
     request(app)
       .post("/categories")
       .send({
-        name: "listening",
+        name: "test category",
       })
       .set({
         access_token: token,
@@ -34,7 +34,10 @@ describe("POSTS /categories", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(201);
-        expect(body).toHaveProperty("message", "Succeessfully added a new category");
+        expect(body).toHaveProperty(
+          "message",
+          "Succeessfully added a new category"
+        );
         done();
       })
       .catch((err) => {
@@ -126,7 +129,7 @@ describe("GET /categories/:id", () => {
       })
       .then((response) => {
         const { body, status } = response;
-        expect(status).toBe(401);
+        expect(status).toBe(400);
         expect(body).toHaveProperty("message", "Please check your ID");
         done();
       })
@@ -149,7 +152,10 @@ describe("UPDATE /categories/:id", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Category with ID 3 has been updated");
+        expect(body).toHaveProperty(
+          "message",
+          "Category with ID 3 has been updated"
+        );
         done();
       })
       .catch((err) => {
@@ -182,7 +188,7 @@ describe("UPDATE /categories/:id", () => {
       })
       .then((response) => {
         const { body, status } = response;
-        expect(status).toBe(401);
+        expect(status).toBe(400);
         expect(body).toHaveProperty("message", "Please check your ID");
         done();
       })
@@ -202,7 +208,10 @@ describe("DELETE /categories/:id", () => {
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Category with ID 3 has been deleted");
+        expect(body).toHaveProperty(
+          "message",
+          "Category with ID 3 has been deleted"
+        );
         done();
       })
       .catch((err) => {
@@ -235,7 +244,7 @@ describe("DELETE /categories/:id", () => {
       })
       .then((response) => {
         const { body, status } = response;
-        expect(status).toBe(401);
+        expect(status).toBe(400);
         expect(body).toHaveProperty("message", "Please check your ID");
         done();
       })
