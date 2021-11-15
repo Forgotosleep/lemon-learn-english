@@ -38,7 +38,7 @@ class UsersController {
 
   static async readOneUsers(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.user;
       const result = await User.findByPk(Number(id), {
         attributes: {
           exclude: ["createdAt", "updatedAt", "role", "password"],
@@ -90,9 +90,7 @@ class UsersController {
           id: Number(id),
         },
       });
-      res
-        .status(200)
-        .json({ message: `User with id ${cekUser["id"]} has been deleted` });
+      res.status(200).json({ message: `User with id ${cekUser["id"]} has been deleted` });
     } catch (err) {
       next(err);
     }
@@ -100,8 +98,7 @@ class UsersController {
 
   static async newUser(req, res, next) {
     try {
-      const { username, email, password, role, name, photo, phone, address } =
-        req.body;
+      const { username, email, password, role, name, photo, phone, address } = req.body;
 
       const result = await User.create({
         username,

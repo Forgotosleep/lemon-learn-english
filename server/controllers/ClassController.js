@@ -85,14 +85,18 @@ class ClassController {
               exclude: ["createdAt", "updatedAt"],
             },
           },
+          {
+            model: StudentClass,
+          },
         ],
-        order: [["ratings", "ASC"]],
+        order: [["ratings", "DESC"]],
         where: { status: "active" },
         limit: limit,
         offset,
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
+        distinct: true,
       };
       if (teacherName)
         option["include"][0]["where"]["name"] = {
@@ -159,8 +163,7 @@ class ClassController {
       //   throw { name: "UserNotFound" };
       // }
 
-      if (checkStatus["status"].toLowerCase() !== "complete")
-        throw { name: "notCompletedClass" };
+      if (checkStatus["status"].toLowerCase() !== "complete") throw { name: "notCompletedClass" };
 
       const result = await Class.findByPk(+id);
       if (!result) throw { name: "ClassNotFound", id };
@@ -178,9 +181,7 @@ class ClassController {
           },
         }
       );
-      res
-        .status(200)
-        .json({ message: `Succeess in rating class ${result["name"]}` });
+      res.status(200).json({ message: `Succeess in rating class ${result["name"]}` });
     } catch (err) {
       next(err);
     }
@@ -238,10 +239,7 @@ class ClassController {
       console.log(checkClass, "<<< Check before Add Class");
       if (checkClass.length > 0) {
         for (const key in checkClass) {
-          if (
-            checkClass[key]["levelId"] === levelId &&
-            checkClass[key]["categoryId"] === categoryId
-          ) {
+          if (checkClass[key]["levelId"] === levelId && checkClass[key]["categoryId"] === categoryId) {
             throw { name: "duplicate class" };
           }
         }
@@ -335,9 +333,7 @@ class ClassController {
       const destroyed = Class.destroy({
         where: { id },
       });
-      res
-        .status(200)
-        .json({ message: `Successfully deleted Class ${result.name}` });
+      res.status(200).json({ message: `Successfully deleted Class ${result.name}` });
     } catch (err) {
       next(err);
     }

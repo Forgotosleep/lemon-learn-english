@@ -13,7 +13,7 @@ class StudentClassController {
       if (!classData) throw { name: "ClassNotFound", id: classId };
       const checkMaxClass = await StudentClass.findAll({ where: { classId, status: "incomplete" } });
       if (checkMaxClass.length > maxClass) throw { name: "maxStudentClass" };
-      const checkResgiter = await StudentClass.findOne({ where: { studentId: id, status: "incomplete" } });
+      const checkResgiter = await StudentClass.findOne({ where: { studentId: id, status: "incomplete", classId } });
       if (checkResgiter) throw { name: "register" };
       const resp = await StudentClass.create({
         studentId: id,

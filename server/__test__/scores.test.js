@@ -8,7 +8,7 @@ beforeAll((done) => {
   request(app)
     .post("/login")
     .send({
-      email: "soap@mail.com",
+      email: "mason@mail.com",
       password: "password",
     })
     .then((response) => {
@@ -21,6 +21,7 @@ beforeAll((done) => {
     });
 });
 
+// set initial data
 describe("GET /scores", () => {
   test("200 success get all score", (done) => {
     request(app)

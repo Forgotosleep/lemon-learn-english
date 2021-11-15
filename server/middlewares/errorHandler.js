@@ -80,7 +80,10 @@ const errorHandler = (err, req, res, next) => {
         .status(404)
         .json({ message: err.message || `Score with ID ${err?.id} not found` });
       break;
-
+    case "SequelizeForeignKeyConstraintError":
+      res.status(404).json({ message: err.message || `Foreign Key Error` });
+    case "TypeError":
+      res.status(404).json({ message: err.message || `Foreign Key Error` });
     /* LEVEL ERRORS */
     case "LevelNotFound":
       res
