@@ -8,9 +8,11 @@ import Header from "../components/Header";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import { useSelector } from "react-redux";
+
 function App() {
   const access_token = localStorage.getItem('access_token')
   const { isLoggedIn, isLoading, isError } = useSelector(state => state.user)
+  
   return (
     <>
       {

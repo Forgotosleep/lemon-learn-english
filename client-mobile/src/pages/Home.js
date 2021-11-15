@@ -2,21 +2,16 @@ import BoxHome from "../components/BoxHome";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getClassesActive } from "../store/actions/actionClasses";
-import { useLocation } from "react-router-dom";
 import BoxClass from "../components/BoxClass";
 import { Grid } from "@mui/material";
 function Home() {
-  const location = useLocation();
   const dispatch = useDispatch();
-  const [path, setPath] = useState("");
   const { classes } = useSelector((state) => state["classes"]);
-
+  const { isLoggedIn, isLoading } = useSelector((state) => state["user"]);
+  console.log(isLoggedIn)
   useEffect(() => {
-    setPath(location.pathname);
-    if (path === "/") {
-      dispatch(getClassesActive());
-    }
-  }, [path]);
+    dispatch(getClassesActive())
+  }, [isLoggedIn])
 
   return (
     <>

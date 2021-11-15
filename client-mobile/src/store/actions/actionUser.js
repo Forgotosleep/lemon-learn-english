@@ -1,4 +1,10 @@
-import { SET_USER } from "../actionTypes";
+import {
+  SET_USER,
+  SET_ISLOGGEDIN,
+  SET_ISLOADING,
+  SET_ISERROR
+} from "../actionTypes";
+
 import ApiServer from "../api/axios";
 
 const token = localStorage.getItem("access_token");
@@ -26,3 +32,71 @@ export function getUser() {
     }
   };
 }
+
+export function setIsLoggedIn(payload) {
+  return {
+    type: SET_ISLOGGEDIN,
+    payload
+  }
+}
+
+export function setIsError(payload) {
+  return {
+    type: SET_ISERROR,
+    payload
+  }
+}
+
+export function setIsLoading(payload) {
+  return {
+    type: SET_ISLOADING,
+    payload
+  }
+}
+
+export function fetchLogin(payload) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setIsLoading(true))
+      ApiServer({
+        url: '/login',
+        method: 'POST',
+        data: payload
+      })
+        .then(({ data }) => {
+          localStorage.setItem('access_token', data.access_token)
+          dispatch(setIsLoggedIn(true))
+          resolve()
+        })
+        .catch((err) => {
+          reject(err)
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false))
+        })
+    })
+  }
+}
+
+export function fetchRegister(payload) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setIsLoading(true))
+      ApiServer({
+        url: '/register',
+        method: 'POST',
+        data: payload
+      })
+        .then(({ data }) => {
+          resolve()
+        })
+        .catch((err) => {
+          reject(err.response.data.message)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    })
+  }
+}
+

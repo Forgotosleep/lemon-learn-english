@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { fetchRegister } from "../store/action";
+import { fetchRegister } from "../store/actions/actionUser";
+// import { fetchRegister } from "../store/action";
 
 function RegisterPage() {
   const dispatch = useDispatch()

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import { fetchLogin } from '../store/action';
+import { fetchLogin } from '../store/actions/actionUser';
 function LoginPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
