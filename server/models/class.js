@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       Class.hasMany(models.Task, { foreignKey: "classId" });
       Class.hasMany(models.Material, { foreignKey: "classId" });
+      Class.hasMany(models.StudentClass, { foreignKey: "classId" });
     }
   }
   Class.init(

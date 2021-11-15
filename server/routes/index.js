@@ -1,5 +1,4 @@
 const express = require("express");
-const errorHandler = require("../middlewares/errorHandler");
 const route = express.Router();
 const UsersController = require("../controllers/UsersController");
 const UserRouter = require("./UserRouter");
@@ -11,6 +10,7 @@ const CategoryRouter = require("./CategoryRouter");
 const StudentClassRouter = require("./StudentClassRouter");
 const ScoreRouter = require("./ScoreRouter");
 const authentication = require("../middlewares/authentication");
+const errorHandler = require("../middlewares/errorHandler");
 
 route.post("/register", UsersController.newUser);
 route.post("/login", UsersController.login);

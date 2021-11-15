@@ -6,7 +6,7 @@ const { authorizationTeacher, authorizationStudent } = require("../middlewares/a
 
 route.get("/", ClassController.findAllClass);
 route.get("/teacherClasses", ClassController.findClassByTeacherId);
-route.get("/active", ClassController.findActiveClass);
+route.get("/active", authorizationStudent, ClassController.findActiveClass);
 route.get("/:id", ClassController.findOneClass);
 // Teachers get to Create, Update and Delete classes
 route.post("/", authorizationTeacher, ClassController.addClass);

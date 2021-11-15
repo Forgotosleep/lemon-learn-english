@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
 
+// admin token
 let token;
 
 beforeAll((done) => {
@@ -8,7 +9,7 @@ beforeAll((done) => {
   request(app)
     .post("/login")
     .send({
-      email: "mason@mail.com",
+      email: "soap@mail.com",
       password: "password",
     })
     .then((response) => {

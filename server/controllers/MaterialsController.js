@@ -3,6 +3,7 @@ const { Material, Class } = require("../models/index");
 class MaterialController {
   static async addMaterial(req, res, next) {
     try {
+
       const { name, description, materialUrl, classId } = req.body;
       const resp = await Material.create({
         name,
@@ -10,7 +11,7 @@ class MaterialController {
         materialUrl,
         classId,
       });
-      res.status(201).json({ message: "Success add material" });
+      res.status(201).json({ message: "Succeessfully added a new material" });
     } catch (err) {
       next(err);
     }
@@ -21,13 +22,18 @@ class MaterialController {
       const { id } = req.params;
       if (!Number(id)) throw { name: "InvalidMaterialId" };
       const resp = await Material.findByPk(id, {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
         include: {
           model: Class,
-          attributes: ["name"],
-        },
-      });
-      if (!resp) throw { name: "MaterialNotFound", id };
-      res.status(200).json(resp);
+          attributes: {
+            exclude: ['createdAt', 'updatedAt']
+          }
+        }
+      })
+      if (!resp) throw ({ name: 'MaterialNotFound', id })
+      res.status(200).json(resp)
     } catch (err) {
       next(err);
     }
@@ -36,12 +42,17 @@ class MaterialController {
   static async getAllMaterial(req, res, next) {
     try {
       const resp = await Material.findAll({
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
         include: {
           model: Class,
-          attributes: ["name"],
-        },
-      });
-      res.status(200).json(resp);
+          attributes: {
+            exclude: ['createdAt', 'updatedAt']
+          }
+        }
+      })
+      res.status(200).json(resp)
     } catch (err) {
       next(err);
     }
@@ -84,7 +95,7 @@ class MaterialController {
           },
         }
       );
-      res.status(200).json({ message: "Success update material" });
+      res.status(200).json({ message: "Succeessfully updated a material" });
     } catch (err) {
       next(err);
     }

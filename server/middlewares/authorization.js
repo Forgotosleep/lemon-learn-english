@@ -1,4 +1,4 @@
-const { User, Class, Task } = require("../models");
+const { User, Class, Task, Material } = require("../models");
 
 const authorizationAdmin = async (req, res, next) => {
   try {
@@ -17,8 +17,7 @@ const authorizationTeacher = async (req, res, next) => {
     const role = req.user.role;
     if (role === "teacher" || role === "admin") {
       next();
-    }
-    else {
+    } else {
       throw { name: "Unauthorized" };
     }
   } catch (err) {
@@ -26,33 +25,73 @@ const authorizationTeacher = async (req, res, next) => {
   }
 };
 
-const authorizationTaskMaterial = async (req, res, next) => {  // This is so that other Teachers can't edit or delete another teacher's tasks
+const authorizationTask = async (req, res, next) => {
+  // This is so that other Teachers can't edit or delete another teacher's tasks
   try {
-    const teacherId = req.user.id
-    const classId = req.params.id
+    const teacherId = req.user.id;
+    const taskId = req.params.id;
+    const task = await Task.findByPk(taskId);
 
-    const teacherClass = await Class.findByPk(classId)
-    console.log(teacherClass, "<<< TEACHER CLASS");
-
-    if (teacherClass.teacherId === teacherId) {
-      next()
+    if (!task) {
+      throw { name: "TaskNotFound", id: taskId };
     }
-    else {
+
+    const classId = task.classId;
+    const teacherClass = await Class.findByPk(classId);
+    // const user = await User.findByPk(teacherId)
+    console.log(teacherClass, "<<< TEACHER CLASS");
+    console.log(req.user, "<<< REQ USER");
+
+    if (
+      teacherClass?.teacherId === teacherId ||
+      req.user?.role.toLowerCase() === "admin"
+    ) {
+      next();
+    } else {
       throw { name: "Unauthorized" };
     }
-
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
+
+const authorizationMaterial = async (req, res, next) => {
+  // This is so that other Teachers can't edit or delete another teacher's tasks
+  try {
+    const teacherId = req.user.id;
+    const materialId = req.params.id;
+    const material = await Material.findByPk(materialId);
+
+    if (!material) {
+      throw { name: "MaterialNotFound", id: materialId };
+    }
+
+    const classId = material.classId;
+
+    const teacherClass = await Class.findByPk(classId);
+    // const user = await User.findByPk(teacherId)
+    console.log(teacherClass, "<<< TEACHER CLASS");
+    console.log(req.user, "<<< REQ USER");
+
+    if (
+      teacherClass?.teacherId === teacherId ||
+      req.user?.role.toLowerCase() === "admin"
+    ) {
+      next();
+    } else {
+      throw { name: "Unauthorized" };
+    }
+  } catch (err) {
+    next(err);
+  }
+};
 
 const authorizationStudent = async (req, res, next) => {
   try {
     const role = req.user.role;
     if (role === "student" || role === "admin") {
       next();
-    }
-    else {
+    } else {
       throw { name: "Unauthorized" };
     }
   } catch (err) {
@@ -80,5 +119,6 @@ module.exports = {
   authorizationStudent,
   authorizationTeacher,
   authorizatioUpdateUsers,
-  authorizationTaskMaterial,
+  authorizationTask,
+  authorizationMaterial,
 };

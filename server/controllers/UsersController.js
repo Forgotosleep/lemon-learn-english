@@ -38,7 +38,7 @@ class UsersController {
 
   static async readOneUsers(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.user;
       const result = await User.findByPk(Number(id), {
         attributes: {
           exclude: ["createdAt", "updatedAt", "role", "password"],
@@ -65,8 +65,7 @@ class UsersController {
           },
 
           // returning: true,
-        },
-
+        }
       );
 
       // const data = result[1][0];
@@ -130,7 +129,6 @@ class UsersController {
     try {
       const { email, password } = req.body;
       const chekLogin = await User.findOne({ where: { email: email } });
-
       if (!chekLogin || !decode(password, chekLogin.password)) {
         throw { name: "LoginError" };
       } else {

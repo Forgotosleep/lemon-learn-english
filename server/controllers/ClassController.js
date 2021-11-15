@@ -85,14 +85,18 @@ class ClassController {
               exclude: ["createdAt", "updatedAt"],
             },
           },
+          {
+            model: StudentClass,
+          },
         ],
-        order: [["ratings", "ASC"]],
+        order: [["ratings", "DESC"]],
         where: { status: "active" },
         limit: limit,
         offset,
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
+        distinct: true,
       };
       if (teacherName)
         option["include"][0]["where"]["name"] = {
@@ -144,31 +148,39 @@ class ClassController {
   static async rateClass(req, res, next) {
     try {
       const studentId = +req.user.id;
-      const { id } = +req.params;
+      const { id } = req.params;
       const { ratings } = req.body;
 
       const checkStatus = await StudentClass.findOne({
         where: {
           studentId,
-          classId: id,
+          classId: Number(id),
         },
       });
 
-      if (checkStatus["status"].toLowerCase() !== "completed") throw { name: "notCompletedClass" };
+      if (!checkStatus) {
+        console.log("error handling required");
+      }
 
-      const result = await Class.findByPk(id);
+      if (checkStatus["status"].toLowerCase() !== "complete") throw { name: "notCompletedClass" };
+
+      const result = await Class.findByPk(+id);
       if (!result) throw { name: "ClassNotFound", id };
+
+      // Later in Client-side, the total ratings (ratings in the table) will be divided with the total number of students that has completed the class
+      let newRatings = Number(result.ratings) + Number(ratings);
+
       await Class.update(
         {
-          ratings,
+          ratings: newRatings,
         },
         {
           where: {
-            id,
+            id: Number(id),
           },
         }
       );
-      res.status(200).json({ message: `success to rate class ${result["name"]}` });
+      res.status(200).json({ message: `Succeess in rating class ${result["name"]}` });
     } catch (err) {
       next(err);
     }
@@ -194,13 +206,14 @@ class ClassController {
   static async addClass(req, res, next) {
     try {
       const { name, levelId, categoryId } = req.body;
+      console.log("addClass", req.body);
       const teacherId = req.user.id;
       const checkClass = await Class.findAll({
         where: {
           teacherId: teacherId,
         },
       });
-      console.log(checkClass);
+      console.log(checkClass, "<<< Check before Add Class");
       if (checkClass.length > 0) {
         for (const key in checkClass) {
           if (checkClass[key]["levelId"] === levelId && checkClass[key]["categoryId"] === categoryId) {
@@ -244,7 +257,7 @@ class ClassController {
       }
 
       // IF CLASS IS UPDATED
-      res.status(200).json(result[1]);
+      res.status(200).json(result[1][0]);
     } catch (err) {
       next(err);
     }
@@ -257,6 +270,10 @@ class ClassController {
       const { status } = req.body;
       const result = await Class.findByPk(id);
       if (!result) throw { name: "ClassNotFound", id };
+
+      console.log(req.user.id, "<<< teach ID");
+      console.log(result.teacherId, "<<< result's teach ID");
+
       if (result) {
         if (result.teacherId !== teacherId) throw { name: "Unauthorized" };
       }
@@ -268,7 +285,7 @@ class ClassController {
           where: { id },
         }
       );
-      res.status(200).json({ message: "your class status has updated" });
+      res.status(200).json({ message: "Your class status has been updated" });
     } catch (err) {
       next(err);
     }
@@ -277,11 +294,16 @@ class ClassController {
   static async deleteClass(req, res, next) {
     try {
       const { id } = req.params;
+      const teacherId = req.user.id;
       const result = await Class.findByPk(id);
 
       if (!result) {
         // IF CLASS NOT FOUND
         throw { name: "ClassNotFound", id };
+      }
+
+      if (result && req.user.role !== "admin") {
+        if (result.teacherId !== teacherId) throw { name: "Unauthorized" };
       }
 
       // IF CLASS IS FOUND

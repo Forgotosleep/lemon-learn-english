@@ -32,7 +32,7 @@ class TaskController {
       const task = await Task.findByPk(id);
 
       if (!task) {
-        throw { name: "TaskNotFound", id }
+        throw { name: "TaskNotFound", id };
       }
 
       res.status(200).json(task);
@@ -46,13 +46,9 @@ class TaskController {
     try {
       const task = await Task.findByPk(id);
 
-      if (!task) {
-        throw { name: "TaskNotFound", id }
-      }
-
       await Task.destroy({ where: { id } });
 
-      res.status(200).json({ message: `Task with ID ${id} Deleted` });
+      res.status(200).json({ message: `Deleted task with ID ${id}` });
     } catch (err) {
       next(err);
     }
@@ -64,14 +60,19 @@ class TaskController {
       const { name, description, question, soundUrl, classId } = req.body;
       const input = { name, description, question, soundUrl, classId };
 
-      const result = await Task.update(input, { where: { id }, returning: true });
+      const result = await Task.update(input, {
+        where: { id },
+        returning: true,
+      });
 
       // IF CLASS NOT FOUND
       if (!result[0]) {
         throw { name: "TaskNotFound", id };
       }
 
-      res.status(200).json({ result: result[1][0], message: `Task with ID ${id} Updated` });
+      res
+        .status(200)
+        .json({ result: result[1][0], message: `Task with ID ${id} Updated` });
       // res.status(200).json({ message: "Task Updated" });
     } catch (err) {
       next(err);
