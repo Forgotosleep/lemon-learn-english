@@ -16,7 +16,7 @@ const uploadAudio = async (file) => {
         public_id: `AudioUploads/${fName}`,
       }
     )
-      return resp.url
+    return resp.url
   } catch (err) {
     throw (err)
   }
