@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import pikachugif from "../image/pikachugif.gif";
 
 export function alertSuccess(text) {
   Swal.fire({
@@ -28,4 +29,16 @@ export async function alertSure() {
     confirmButtonText: "Sure",
   });
   return result;
+}
+
+export function alertLoading() {
+  Swal.fire({
+    text: "Loading, please wait . . .",
+    imageUrl: pikachugif,
+    imageWidth: 400,
+    imageHeight: 200,
+    imageAlt: "Custom image",
+    timer: 2500,
+    showConfirmButton: false,
+  });
 }

@@ -8,26 +8,34 @@ import Header from "../components/Header";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUser } from "../store/actions/actionUser";
+import HomeTeacher from "./teacher/Home";
+import { alertLoading } from "../assets/js/sweetalert2";
 
 function App() {
   const access_token = localStorage.getItem("access_token");
   const dispatch = useDispatch();
-  const { isLoggedIn, isLoading, isError } = useSelector((state) => state.user);
+  const { isLoggedIn, isLoading, isError, user } = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
+  const home = () => {
+    return <>{user?.role === "student" ? <Home /> : user?.role === "teacher" ? <HomeTeacher /> : ""}</>;
+  };
 
   useEffect(() => {
     dispatch(getUser());
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <>
+      {isLoading ? alertLoading() : ""}
       {access_token ? <Header /> : ""}
       <Container sx={{ mt: 13, mb: 8 }} fixed>
         <Routes>
-          <Route path="/" element={access_token ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/" element={access_token ? home() : <Navigate to="/login" />} />
           <Route path="/class" element={access_token ? <Class /> : <Navigate to="/login" />} />
           <Route path="/profile" element={access_token ? <Profile /> : <Navigate to="/login" />} />
+
           <Route path="/login" element={access_token ? <Navigate to="/" /> : <LoginPage />} />
           <Route path="/register" element={access_token ? <Navigate to="/" /> : <RegisterPage />} />
         </Routes>
