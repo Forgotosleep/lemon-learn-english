@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Task, Class } = require("../models");
+const { Task, Class, Score } = require("../models");
 const Redis = require("ioredis");
 const redis = new Redis();
 const { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore } = require('../helpers/getSongs')
@@ -38,13 +38,18 @@ class TaskController {
   static async getTaskByClass(req, res, next) {
     try {
       const { classId } = req.params
+      const studentId = req.user.id
       if (!Number(classId)) throw { name: "InvalidMaterialId" };
       const classData = await Class.findByPk(classId)
       if (!classData) throw { name: "ClassNotFound", id: classId };
       const resp = await Task.findAll({
         where: {
           classId
-        }
+        },
+        include: {
+          model: Score
+        },
+        distinct: true
       })
       res.status(200).json(resp)
     } catch (err) {
