@@ -1,5 +1,8 @@
 const { Op } = require("sequelize");
 const { Task } = require("../models");
+const Redis = require("ioredis");
+const redis = new Redis();
+const { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore } = require('../helpers/getSongs')
 
 class TaskController {
   static async create(req, res, next) {
@@ -85,7 +88,65 @@ class TaskController {
     }
   }
 
+  static async searchSong(req, res, next) {
+    const { artist, title } = req.query
+    const songs = await searchSongs(artist, title)
 
+    res.status(200).json(songs)
+
+  } catch(err) {
+    console.log(err);
+    next(err)
+  }
+
+  static async getSongDetails(req, res, next) {
+    try {
+      const { songId } = req.params
+      const checkCache = await redis.get(songId)
+      const cachedSong = JSON.parse(checkCache)
+      if (cachedSong.id == songId) {
+        res.status(200).json(cachedSong)
+        return
+      }
+
+      const songDetail = await getSongDetailById(songId)
+      redis.set(songId, JSON.stringify(songDetail))
+
+      res.status(200).json(songDetail)
+    } catch (err) {
+      console.log(err);
+      next(err)
+    }
+  }
+
+  static async getQuestion(req, res, next) {
+    try {
+      const { id, song, index } = req.body
+      const cachedSong = await redis.get(id)
+      const question = convertLyricsToQuestion(cachedSong, index)
+
+      res.status(200).json({ question })
+
+    } catch (err) {
+      console.log(err);
+      next(err)
+    }
+  }
+
+  static async getListeningScore(req, res, next) {
+    try {
+      const { answer, index, id } = req.body
+      const cachedSong = await redis.get(id)
+      const { splitLyrics } = JSON.parse(cachedSong)
+      const score = getListeningScore(splitLyrics, answer, index)
+
+      res.status(200).json({ score })
+
+    } catch (err) {
+      console.log(err);
+      next(err)
+    }
+  }
 }
 
 module.exports = TaskController;
