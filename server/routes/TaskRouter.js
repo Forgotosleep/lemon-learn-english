@@ -4,6 +4,9 @@ const route = express.Router();
 const { authorizationTeacher, authorizationTask } = require('../middlewares/authorization')
 
 route.get("/", TaskController.get);
+
+route.get("/class/:classId", TaskController.getTaskByClass);
+// get All Task by classId
 route.get("/:id", TaskController.getById);
 // Teachers gets to create, update and delete task for students.
 route.post("/", authorizationTeacher, TaskController.create);
