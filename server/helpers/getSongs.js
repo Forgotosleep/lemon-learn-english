@@ -1,10 +1,8 @@
 /* SETUP */
-const { getLyrics, getSong, searchSong, getAlbumArt, getSongById } = require('genius-lyrics-api')
-const Redis = require("ioredis");
+const { getLyrics, getSong, searchSong, getAlbumArt } = require('genius-lyrics-api')
 const Lyricist = require('lyricist/node6');
 const { backOff } = require("exponential-backoff")
 
-const redis = new Redis();
 const accessToken = process.env.GENIUSTOKEN  // Get this thing into a .env BEFORE DEPLOYING
 const lyricist = new Lyricist(accessToken);
 
@@ -33,12 +31,6 @@ async function searchSongs(artist, title) {
 async function getSongDetailById(id) {  // returns an object containing the original lyrics (string), split lyrics (array), index of missing words (array) and the URL to its video/music
 
   try {
-    // const checkCache = await redis.get(id)
-    // const cachedSong = JSON.parse(checkCache)
-    // if (cachedSong.id == id) {
-    //   return cachedSong
-    // }
-
     const songById = await backOff(async () => {
       const { lyrics, media } = await lyricist.song(id, { fetchLyrics: true });
 
@@ -49,10 +41,6 @@ async function getSongDetailById(id) {  // returns an object containing the orig
       let splitLyrics = lyrics.split('\n')
 
       const song = { id, lyrics, media, splitLyrics }
-
-      // console.log(song, "<<< SONG");
-
-      // redis.set(id, JSON.stringify(song))
 
       return song
     });
@@ -104,8 +92,3 @@ function getListeningScore(splitLyrics, answer, index) {  // This function accep
 }
 
 module.exports = { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore }
-
-/*
-ERROR HANDLING NEXT DARI MANA PAK
-
-*/

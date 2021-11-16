@@ -119,27 +119,30 @@ class TaskController {
     }
   }
 
-  static async getQuestion(req, res, next) {
+  static async getQuestion(req, res, next) {  // Still uses Redis to transport the 'song' atm
     try {
       const { id, song, index } = req.body
       const cachedSong = await redis.get(id)
-      const question = convertLyricsToQuestion(cachedSong, index)
-
-      res.status(200).json({ question })
-
+      if (cachedSong) {
+        const question = convertLyricsToQuestion(cachedSong, index)
+        res.status(200).json({ question })
+      }
+      else {
+        const question = convertLyricsToQuestion(song, index)
+        res.status(200).json({ question })
+      }
     } catch (err) {
       console.log(err);
       next(err)
     }
   }
 
-  static async getListeningScore(req, res, next) {
+  static async getListeningScore(req, res, next) {  // Still uses Redis to transport the 'song' atm
     try {
-      const { answer, index, id } = req.body
+      const { answer, index, id, song } = req.body
       const cachedSong = await redis.get(id)
       const { splitLyrics } = JSON.parse(cachedSong)
       const score = getListeningScore(splitLyrics, answer, index)
-
       res.status(200).json({ score })
 
     } catch (err) {
