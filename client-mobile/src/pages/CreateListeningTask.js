@@ -19,6 +19,8 @@ const CreateListeningTask = () => {
     dispatch(getSongDetail({ id: +id }));
   }, [dispatch]);
 
+  console.log(song, "<<< SONG");
+
   const handleClick = (input) => {
     if (choiceIndex.indexOf(input) < 0) {
       setChoiceIndex([
@@ -61,7 +63,7 @@ const CreateListeningTask = () => {
       <div>
         <Stack>
           {splitLyrics?.map((row, index) => (
-            row ? <button onClick={() => { handleClick(index) }}>{row}</button> : <br />
+            row ? <button key={index} onClick={() => { handleClick(index) }}>{row}</button> : <br />
           ))}
         </Stack>
 
