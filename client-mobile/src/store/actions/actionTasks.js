@@ -1,4 +1,5 @@
 import { SET_TASK, SET_TASKS, SET_SONG, SET_SONGS, SET_TASKS_ISLOADING, SET_TASKS_ISERROR, SET_TASKS_SUCCESS_MESSAGE, SET_TASKS_ERROR_MESSAGE } from "../actionTypes";
+
 import ApiServer from "../api/axios";
 
 export function setTask(payload) {
@@ -14,34 +15,6 @@ export function setTasks(payload) {
     payload: payload,
   };
 }
-
-
-export function fetchTasks(params) {
-  return (dispatch, getstate) => {
-    return new Promise((resolve, reject) => {
-      dispatch(setIsLoadingMyClasses(true))
-      ApiServer({
-        url: `/tasks/class/${params}`,
-        method: 'GET',
-        headers: { access_token: localStorage.getItem('access_token') }
-      })
-        .then(({ data }) => {
-          dispatch(setTasks(data))
-          resolve()
-        })
-        .catch((err) => {
-          dispatch(setIsErrorMyClasses(err))
-          reject()
-        })
-        .finally(() => {
-          dispatch(setIsLoadingMyClasses(false))
-        })
-    })
-
-  }
-}
-
-
 
 export function setSong(payload) {
   return {
@@ -88,6 +61,7 @@ export function setTasksMessageError(payload) {
 export function searchSongs(payload) {
   return async (dispatch, getState) => {
     try {
+      setTasksIsLoading(true)
       const { data } = await ApiServer({
         url: "/tasks/search-songs",
         method: "GET",
@@ -99,7 +73,9 @@ export function searchSongs(payload) {
           title: payload.title
         }
       });
+      console.log(data);
       dispatch(setSongs(data));
+      setTasksIsLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -145,25 +121,75 @@ export function getListeningQuestion(payload) {
   };
 }
 
-export function getListeningScore(payload) {
-  return async (dispatch, getState) => {
-    try {
-      const { data } = await ApiServer({
-        url: "/tasks/get-listening-score",
-        method: "GET",
-        headers: {
-          access_token: localStorage.getItem("access_token"),
-        },
-        data: {
-          answer: payload.answer,
-          song: payload.song,
-          id: payload.id,
-          index: payload.index,
-        }
-      });
-      dispatch(setScore(data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+// export function getListeningScore(payload) {
+//   return async (dispatch, getState) => {
+//     try {
+//       const { data } = await ApiServer({
+//         url: "/tasks/get-listening-score",
+//         method: "GET",
+//         headers: {
+//           access_token: localStorage.getItem("access_token"),
+//         },
+//         data: {
+//           answer: payload.answer,
+//           song: payload.song,
+//           id: payload.id,
+//           index: payload.index,
+//         }
+//       });
+//       dispatch(setScore(data));  // Gotta get to score stuff
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// }
+
+
+
+export function fetchTasks(payload) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setTasksIsLoading(true))
+      ApiServer({
+        url: `/tasks/class/${payload}`,
+        method: 'GET',
+        headers: {access_token: localStorage.getItem('access_token')}
+      })
+      .then(({data})=>{
+        dispatch(setTasks(data))
+        resolve()
+      })
+      .catch((err)=>{
+        dispatch(setTasksMessageError(err))
+        reject(err)
+      })
+      .finally(()=>{
+        dispatch(setTasksIsLoading(false))
+      })
+    })
+  }
+}
+
+export function fetchTask(payload) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setTasksIsLoading(true))
+      ApiServer({
+        url: `/tasks/${payload}`,
+        method: 'GET',
+        headers: {access_token: localStorage.getItem('access_token')}
+      })
+      .then(({data})=>{
+        dispatch(setTask(data))
+        resolve()
+      })
+      .catch((err)=>{
+        dispatch(setTasksMessageError(err))
+        reject(err)
+      })
+      .finally(()=>{
+        dispatch(setTasksIsLoading(false))
+      })
+    })
+  }
 }

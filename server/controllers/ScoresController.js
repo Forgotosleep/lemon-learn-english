@@ -23,7 +23,7 @@ class ScoresController {
   }
   static async createScore(req, res, next) {
     try {
-      const { id } = req.user 
+      const { id } = req.user
       const soundUrl = await uploadAudio(req.file);
       const { score, taskId, answer } = req.body;
       const resp = await Score.create({
@@ -42,7 +42,8 @@ class ScoresController {
   static async getScore(req, res, next) {
     try {
       const file = req.file;
-      const resp = await getScore(file);
+      const { question } = req.body
+      const resp = await getScore(file, question);
       res.status(200).json(resp);
     } catch (err) {
       next(err);

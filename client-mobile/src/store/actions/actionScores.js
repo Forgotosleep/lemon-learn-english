@@ -45,13 +45,14 @@ export function setScoresMessageError(payload) {
   };
 }
 
-export function getScore(payload) {
+export function getScore(payload, question) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       dispatch(setScoresIsLoading(true))
       const file = new File([payload.blob], "newData.wav", { type: "audio/wav", lastModified: Date.now() });
       let form = new FormData()
       form.append("audioBuffer", file)
+      form.append("question", question)
       ApiServer({
         url: 'http://localhost:4001/scores/get-score',
         method: 'POST',
@@ -63,7 +64,6 @@ export function getScore(payload) {
         })
         .catch((err) => {
           reject(err)
-          dispatch(setScoresMessageError(err.ressponse.data))
         })
         .finally(() => {
           dispatch(setScoresIsLoading(false))
@@ -89,6 +89,7 @@ export function addScore(payload) {
         headers: { access_token: localStorage.getItem('access_token') }
       })
         .then(({ data }) => {
+          console.log(data)
           resolve(data)
         })
         .catch((err) => {

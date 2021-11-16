@@ -1,13 +1,19 @@
-import { SET_TASK, SET_TASKS, SET_TASKS_ISLOADING, SET_TASKS_ISERROR, SET_TASKS_SUCCESS_MESSAGE, SET_TASKS_ERROR_MESSAGE } from "../actionTypes";
+import {
+  SET_TASK,
+  SET_TASKS,
+  SET_TASKS_ISLOADING,
+  SET_TASKS_ISERROR,
+  SET_TASKS_SUCCESS_MESSAGE,
+  SET_TASKS_ERROR_MESSAGE,
+  SET_SONG,
+  SET_SONGS
+} from "../actionTypes";
 
 const initialState = {
   task: {},
   tasks: [],
-<<<<<<< HEAD
-=======
   song: {},
   songs: [],
->>>>>>> 1c10ce1aa42fc1240f8c44515fe4e5bae293c2ec
   isLoading: false,
   isError: null,
   messageSuccess: "",
@@ -20,13 +26,10 @@ function tasksReducer(state = initialState, action) {
       return { ...state, task: action.payload };
     case SET_TASKS:
       return { ...state, tasks: action.payload };
-<<<<<<< HEAD
-=======
     case SET_SONG:
       return { ...state, song: action.payload };
     case SET_SONGS:
       return { ...state, songs: action.payload };
->>>>>>> 1c10ce1aa42fc1240f8c44515fe4e5bae293c2ec
     case SET_TASKS_ISLOADING:
       return { ...state, isLoading: action.payload };
     case SET_TASKS_ISERROR:
@@ -39,9 +42,4 @@ function tasksReducer(state = initialState, action) {
       return state;
   }
 }
-
-<<<<<<< HEAD
 export default tasksReducer;
-=======
-export default tasksReducer;
->>>>>>> 1c10ce1aa42fc1240f8c44515fe4e5bae293c2ec

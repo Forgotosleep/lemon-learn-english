@@ -16,17 +16,16 @@ function StudentTask() {
     getTasks()
   }, [])
 
-  const toSpeaking = (id) => {
-    navigate(`/speaking/${id}`)
+  const toTask = (id, url) => {
+    if (!url) navigate(`/speaking/${id}`)
   }
-
   return (
     <>
       <div className="container">
         <h1 className="mb-4">StudentTask</h1>
         {
           tasks.map(task => (
-            <div onClick={() => toSpeaking(task.id)} className="card p-2 mb-2 bg-warning text-white border-danger" style={{ borderRadius: 20 }}>
+            <div onClick={() => toTask(task.id, task.soundUrl)} className="card p-2 mb-2 bg-warning text-white border-danger" style={{ borderRadius: 20 }}>
               <h5>{task.name}</h5>
               <p>{task.description}</p>
             </div>
