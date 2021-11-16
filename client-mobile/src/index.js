@@ -4,6 +4,7 @@ import App from "./pages/App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import store from "./store";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import { GlobalStyles } from "@mui/material";
 ReactDOM.render(

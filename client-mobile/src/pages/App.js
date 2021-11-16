@@ -11,7 +11,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getUser } from "../store/actions/actionUser";
 import HomeTeacher from "./teacher/Home";
+import ProfileTeacher from "./teacher/Profile";
 import { alertLoading } from "../assets/js/sweetalert2";
+import NavTeacher from "../components/teacher/Nav";
+import ClassTeacher from "./teacher/MyClass";
 
 function App() {
   const access_token = localStorage.getItem("access_token");
@@ -20,6 +23,16 @@ function App() {
   const [loading, setLoading] = useState(false);
   const home = () => {
     return <>{user?.role === "student" ? <Home /> : user?.role === "teacher" ? <HomeTeacher /> : ""}</>;
+  };
+  const myClass = () => {
+    return <>{user?.role === "student" ? <Class /> : <Navigate to="/login" />}</>;
+  };
+  const teacherClass = () => {
+    return <>{user?.role === "student" ? <Navigate to="/login" /> : <ClassTeacher />}</>;
+  };
+
+  const profile = () => {
+    return <>{user?.role === "student" ? <Profile /> : user?.role === "teacher" ? <ProfileTeacher /> : ""}</>;
   };
 
   useEffect(() => {
@@ -32,17 +45,22 @@ function App() {
       {access_token ? <Header /> : ""}
       <Container sx={{ mt: 13, mb: 8 }} fixed>
         <Routes>
+          <Route path="/myclass/:id" element={access_token ? teacherClass() : <Navigate to="/login" />} />
           <Route path="/" element={access_token ? home() : <Navigate to="/login" />} />
-          <Route path="/class" element={access_token ? <Class /> : <Navigate to="/login" />} />
-          <Route path="/profile" element={access_token ? <Profile /> : <Navigate to="/login" />} />
+          <Route path="/class" element={access_token ? myClass() : <Navigate to="/login" />} />
+          <Route path="/profile" element={access_token ? profile() : <Navigate to="/login" />} />
 
           <Route path="/login" element={access_token ? <Navigate to="/" /> : <LoginPage />} />
           <Route path="/register" element={access_token ? <Navigate to="/" /> : <RegisterPage />} />
         </Routes>
       </Container>
-      {access_token ? (
+      {user?.role === "student" ? (
         <Container fixed>
           <Nav />
+        </Container>
+      ) : user?.role === "teacher" ? (
+        <Container fixed>
+          <NavTeacher />
         </Container>
       ) : (
         ""
