@@ -14,7 +14,7 @@ const getScore = async (file, task) => {
       data: {
         audio_base64: base64,
         audio_format: "wav",
-        text: "Try the new cross-platform PowerShell",
+        text: task.toLowerCase(),
       },
     });
     return response.data.score;
