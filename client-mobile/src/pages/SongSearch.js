@@ -2,10 +2,12 @@ import React from 'react'
 import { Stack } from '@mui/material';
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { searchSongs, getSongDetail, getListeningQuestion } from '../store/actions/actionTasks'
 
 function SongSearch() {
+  // const { classId } = useLocation()
+  const classId = 1 // Hardcoded for testing purpoises
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { songs, isLoading } = useSelector((state) => state["tasks"])
@@ -31,7 +33,9 @@ function SongSearch() {
   const handleClick = (e, id) => {
     e.preventDefault()
     console.log(id, "<<< SONG ID");
-    navigate("/create-listening-task/" + id)
+    navigate("/create-listening-task/" + id, {
+      state: { classId }
+    })
   }
 
   useEffect(() => {
