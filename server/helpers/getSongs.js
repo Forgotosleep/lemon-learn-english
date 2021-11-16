@@ -22,7 +22,7 @@ async function searchSongs(artist, title) {
 
   } catch (err) {
     console.log(err, "<<< ERR SEARCH SONGS");
-    next(err)
+    throw (err)
     // INSERT ERROR HANDLER HERE
   }
 }
@@ -46,7 +46,7 @@ async function getSongDetailById(id) {  // returns an object containing the orig
 
   } catch (err) {
     console.log(err, "<<< ERR GET LYRICS BY ID");
-    next(err)
+    throw (err)
   }
 }
 
@@ -88,3 +88,8 @@ function getListeningScore(splitLyrics, answer, index) {  // This function accep
 }
 
 module.exports = { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore }
+
+/*
+ERROR HANDLING NEXT DARI MANA PAK
+
+*/
