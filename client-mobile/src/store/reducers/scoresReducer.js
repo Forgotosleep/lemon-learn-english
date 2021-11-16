@@ -2,7 +2,7 @@ import { SET_SCORE, SET_SCORES, SET_SCORES_ISLOADING, SET_SCORES_ISERROR, SET_SC
 
 const initialState = {
   score: {},
-  scores: {},
+  scores: [],
   isLoading: false,
   isError: null,
   messageSuccess: "",

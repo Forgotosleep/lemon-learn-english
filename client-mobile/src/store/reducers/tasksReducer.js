@@ -2,7 +2,7 @@ import { SET_TASK, SET_TASKS, SET_TASKS_ISLOADING, SET_TASKS_ISERROR, SET_TASKS_
 
 const initialState = {
   task: {},
-  tasks: {},
+  tasks: [],
   isLoading: false,
   isError: null,
   messageSuccess: "",
