@@ -15,12 +15,12 @@ import ProfileTeacher from "./teacher/Profile";
 import { alertLoading } from "../assets/js/sweetalert2";
 import NavTeacher from "../components/teacher/Nav";
 import ClassTeacher from "./teacher/MyClass";
+import Tasks from "./teacher/Tasks";
 
 function App() {
   const access_token = localStorage.getItem("access_token");
   const dispatch = useDispatch();
   const { isLoggedIn, isLoading, isError, user } = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(false);
   const home = () => {
     return <>{user?.role === "student" ? <Home /> : user?.role === "teacher" ? <HomeTeacher /> : ""}</>;
   };
@@ -29,6 +29,9 @@ function App() {
   };
   const teacherClass = () => {
     return <>{user?.role === "student" ? <Navigate to="/login" /> : <ClassTeacher />}</>;
+  };
+  const tasks = () => {
+    return <>{user?.role === "student" ? <Navigate to="/login" /> : <Tasks />}</>;
   };
 
   const profile = () => {
@@ -49,7 +52,7 @@ function App() {
           <Route path="/" element={access_token ? home() : <Navigate to="/login" />} />
           <Route path="/class" element={access_token ? myClass() : <Navigate to="/login" />} />
           <Route path="/profile" element={access_token ? profile() : <Navigate to="/login" />} />
-
+          <Route path="/tasks" element={access_token ? tasks() : <Navigate to="/login" />} />
           <Route path="/login" element={access_token ? <Navigate to="/" /> : <LoginPage />} />
           <Route path="/register" element={access_token ? <Navigate to="/" /> : <RegisterPage />} />
         </Routes>

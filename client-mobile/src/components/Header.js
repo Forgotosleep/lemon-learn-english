@@ -32,6 +32,10 @@ export default function Header() {
             <IconButton component={Link} to="/">
               <ArrowBack />
             </IconButton>
+          ) : value === "Tasks" ? (
+            <IconButton component={Link} to="/">
+              <ArrowBack />
+            </IconButton>
           ) : (
             <Icon sx={{ mr: 2 }}>
               <img src={psyduck} alt="psyduck" height={25} width={25} />

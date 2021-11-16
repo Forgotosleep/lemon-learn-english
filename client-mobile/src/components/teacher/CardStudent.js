@@ -1,9 +1,11 @@
 import { brown } from "@mui/material/colors";
 import { Col, Row, Image, Card, Badge } from "react-bootstrap";
+import ModalDetailTasks from "./ModalDetailTasks";
 function CardStudent(props) {
-  const { data } = props;
+  const { data, state } = props;
   const sumScore = (int) => {
     let temp = 0;
+    if (data.student.Scores.length === 0) return temp;
     for (const key in data.student.Scores) {
       temp += data.student.Scores[key]["score"];
     }
@@ -28,21 +30,26 @@ function CardStudent(props) {
                     {data.status}
                   </Badge>
                 </Col>
-
                 <Col md={6} xs={6}>
-                  <p>Score</p>
-                </Col>
-
-                <Col md={6} xs={6}>
-                  <p>Task</p>
+                  <label>Score</label>
                 </Col>
                 <Col md={6} xs={6}>
                   <Badge bg="secondary">{sumScore(data.student.Scores.length)}</Badge>
                 </Col>
                 <Col md={6} xs={6}>
-                  <Badge bg="secondary">{data.student.Scores.length}</Badge>
+                  <label>Task</label>
+                </Col>
+                <Col md={6} xs={6}>
+                  <Badge bg="secondary">
+                    {data.student.Scores.length} / {state.tasks.length}{" "}
+                  </Badge>
                 </Col>
               </Row>
+            </Col>
+            <Col md={12} xs={12}>
+              <div className="d-grid mt-2 gap-2">
+                <ModalDetailTasks tasks={data.student.Scores} />
+              </div>
             </Col>
           </Row>
         </div>

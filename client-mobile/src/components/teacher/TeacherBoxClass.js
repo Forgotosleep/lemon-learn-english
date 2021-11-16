@@ -61,8 +61,8 @@ function TeacherBoxClass(props) {
             </Typography>
           </CardContent>
           <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-            <ButBos onClick={() => navigate("/myclass/" + data.id)} variant="outline-danger">
-              Check your class !
+            <ButBos onClick={() => navigate("/myclass/" + data.id, { state: { category: data.Category.name, tasks: data.Tasks } })} variant="outline-danger">
+              Students
             </ButBos>
             <ButBos
               style={{ marginLeft: "1vh" }}
@@ -72,6 +72,9 @@ function TeacherBoxClass(props) {
               variant={data.status === "active" ? "outline-secondary" : "outline-success"}
             >
               {data.status === "active" ? "hide" : "active"}
+            </ButBos>
+            <ButBos style={{ marginLeft: "1vh" }} variant="outline-info" onClick={() => navigate("/tasks", { state: { category: data.Category.name, tasks: data.Tasks } })}>
+              Tasks
             </ButBos>
           </Box>
         </Box>

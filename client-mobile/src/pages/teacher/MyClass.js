@@ -1,5 +1,5 @@
 import { brown } from "@mui/material/colors";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getMyStudents } from "../../store/actions/actionClasses";
@@ -9,11 +9,10 @@ import CardStudent from "../../components/teacher/CardStudent";
 function MyClass() {
   const dispatch = useDispatch();
   const { id } = useParams();
-
+  const { state } = useLocation();
   const { myStudents } = useSelector((state) => state["classes"]);
   useEffect(() => {
     dispatch(getMyStudents(id));
-    console.log(myStudents);
   }, []);
 
   return (
@@ -29,7 +28,7 @@ function MyClass() {
         <Row xs={1} md={3} className="mt-5 g-3 ">
           {myStudents.result?.map((el) => (
             <Col key={el.id}>
-              <CardStudent data={el} />
+              <CardStudent data={el} state={state} />
             </Col>
           ))}
         </Row>
