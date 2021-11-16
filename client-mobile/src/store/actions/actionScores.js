@@ -2,6 +2,7 @@ import { SET_SCORE, SET_SCORES, SET_SCORES_ISLOADING, SET_SCORES_ISERROR, SET_SC
 import ApiServer from "../api/axios";
 const FormData = require('form-data')
 
+
 export function setScore(payload) {
   return {
     type: SET_SCORE,
@@ -100,3 +101,4 @@ export function addScore(payload) {
     })
   }
 }
+
