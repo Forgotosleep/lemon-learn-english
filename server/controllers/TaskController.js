@@ -103,10 +103,12 @@ class TaskController {
     try {
       const { songId } = req.params
       const checkCache = await redis.get(songId)
-      const cachedSong = JSON.parse(checkCache)
-      if (cachedSong.id == songId) {
-        res.status(200).json(cachedSong)
-        return
+      if (checkCache) {
+        const cachedSong = JSON.parse(checkCache)
+        if (cachedSong.id == songId) {
+          res.status(200).json(cachedSong)
+          return
+        }
       }
 
       const songDetail = await getSongDetailById(songId)
@@ -122,11 +124,15 @@ class TaskController {
   static async getQuestion(req, res, next) {  // Still uses Redis to transport the 'song' atm
     try {
       const { id, song, index } = req.body
-      const cachedSong = await redis.get(id)
-      if (cachedSong) {
-        const question = convertLyricsToQuestion(cachedSong, index)
-        res.status(200).json({ question })
+      const checkCache = await redis.get(id)
+      if (checkCache) {
+        const cachedSong = JSON.parse(checkCache)
+        if (cachedSong.id == id) {
+          const question = convertLyricsToQuestion(cachedSong, index)
+          res.status(200).json({ question })
+        }
       }
+
       else {
         const question = convertLyricsToQuestion(song, index)
         res.status(200).json({ question })
@@ -140,10 +146,21 @@ class TaskController {
   static async getListeningScore(req, res, next) {  // Still uses Redis to transport the 'song' atm
     try {
       const { answer, index, id, song } = req.body
-      const cachedSong = await redis.get(id)
-      const { splitLyrics } = JSON.parse(cachedSong)
-      const score = getListeningScore(splitLyrics, answer, index)
-      res.status(200).json({ score })
+
+      const checkCache = await redis.get(id)
+      if (checkCache) {
+        const cachedSong = JSON.parse(checkCache)
+        if (cachedSong.id == id) {
+          const { splitLyrics } = JSON.parse(cachedSong)
+          const score = getListeningScore(splitLyrics, answer, index)
+          res.status(200).json({ score })
+        }
+      }
+      else {
+        const { splitLyrics } = song
+        const score = getListeningScore(splitLyrics, answer, index)
+        res.status(200).json({ score })
+      }
 
     } catch (err) {
       console.log(err);

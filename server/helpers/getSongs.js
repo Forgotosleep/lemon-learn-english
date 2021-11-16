@@ -32,7 +32,7 @@ async function getSongDetailById(id) {  // returns an object containing the orig
 
   try {
     const songById = await backOff(async () => {
-      const { lyrics, media } = await lyricist.song(id, { fetchLyrics: true });
+      const { lyrics, media, title } = await lyricist.song(id, { fetchLyrics: true });
 
       if (!lyrics) {
         return Promise.reject({ name: "SearchSongByIdFail" })
@@ -40,7 +40,7 @@ async function getSongDetailById(id) {  // returns an object containing the orig
 
       let splitLyrics = lyrics.split('\n')
 
-      const song = { id, lyrics, media, splitLyrics }
+      const song = { id, title, lyrics, media, splitLyrics }
 
       return song
     });
