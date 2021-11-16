@@ -1,4 +1,4 @@
-import { SET_TASK, SET_TASKS, SET_SONG, SET_SONGS, SET_TASKS_ISLOADING, SET_TASKS_ISERROR, SET_TASKS_SUCCESS_MESSAGE, SET_TASKS_ERROR_MESSAGE } from "../actionTypes";
+import { SET_TASK, SET_TASKS, SET_SONG, SET_SONGS, SET_MEDIA, SET_TASKS_ISLOADING, SET_TASKS_ISERROR, SET_TASKS_SUCCESS_MESSAGE, SET_TASKS_ERROR_MESSAGE } from "../actionTypes";
 
 import ApiServer from "../api/axios";
 
@@ -26,6 +26,13 @@ export function setSong(payload) {
 export function setSongs(payload) {
   return {
     type: SET_SONGS,
+    payload: payload,
+  };
+}
+
+export function setMedia(payload) {
+  return {
+    type: SET_MEDIA,
     payload: payload,
   };
 }
@@ -61,6 +68,7 @@ export function setTasksMessageError(payload) {
 export function searchSongs(payload) {
   return async (dispatch, getState) => {
     try {
+      dispatch(setTasksIsLoading(true))
       const { data } = await ApiServer({
         url: "/tasks/search-songs",
         method: "GET",
@@ -72,7 +80,9 @@ export function searchSongs(payload) {
           title: payload.title
         }
       });
+      console.log(data);
       dispatch(setSongs(data));
+      dispatch(setTasksIsLoading(false))
     } catch (error) {
       console.log(error);
     }
@@ -81,6 +91,7 @@ export function searchSongs(payload) {
 
 export function getSongDetail(payload) {
   return async (dispatch, getState) => {
+    dispatch(setTasksIsLoading(true))
     try {
       const { data } = await ApiServer({
         url: `/tasks/search-songs/${payload.id}`,
@@ -90,6 +101,8 @@ export function getSongDetail(payload) {
         }
       });
       dispatch(setSong(data));
+      dispatch(setMedia(data.media))
+      dispatch(setTasksIsLoading(false))
     } catch (error) {
       console.log(error);
     }
@@ -99,18 +112,17 @@ export function getSongDetail(payload) {
 export function getListeningQuestion(payload) {
   return async (dispatch, getState) => {
     try {
+      // console.log(payload, "<<<< PAYLOAD GET LISTEN QUESTION");
       const { data } = await ApiServer({
         url: "/tasks/question",
-        method: "GET",
+        method: "POST",
         headers: {
           access_token: localStorage.getItem("access_token"),
         },
-        data: {
-          song: payload.song,
-          id: payload.id,
-          index: payload.index,
-        }
+        // data: payload
+        data: payload
       });
+      // console.log(data, "<<< FROM LISTENING QUESTION ACTION");
       dispatch(setTask(data));
     } catch (error) {
       console.log(error);
@@ -118,25 +130,25 @@ export function getListeningQuestion(payload) {
   };
 }
 
-export function getListeningScore(payload) {
-  return async (dispatch, getState) => {
-    try {
-      const { data } = await ApiServer({
-        url: "/tasks/get-listening-score",
-        method: "GET",
-        headers: {
-          access_token: localStorage.getItem("access_token"),
-        },
-        data: {
-          answer: payload.answer,
-          song: payload.song,
-          id: payload.id,
-          index: payload.index,
-        }
-      });
-      dispatch(setScore(data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
+// export function getListeningScore(payload) {  // Also submits student's answer
+//   return async (dispatch, getState) => {
+//     try {
+//       const { data } = await ApiServer({
+//         url: "/tasks/get-listening-score",
+//         method: "GET",
+//         headers: {
+//           access_token: localStorage.getItem("access_token"),
+//         },
+//         data: {
+//           answer: payload.answer,
+//           song: payload.song,
+//           id: payload.id,
+//           index: payload.index,
+//         }
+//       });
+//       dispatch(setScore(data));  // Gotta get to score stuff
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// }

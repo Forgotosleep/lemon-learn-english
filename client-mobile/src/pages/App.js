@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { getUser } from "../store/actions/actionUser";
 import HomeTeacher from "./teacher/Home";
 import { alertLoading } from "../assets/js/sweetalert2";
+import CreateListeningTask from "./CreateListeningTask";
+import SongSearch from "./SongSearch";
 
 function App() {
   const access_token = localStorage.getItem("access_token");
@@ -35,6 +37,10 @@ function App() {
           <Route path="/" element={access_token ? home() : <Navigate to="/login" />} />
           <Route path="/class" element={access_token ? <Class /> : <Navigate to="/login" />} />
           <Route path="/profile" element={access_token ? <Profile /> : <Navigate to="/login" />} />
+
+          {/* TEMP */}
+          <Route path="/create-listening-task/:id" element={access_token ? <CreateListeningTask /> : <Navigate to="/login" />} />
+          <Route path="/search-song" element={access_token ? <SongSearch /> : <Navigate to="/login" />} />
 
           <Route path="/login" element={access_token ? <Navigate to="/" /> : <LoginPage />} />
           <Route path="/register" element={access_token ? <Navigate to="/" /> : <RegisterPage />} />
