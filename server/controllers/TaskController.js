@@ -1,5 +1,8 @@
 const { Op } = require("sequelize");
 const { Task } = require("../models");
+const Redis = require("ioredis");
+const redis = new Redis();
+const { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore } = require('../helpers/getSongs')
 
 class TaskController {
   static async create(req, res, next) {
@@ -85,7 +88,85 @@ class TaskController {
     }
   }
 
+  static async searchSong(req, res, next) {
+    const { artist, title } = req.query
+    const songs = await searchSongs(artist, title)
 
+    res.status(200).json(songs)
+
+  } catch(err) {
+    console.log(err);
+    next(err)
+  }
+
+  static async getSongDetails(req, res, next) {
+    try {
+      const { songId } = req.params
+      const checkCache = await redis.get(songId)
+      if (checkCache) {
+        const cachedSong = JSON.parse(checkCache)
+        if (cachedSong.id == songId) {
+          res.status(200).json(cachedSong)
+          return
+        }
+      }
+
+      const songDetail = await getSongDetailById(songId)
+      redis.set(songId, JSON.stringify(songDetail))
+
+      res.status(200).json(songDetail)
+    } catch (err) {
+      console.log(err);
+      next(err)
+    }
+  }
+
+  static async getQuestion(req, res, next) {  // Still uses Redis to transport the 'song' atm
+    try {
+      const { id, song, index } = req.body
+      const checkCache = await redis.get(id)
+      if (checkCache) {
+        const cachedSong = JSON.parse(checkCache)
+        if (cachedSong.id == id) {
+          const question = convertLyricsToQuestion(cachedSong, index)
+          res.status(200).json({ question })
+        }
+      }
+
+      else {
+        const question = convertLyricsToQuestion(song, index)
+        res.status(200).json({ question })
+      }
+    } catch (err) {
+      console.log(err);
+      next(err)
+    }
+  }
+
+  static async getListeningScore(req, res, next) {  // Still uses Redis to transport the 'song' atm
+    try {
+      const { answer, index, id, song } = req.body
+
+      const checkCache = await redis.get(id)
+      if (checkCache) {
+        const cachedSong = JSON.parse(checkCache)
+        if (cachedSong.id == id) {
+          const { splitLyrics } = JSON.parse(cachedSong)
+          const score = getListeningScore(splitLyrics, answer, index)
+          res.status(200).json({ score })
+        }
+      }
+      else {
+        const { splitLyrics } = song
+        const score = getListeningScore(splitLyrics, answer, index)
+        res.status(200).json({ score })
+      }
+
+    } catch (err) {
+      console.log(err);
+      next(err)
+    }
+  }
 }
 
 module.exports = TaskController;

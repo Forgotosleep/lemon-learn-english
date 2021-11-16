@@ -3,6 +3,8 @@ import { SET_TASK, SET_TASKS, SET_TASKS_ISLOADING, SET_TASKS_ISERROR, SET_TASKS_
 const initialState = {
   task: {},
   tasks: [],
+  song: {},
+  songs: [],
   isLoading: false,
   isError: null,
   messageSuccess: "",
@@ -15,6 +17,10 @@ function tasksReducer(state = initialState, action) {
       return { ...state, task: action.payload };
     case SET_TASKS:
       return { ...state, tasks: action.payload };
+    case SET_SONG:
+      return { ...state, song: action.payload };
+    case SET_SONGS:
+      return { ...state, songs: action.payload };
     case SET_TASKS_ISLOADING:
       return { ...state, isLoading: action.payload };
     case SET_TASKS_ISERROR:

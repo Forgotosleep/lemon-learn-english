@@ -9,6 +9,8 @@ export const SET_ERROR_CLASSES = "classes/error";
 /* TASKS */
 export const SET_TASK = "task/set"
 export const SET_TASKS = "tasks/set"
+export const SET_SONG = "song/set"
+export const SET_SONGS = "songs/set"
 export const SET_TASKS_ISLOADING = "task/setIsLoading"
 export const SET_TASKS_ISERROR = "task/setIsError"
 export const SET_TASKS_SUCCESS_MESSAGE = "tasks/setSuccessMessage";
