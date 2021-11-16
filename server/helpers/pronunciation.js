@@ -15,14 +15,12 @@ const getScore = async (file, task) => {
         audio_base64: base64,
         audio_format: "wav",
         text: "Try the new cross-platform PowerShell",
-      }
-    })
-    return response.data.score
+      },
+    });
+    return response.data.score;
   } catch (err) {
-    throw (err)
+    throw err;
   }
+};
 
-}
-
-
-module.exports = getScore
+module.exports = getScore;

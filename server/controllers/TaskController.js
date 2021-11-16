@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Task } = require("../models");
 
 class TaskController {
@@ -9,16 +10,21 @@ class TaskController {
       const result = await Task.create(input);
 
       res.status(201).json({ result });
-      // res.status(201).json({ message: "Task Created" });
     } catch (err) {
       next(err);
-      // res.status(500).json({ message: "error" });
     }
   }
 
   static async get(req, res, next) {
     try {
-      const tasks = await Task.findAll();
+      const { classId } = req.query;
+
+      let opt = { where: {} };
+      if (classId) {
+        opt.where.classId = classId;
+      }
+
+      const tasks = await Task.findAll(opt);
 
       res.status(200).json(tasks);
     } catch (err) {

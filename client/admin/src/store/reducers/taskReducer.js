@@ -1,34 +1,29 @@
 import {
-  SET_CLASSES,
-  SET_CLASSESDETAILS,
-  SET_CLASSESERROR,
-  SET_CLASSESLOADING,
+  SET_TASKS,
+  SET_TASKSDETAILS,
+  SET_TASKSLOADING,
+  SET_TASKSERROR,
 } from "../actions/type";
 
 const initialState = {
   data: [],
-  classDetails: {},
   loading: false,
   error: false,
 };
 
-function classReducer(state = initialState, action) {
+function taskReducer(state = initialState, action) {
   let newState = { ...state };
 
   switch (action.type) {
-    case SET_CLASSES:
+    case SET_TASKS:
       newState.data = action.payload;
       break;
 
-    case SET_CLASSESDETAILS:
-      newState.classDetails = action.payload;
-      break;
-
-    case SET_CLASSESLOADING:
+    case SET_TASKSLOADING:
       newState.loading = action.payload;
       break;
 
-    case SET_CLASSESERROR:
+    case SET_TASKSERROR:
       newState.error = action.payload;
       break;
   }
@@ -36,4 +31,4 @@ function classReducer(state = initialState, action) {
   return newState;
 }
 
-export default classReducer;
+export default taskReducer;

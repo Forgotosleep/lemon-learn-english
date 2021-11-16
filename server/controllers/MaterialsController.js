@@ -3,7 +3,6 @@ const { Material, Class } = require("../models/index");
 class MaterialController {
   static async addMaterial(req, res, next) {
     try {
-
       const { name, description, materialUrl, classId } = req.body;
       const resp = await Material.create({
         name,
@@ -23,17 +22,17 @@ class MaterialController {
       if (!Number(id)) throw { name: "InvalidMaterialId" };
       const resp = await Material.findByPk(id, {
         attributes: {
-          exclude: ['createdAt', 'updatedAt']
+          exclude: ["createdAt", "updatedAt"],
         },
         include: {
           model: Class,
           attributes: {
-            exclude: ['createdAt', 'updatedAt']
-          }
-        }
-      })
-      if (!resp) throw ({ name: 'MaterialNotFound', id })
-      res.status(200).json(resp)
+            exclude: ["createdAt", "updatedAt"],
+          },
+        },
+      });
+      if (!resp) throw { name: "MaterialNotFound", id };
+      res.status(200).json(resp);
     } catch (err) {
       next(err);
     }
@@ -41,18 +40,24 @@ class MaterialController {
 
   static async getAllMaterial(req, res, next) {
     try {
-      const resp = await Material.findAll({
+      const { classId } = req.query;
+      let opt = {
+        where: {},
         attributes: {
-          exclude: ['createdAt', 'updatedAt']
+          exclude: ["createdAt", "updatedAt"],
         },
         include: {
           model: Class,
           attributes: {
-            exclude: ['createdAt', 'updatedAt']
-          }
-        }
-      })
-      res.status(200).json(resp)
+            exclude: ["createdAt", "updatedAt"],
+          },
+        },
+      };
+
+      if (classId) opt.where.classId = classId;
+
+      const resp = await Material.findAll(opt);
+      res.status(200).json(resp);
     } catch (err) {
       next(err);
     }
@@ -61,9 +66,7 @@ class MaterialController {
   static async deleteMaterialByID(req, res, next) {
     try {
       const { id } = req.params;
-      if (!Number(id)) throw { name: "InvalidMaterialId" };
       const resp = await Material.findByPk(id);
-      if (!resp) throw { name: "MaterialNotFound", id };
       await Material.destroy({
         where: {
           id,
@@ -78,11 +81,8 @@ class MaterialController {
   static async updateMaterial(req, res, next) {
     try {
       const { id } = req.params;
-      if (!Number(id)) throw { name: "InvalidMaterialId" };
       const { name, description, materialUrl, classID } = req.body;
-      const material = await Material.findByPk(id);
-      if (!material) throw { name: "MaterialNotFound", id };
-      const resp = await Material.update(
+      await Material.update(
         {
           name,
           description,

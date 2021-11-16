@@ -80,3 +80,53 @@
 .login-page h3 {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.link-pill {
+  /* background-color: #ccc;
+  border-radius: 2000px; */
+  padding: 9px 14px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.5;
+  font-size: 1rem;
+  text-decoration: none;
+  color: #323;
+  display: inline-block;
+}
+
+.lp-active {
+  padding: 9px 20px;
+  background-color: #ccc;
+  border-radius: 2000px;
+}
+
+.link-pill:hover {
+  color: #323;
+}
+
+.bcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 0;
+  margin-bottom: 1 rem;
+  list-style: none;
+}
+
+.bcrumb li {
+  list-style: none;
+}
+
+.bc-item {
+  float: left;
+  padding-right: 0.5 rem;
+  margin-right: 12px;
+  color: #6c757d;
+}
+
+.bc-item a {
+  text-decoration: none;
+}
+
+/* .bc-arrow {
+  margin-right: 8px;
+} */

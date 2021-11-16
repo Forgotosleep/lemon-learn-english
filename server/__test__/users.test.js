@@ -89,6 +89,26 @@ describe("POST /register", () => {
         done(err);
       });
   });
+
+  test("400 failed register with email already used", (done) => {
+    request(app)
+      .post("/register")
+      .send({
+        email: "mactavish@mail.com",
+        password: "password",
+        role: "student",
+        name: "leo",
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(400);
+        expect(body).toHaveProperty("message");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
 });
 
 describe("POST /login", () => {
@@ -182,17 +202,17 @@ describe("GET /users", () => {
   });
 });
 
-describe("GET /users/:id", () => {
-  test("200 success get user by id", (done) => {
+describe("GET /users/detail", () => {
+  test("200 success get user detail", (done) => {
     request(app)
-      .get("/users/1")
+      .get("/users/detail")
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("name", "Mason");
+        expect(body).toHaveProperty("name", "Soap");
         done();
       })
       .catch((err) => {
@@ -200,28 +220,28 @@ describe("GET /users/:id", () => {
       });
   });
 
-  test("404 failed get user by id", (done) => {
-    request(app)
-      .get("/users/99")
-      .set({
-        access_token: token,
-      })
-      .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(404);
-        expect(body).toHaveProperty("message", "User with ID 99 not found");
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
+  // test("404 failed get user detail", (done) => {
+  //   request(app)
+  //     .get("/users/99")
+  //     .set({
+  //       access_token: token,
+  //     })
+  //     .then((response) => {
+  //       const { body, status } = response;
+  //       expect(status).toBe(404);
+  //       expect(body).toHaveProperty("message", "User with ID 99 not found");
+  //       done();
+  //     })
+  //     .catch((err) => {
+  //       done(err);
+  //     });
+  // });
 });
 
 describe("update /users/:id", () => {
   test("200 success update users", (done) => {
     request(app)
-      .put("/users/4")
+      .put("/users/6")
       .set({
         access_token: token,
       })
@@ -233,7 +253,7 @@ describe("update /users/:id", () => {
         expect(status).toBe(200);
         expect(body).toHaveProperty(
           "message",
-          "User with id 4 has been updated"
+          "User with id 6 has been updated"
         );
         done();
       })
@@ -263,7 +283,7 @@ describe("update /users/:id", () => {
 describe("delete /users/:id", () => {
   test("200 success delete users", (done) => {
     request(app)
-      .delete("/users/4")
+      .delete("/users/6")
       .set({
         access_token: token,
       })
@@ -272,7 +292,7 @@ describe("delete /users/:id", () => {
         expect(status).toBe(200);
         expect(body).toHaveProperty(
           "message",
-          "User with id 4 has been deleted"
+          "User with id 6 has been deleted"
         );
         done();
       })
