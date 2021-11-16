@@ -9,6 +9,7 @@ function SpeakingStudent() {
   const dispatch = useDispatch()
   const [recordState, setRecordState] = useState(null)
   const [audioData, setAudioData] = useState()
+  const [score, setScore] = useState()
   const { id: taskId } = useParams()
   const { task } = useSelector(state => state.tasks)
   useEffect(() => {
@@ -18,6 +19,7 @@ function SpeakingStudent() {
   const submitAudio = () => {
     dispatch(getScore(audioData, task?.question))
       .then((data) => {
+        setScore(data)
         sendAudio({ audioData, scoreData: data, taskId })
       })
       .catch((err) => {
@@ -47,12 +49,24 @@ function SpeakingStudent() {
         <p>{task?.question}</p>
         <AudioReactRecorder canvasWidth={300} canvasHeight={200} state={recordState} onStop={(e) => onstop(e)} />
         <audio src={audioData?.url} controls></audio>
-        <div className="d-flex flex-row mt-3 justify-content-around">
-          <button className="button rounded btn-secondary mb-2 w-25" onClick={start}>START</button>
-          <button className="button rounded btn-warning mb-2 w-25" onClick={stop}>STOP</button>
-          <button className="button rounded btn-success mb-2 w-25" onClick={submitAudio}>SUBMIT</button>
-        </div>
+        {
+          score ? (
+            <div className="d-flex flex-row mt-3 justify-content-around">
+              <button disabled className="button rounded btn-secondary mb-2 w-25" onClick={start}>START</button>
+              <button disabled className="button rounded btn-warning mb-2 w-25" onClick={stop}>STOP</button>
+              <button disabled className="button rounded btn-success mb-2 w-25" onClick={submitAudio}>SUBMIT</button>
+            </div>
+          ) :
+            <div className="d-flex flex-row mt-3 justify-content-around">
+              <button className="button rounded btn-secondary mb-2 w-25" onClick={start}>START</button>
+              <button className="button rounded btn-warning mb-2 w-25" onClick={stop}>STOP</button>
+              <button className="button rounded btn-success mb-2 w-25" onClick={submitAudio}>SUBMIT</button>
+            </div>
+        }
       </div>
+      {
+        score ? <center><h5>Your score is :{score}</h5></center> : ''
+      }
     </div>
   );
 }
