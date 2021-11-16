@@ -1,5 +1,6 @@
 import { SET_TASK, SET_TASKS, SET_SONG, SET_SONGS, SET_MEDIA, SET_TASKS_ISLOADING, SET_TASKS_ISERROR, SET_TASKS_SUCCESS_MESSAGE, SET_TASKS_ERROR_MESSAGE } from "../actionTypes";
 
+
 const initialState = {
   task: {},
   tasks: [],
@@ -36,5 +37,4 @@ function tasksReducer(state = initialState, action) {
       return state;
   }
 }
-
 export default tasksReducer;
