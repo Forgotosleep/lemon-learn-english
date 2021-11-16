@@ -1,12 +1,8 @@
 const { Op } = require("sequelize");
-<<<<<<< HEAD
 const { Task, Class } = require("../models");
-=======
-const { Task } = require("../models");
 const Redis = require("ioredis");
 const redis = new Redis();
 const { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore } = require('../helpers/getSongs')
->>>>>>> 1c10ce1aa42fc1240f8c44515fe4e5bae293c2ec
 
 class TaskController {
   static async create(req, res, next) {

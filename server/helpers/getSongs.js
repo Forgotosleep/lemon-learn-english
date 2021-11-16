@@ -4,7 +4,7 @@ const Lyricist = require('lyricist/node6');
 const { backOff } = require("exponential-backoff")
 
 const accessToken = process.env.GENIUSTOKEN  // Get this thing into a .env BEFORE DEPLOYING
-const lyricist = new Lyricist(accessToken);
+const lyricist = new Lyricist("Emmh0nWJW5bLOM7upFEGZHuabVmKQZQGX683zYuWhQLpHtW4BitKMv8xa8eb-IoQ");
 
 
 /* FUNCTIONS */
@@ -12,7 +12,7 @@ async function searchSongs(artist, title) {
   // This function attempts to search the database for song(s) based on its provided artist & title data. Returns an array that contains the song's Genius ID, title, albumArt image URL and its lyrics page in Genius' own website. Most useful is the song's ID.
   try {
     const options = {
-      apiKey: accessToken,
+      apiKey: "Emmh0nWJW5bLOM7upFEGZHuabVmKQZQGX683zYuWhQLpHtW4BitKMv8xa8eb-IoQ",
       title: !title ? "''" : title,
       artist: !artist ? "''" : artist,
       optimizeQuery: true
