@@ -15,7 +15,7 @@ export const SET_TASKS_SUCCESS_MESSAGE = "tasks/setSuccessMessage";
 export const SET_TASKS_ERROR_MESSAGE = "tasks/setErrorMessage";
 
 /* SCORES */
-export const SCORE = "score/set"
+export const SET_SCORE = "score/set"
 export const SET_SCORES = "scores/set"
 export const SET_SCORES_ISLOADING = "score/setIsLoading"
 export const SET_SCORES_ISERROR = "score/setIsError"
