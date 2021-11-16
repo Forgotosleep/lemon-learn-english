@@ -7,14 +7,14 @@ import Modal from "@mui/material/Modal";
 import { brown } from "@mui/material/colors";
 import { alertError, alertSuccess, alertSure } from "../assets/js/sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
-import { setErrorClasses, setMessageClasses, joinClass } from "../store/actions/actionClasses";
+import { setErrorClasses, setMessageClasses, joinClass, getClassesActive } from "../store/actions/actionClasses";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "55vh",
+  width: "45vmax",
   bgcolor: "background.paper",
   border: "1px solid #000",
   boxShadow: 20,
@@ -36,6 +36,7 @@ function ModalDetailClass(props) {
     const result = await alertSure();
     if (result.value) {
       dispatch(joinClass(data.id));
+      dispatch(getClassesActive());
     }
   };
 
