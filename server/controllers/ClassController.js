@@ -147,6 +147,7 @@ class ClassController {
 
   static async rateClass(req, res, next) {
     try {
+      console.log("masuksksksksks");
       const studentId = +req.user.id;
       const { id } = req.params;
       const { ratings } = req.body;

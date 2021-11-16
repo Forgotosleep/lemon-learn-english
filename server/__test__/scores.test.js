@@ -86,13 +86,11 @@ describe("POSTS /scores", () => {
   test("201 success create scores", (done) => {
     request(app)
       .post("/scores")
-      .send({
-        score: "90",
-        studentId: 1,
-        taskId: 1,
-        soundUrl: "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
-        answer: "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
-      })
+      .attach("soundUrl", "__test__/file/sound.wav")
+      .field("score", "90")
+      .field("studentId", 1)
+      .field("taskId", 1)
+      .field("answer", "https://www.youtube.com/watch?v=IIZn_cEP9Jg")
       .set({
         access_token: token,
       })
@@ -113,13 +111,11 @@ describe("Failed create score", () => {
   test("400 failed create score", (done) => {
     request(app)
       .post("/scores")
-      .send({
-        score: "score test",
-        studentId: 3,
-        taskId: 1,
-        soundUrl: "url",
-        answer: "answer",
-      })
+      .attach("soundUrl", "__test__/file/sound.wav")
+      .field("score", "score test")
+      .field("studentId", 3)
+      .field("taskId", 1)
+      .field("answer", "answer")
       .set({
         access_token: token,
       })

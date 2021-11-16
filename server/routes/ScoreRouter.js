@@ -8,12 +8,12 @@ const { uploadBuffer, upload } = require("../middlewares/uploadMulter");
 // Authorization will be used here
 route.get("/", ScoresController.displayAll);
 route.get("/:id", ScoresController.displayOne);
-route.post("/", upload.single("audio"), ScoresController.createScore);
-// route.post(
-//   "/get-score",
-//   uploadBuffer.single("audioBuffer"),
-//   ScoresController.getScore
-// );
+route.post("/", upload.single("soundUrl"), ScoresController.createScore);
+route.post(
+  "/get-score",
+  uploadBuffer.single("file"),
+  ScoresController.getScore
+);
 route.put("/:id", ScoresController.updateScore);
 route.delete("/:id", ScoresController.deleteScore);
 

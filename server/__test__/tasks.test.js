@@ -232,3 +232,39 @@ describe("DELETE /tasks", () => {
       });
   });
 });
+
+describe("Search songs /tasks/search-songs", () => {
+  test("200 success delete tasks", (done) => {
+    request(app)
+      .get(`/tasks/search-songs?artist=one&title=one`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("Search songs by id /tasks/searc-songs", (done) => {
+    request(app)
+      .get(`/tasks/search-songs/188004`)
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("lyrics");
+        expect(body).toHaveProperty("media");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
