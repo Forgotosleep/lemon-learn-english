@@ -1,4 +1,4 @@
-const { Class, User, Level, Category, StudentClass } = require("../models");
+const { Class, User, Level, Category, StudentClass, Task } = require("../models");
 const { getPagingData } = require("../helpers/pagination");
 const { Op } = require("sequelize");
 class ClassController {
@@ -131,10 +131,24 @@ class ClassController {
               exclude: ["createdAt", "updatedAt"],
             },
           },
+          {
+            model: StudentClass,
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+          {
+            model: Task,
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
         ],
         where: {
           teacherId,
         },
+        distinct: true,
+        order: [["id", "desc"]],
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
@@ -162,8 +176,7 @@ class ClassController {
         throw { name: "ClassNotFound", id };
       }
 
-      if (checkStatus["status"].toLowerCase() !== "complete")
-        throw { name: "notCompletedClass" };
+      if (checkStatus["status"].toLowerCase() !== "complete") throw { name: "notCompletedClass" };
 
       const result = await Class.findByPk(+id);
       if (!result) throw { name: "ClassNotFound", id };
@@ -181,9 +194,7 @@ class ClassController {
           },
         }
       );
-      res
-        .status(200)
-        .json({ message: `Succeess in rating class ${result["name"]}` });
+      res.status(200).json({ message: `Succeess in rating class ${result["name"]}` });
     } catch (err) {
       next(err);
     }
@@ -231,24 +242,17 @@ class ClassController {
   static async addClass(req, res, next) {
     try {
       const { name, levelId, categoryId } = req.body;
-      console.log("addClass", req.body);
       const teacherId = req.user.id;
-      const checkClass = await Class.findAll({
+      const checkClass = await Class.findOne({
         where: {
           teacherId: teacherId,
+          levelId: Number(levelId),
+          categoryId: Number(categoryId),
         },
       });
-      console.log(checkClass, "<<< Check before Add Class");
-      if (checkClass.length > 0) {
-        for (const key in checkClass) {
-          if (
-            checkClass[key]["levelId"] === levelId &&
-            checkClass[key]["categoryId"] === categoryId
-          ) {
-            throw { name: "duplicate class" };
-          }
-        }
-      }
+      console.log(checkClass);
+      if (checkClass) throw { name: "duplicate class" };
+
       const result = await Class.create({
         name,
         teacherId,
@@ -338,9 +342,7 @@ class ClassController {
       const destroyed = Class.destroy({
         where: { id },
       });
-      res
-        .status(200)
-        .json({ message: `Successfully deleted Class ${result.name}` });
+      res.status(200).json({ message: `Successfully deleted Class ${result.name}` });
     } catch (err) {
       next(err);
     }
