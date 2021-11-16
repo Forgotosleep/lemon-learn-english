@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Task } = require("../models");
+const { Task, Class, Score } = require("../models");
 const Redis = require("ioredis");
 const redis = new Redis();
 const {
@@ -35,6 +35,28 @@ class TaskController {
       const tasks = await Task.findAll(opt);
 
       res.status(200).json(tasks);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async getTaskByClass(req, res, next) {
+    try {
+      const { classId } = req.params;
+      const studentId = req.user.id;
+      if (!Number(classId)) throw { name: "InvalidMaterialId" };
+      const classData = await Class.findByPk(classId);
+      if (!classData) throw { name: "ClassNotFound", id: classId };
+      const resp = await Task.findAll({
+        where: {
+          classId,
+        },
+        include: {
+          model: Score,
+        },
+        distinct: true,
+      });
+      res.status(200).json(resp);
     } catch (err) {
       next(err);
     }
@@ -103,6 +125,7 @@ class TaskController {
     try {
       const { songId } = req.params;
       const checkCache = await redis.get(songId);
+      // console.log(checkCache, "<<<");
       if (checkCache) {
         const cachedSong = JSON.parse(checkCache);
         if (cachedSong.id == songId) {
@@ -122,19 +145,35 @@ class TaskController {
   }
 
   static async getQuestion(req, res, next) {
-    // Still uses Redis to transport the 'song' atm
     try {
-      const { id, song, index } = req.body;
+      const { id, song, index, classId } = req.body;
+      // console.log(req.body, "<<< BODY");
       const checkCache = await redis.get(id);
       if (checkCache) {
+        // console.log("GOT CACHE");
         const cachedSong = JSON.parse(checkCache);
         if (cachedSong.id == id) {
           const question = convertLyricsToQuestion(cachedSong, index);
-          res.status(200).json({ question });
+          const payload = {
+            name: song.title,
+            description: "Listening task",
+            classId,
+            question: JSON.stringify({ index, id, song, question }),
+          };
+          const result = await Task.create(payload);
+          res.status(200).json({ result });
         }
       } else {
+        // console.log("NOT GOT CACHE");
         const question = convertLyricsToQuestion(song, index);
-        res.status(200).json({ question });
+        const payload = {
+          name: song.title,
+          description: "Listening task",
+          classId,
+          question: JSON.stringify({ index, id, song, question }),
+        };
+        const result = await Task.create(payload);
+        res.status(200).json({ result });
       }
     } catch (err) {
       console.log(err);
@@ -143,7 +182,6 @@ class TaskController {
   }
 
   static async getListeningScore(req, res, next) {
-    // Still uses Redis to transport the 'song' atm
     try {
       const { answer, index, id, song } = req.body;
 

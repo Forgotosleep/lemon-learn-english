@@ -132,10 +132,16 @@ class StudentClassController {
         },
         include: {
           model: Class,
+          include: {
+            model: User,
+            as: 'teacher',
+            attributes: ['name']
+          }
         },
-      });
+      })
       res.status(200).json(resp);
     } catch (err) {
+      console.log(err)
       next(err);
     }
   }

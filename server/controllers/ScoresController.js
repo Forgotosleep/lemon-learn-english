@@ -23,6 +23,7 @@ class ScoresController {
   }
   static async createScore(req, res, next) {
     try {
+<<<<<<< HEAD
       const soundUrl = await uploadAudio(req.file);
       const { score, studentId, taskId, answer } = req.body;
       console.log("soundUrl:", soundUrl);
@@ -30,6 +31,15 @@ class ScoresController {
         score,
         studentId,
         taskId,
+=======
+      const { id } = req.user
+      const soundUrl = await uploadAudio(req.file);
+      const { score, taskId, answer } = req.body;
+      const resp = await Score.create({
+        score,
+        studentId: id, //: 1, // harcode req.user.id (student)
+        taskId, //: 1, // harcode
+>>>>>>> upstream/development
         soundUrl,
         answer,
       });
@@ -43,11 +53,17 @@ class ScoresController {
 
   static async getScore(req, res, next) {
     try {
+<<<<<<< HEAD
       const { taskId } = req.body;
       const file = req.file;
       const task = await Task.findByPk(taskId);
       if (!task) throw { name: "TaskNotFound", taskId };
       const resp = await getScore(file, task.question); //task.question
+=======
+      const file = req.file;
+      const { question } = req.body
+      const resp = await getScore(file, question);
+>>>>>>> upstream/development
       res.status(200).json(resp);
     } catch (err) {
       next(err);

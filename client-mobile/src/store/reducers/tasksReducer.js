@@ -1,10 +1,12 @@
-import { SET_TASK, SET_TASKS, SET_TASKS_ISLOADING, SET_TASKS_ISERROR, SET_TASKS_SUCCESS_MESSAGE, SET_TASKS_ERROR_MESSAGE } from "../actionTypes";
+import { SET_TASK, SET_TASKS, SET_SONG, SET_SONGS, SET_MEDIA, SET_TASKS_ISLOADING, SET_TASKS_ISERROR, SET_TASKS_SUCCESS_MESSAGE, SET_TASKS_ERROR_MESSAGE } from "../actionTypes";
+
 
 const initialState = {
   task: {},
   tasks: [],
   song: {},
   songs: [],
+  media: [],
   isLoading: false,
   isError: null,
   messageSuccess: "",
@@ -21,6 +23,8 @@ function tasksReducer(state = initialState, action) {
       return { ...state, song: action.payload };
     case SET_SONGS:
       return { ...state, songs: action.payload };
+    case SET_MEDIA:
+      return { ...state, media: action.payload };
     case SET_TASKS_ISLOADING:
       return { ...state, isLoading: action.payload };
     case SET_TASKS_ISERROR:
@@ -33,5 +37,4 @@ function tasksReducer(state = initialState, action) {
       return state;
   }
 }
-
 export default tasksReducer;
