@@ -8,7 +8,9 @@ import { getSongDetail, getListeningQuestion } from '../store/actions/actionTask
 
 const CreateListeningTask = () => {
   const { id } = useParams()
+  const { state } = useLocation()
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { song, media, isLoading } = useSelector((state) => state["tasks"])
   const [choiceIndex, setChoiceIndex] = useState([])
   const splitLyrics = song?.splitLyrics
@@ -33,11 +35,12 @@ const CreateListeningTask = () => {
     let payload = {
       song,
       id: song.id,
-      index: choiceIndex
+      index: choiceIndex,
+      classId: state.classId
     }
     console.log(payload, "<<< ABOUT TO BE SENT");  // For testing purpoises
     dispatch(getListeningQuestion(payload))
-
+    navigate("/")
   }
 
   if (isLoading) {

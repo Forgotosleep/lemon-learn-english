@@ -132,7 +132,14 @@ class TaskController {
         const cachedSong = JSON.parse(checkCache)
         if (cachedSong.id == id) {
           const question = convertLyricsToQuestion(cachedSong, index)
-          res.status(200).json({ question })
+          const payload = {
+            name: song.title,
+            description: "Listening task",
+            classId,
+            question: JSON.stringify({ index, id, song, question })
+          }
+          const result = await Task.create(payload)
+          res.status(200).json({ result })
         }
       }
 
@@ -140,13 +147,13 @@ class TaskController {
         // console.log("NOT GOT CACHE");
         const question = convertLyricsToQuestion(song, index)
         const payload = {
-          name,
-          description,
+          name: song.title,
+          description: "Listening task",
           classId,
-          question: JSON.stringify()
+          question: JSON.stringify({ index, id, song, question })
         }
         const result = await Task.create(payload)
-        res.status(200).json({ question })
+        res.status(200).json({ result })
       }
     } catch (err) {
       console.log(err);
