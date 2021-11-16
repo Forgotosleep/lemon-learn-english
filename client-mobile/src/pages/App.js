@@ -14,6 +14,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getUser } from "../store/actions/actionUser";
 import { alertLoading } from "../assets/js/sweetalert2";
+import CreateListeningTask from "./CreateListeningTask";
+import SongSearch from "./SongSearch";
+
 function App() {
   const access_token = localStorage.getItem("access_token");
   const dispatch = useDispatch();
@@ -36,9 +39,13 @@ function App() {
           <Route path="/" element={access_token ? home() : <Navigate to="/login" />} />
           <Route path="/class" element={access_token ? <Class /> : <Navigate to="/login" />} />
           <Route path="/profile" element={access_token ? <Profile /> : <Navigate to="/login" />} />
+
+          <Route path="/create-listening-task/:id" element={access_token ? <CreateListeningTask /> : <Navigate to="/login" />} />
+          <Route path="/search-song" element={access_token ? <SongSearch /> : <Navigate to="/login" />} />
+
           <Route path="/tasks/:id" element={access_token ? <StudentTask /> : <Navigate to="/login" />} />
           <Route path="/speaking/:id" element={access_token ? <SpeakingStudent /> : <Navigate to="/login" />} />
-         
+        
           <Route path="/login" element={access_token ? <Navigate to="/" /> : <LoginPage />} />
           <Route path="/register" element={access_token ? <Navigate to="/" /> : <RegisterPage />} />
         </Routes>

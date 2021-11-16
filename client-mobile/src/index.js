@@ -6,6 +6,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import store from "./store";
 import { Provider } from "react-redux";
 import { GlobalStyles } from "@mui/material";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

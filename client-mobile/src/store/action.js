@@ -44,7 +44,7 @@ export function fetchLogin(payload) {
         .catch((err) => {
           reject(err)
         })
-        .finally(()=>{
+        .finally(() => {
           setIsLoading(false)
         })
     })
@@ -66,7 +66,7 @@ export function fetchRegister(payload) {
         .catch((err) => {
           reject(err.response.data.message)
         })
-        .finally(()=>{
+        .finally(() => {
           setIsLoading(false)
         })
     })

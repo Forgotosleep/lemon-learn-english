@@ -120,6 +120,7 @@ class TaskController {
     try {
       const { songId } = req.params
       const checkCache = await redis.get(songId)
+      // console.log(checkCache, "<<<");
       if (checkCache) {
         const cachedSong = JSON.parse(checkCache)
         if (cachedSong.id == songId) {
@@ -138,11 +139,13 @@ class TaskController {
     }
   }
 
-  static async getQuestion(req, res, next) {  // Still uses Redis to transport the 'song' atm
+  static async getQuestion(req, res, next) {
     try {
-      const { id, song, index } = req.body
+      const { id, song, index, classId } = req.body
+      // console.log(req.body, "<<< BODY");
       const checkCache = await redis.get(id)
       if (checkCache) {
+        // console.log("GOT CACHE");
         const cachedSong = JSON.parse(checkCache)
         if (cachedSong.id == id) {
           const question = convertLyricsToQuestion(cachedSong, index)
@@ -151,7 +154,15 @@ class TaskController {
       }
 
       else {
+        // console.log("NOT GOT CACHE");
         const question = convertLyricsToQuestion(song, index)
+        const payload = {
+          name,
+          description,
+          classId,
+          question: JSON.stringify()
+        }
+        const result = await Task.create(payload)
         res.status(200).json({ question })
       }
     } catch (err) {
@@ -160,7 +171,7 @@ class TaskController {
     }
   }
 
-  static async getListeningScore(req, res, next) {  // Still uses Redis to transport the 'song' atm
+  static async getListeningScore(req, res, next) {
     try {
       const { answer, index, id, song } = req.body
 

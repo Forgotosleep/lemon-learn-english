@@ -54,7 +54,8 @@ async function getSongDetailById(id) {  // returns an object containing the orig
 }
 
 function convertLyricsToQuestion(song, index) {  // This function accepts a song object (the result from getSongDetailById func) and the intentionally emptied out parts' index. Based on its index, the parts of the splitLyrics is replaced with a fixed character (underscores atm), and then returns the splitLyrics (now question) as an Array of Strings.
-  const { lyrics, splitLyrics, media } = JSON.parse(song)
+  // console.log(song, "<<<<");
+  const { lyrics, splitLyrics, media } = song
   let count = 0
   // console.log(splitLyrics);
   let question = splitLyrics.map((row, i) => {
