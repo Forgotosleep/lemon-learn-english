@@ -1,7 +1,7 @@
 const getScore = require("../helpers/pronunciation");
 const uploadAudio = require("../helpers/uploadCloudinary");
 
-const { Score } = require("../models");
+const { Score, Task } = require("../models");
 class ScoresController {
   static async displayAll(req, res, next) {
     try {
@@ -23,31 +23,36 @@ class ScoresController {
   }
   static async createScore(req, res, next) {
     try {
-      // const soundUrl = await uploadAudio(req.file);
-      const { score, studentId, taskId, soundUrl, answer } = req.body;
-      // const { score } = req.body; // harcode ver
+      const soundUrl = await uploadAudio(req.file);
+      const { score, studentId, taskId, answer } = req.body;
+      console.log("soundUrl:", soundUrl);
       const resp = await Score.create({
         score,
-        studentId, //: 1, // harcode req.user.id (student)
-        taskId, //: 1, // harcode
+        studentId,
+        taskId,
         soundUrl,
-        answer, //: "ngasal", // harcode
+        answer,
       });
+      console.log("resp nice", resp);
+      console.log("soundUrl", soundUrl);
       res.status(201).json(resp);
     } catch (err) {
       next(err);
     }
   }
 
-  // static async getScore(req, res, next) {
-  //   try {
-  //     const file = req.file;
-  //     const resp = await getScore(file);
-  //     res.status(200).json(resp);
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
+  static async getScore(req, res, next) {
+    try {
+      const { taskId } = req.body;
+      const file = req.file;
+      const task = await Task.findByPk(taskId);
+      if (!task) throw { name: "TaskNotFound", taskId };
+      const resp = await getScore(file, task.question); //task.question
+      res.status(200).json(resp);
+    } catch (err) {
+      next(err);
+    }
+  }
 
   static async updateScore(req, res, next) {
     try {

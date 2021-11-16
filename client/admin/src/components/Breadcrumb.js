@@ -14,9 +14,9 @@ export default function () {
           <li class="bc-item">
             <FontAwesomeIcon icon={faCaretRight} />
           </li>
-          <li class="bc-item" aria-current="page">
+          {/* <li class="bc-item" aria-current="page">
             Library
-          </li>
+          </li> */}
         </ol>
       </nav>
     </>

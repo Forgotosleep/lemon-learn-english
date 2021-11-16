@@ -104,6 +104,24 @@ describe("GET /tasks", () => {
       });
   });
 
+  test("200 success get tasks by classId", (done) => {
+    request(app)
+      .get("/tasks?classId=1")
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(Array.isArray(body)).toBeTruthy();
+        expect(body.length).toBe(3);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
   test("401 failed get tasks", (done) => {
     request(app)
       .get("/tasks")
@@ -189,6 +207,27 @@ describe("UPDATE /tasks", () => {
         const { body, status } = response;
         expect(status).toBe(404);
         expect(body).toHaveProperty("message", "Task with ID 99 not found");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("404 failed update task cause invalid class id", (done) => {
+    request(app)
+      .put(`/tasks/${1}`)
+      .set({
+        access_token: token,
+      })
+      .send({
+        name: "test five",
+        classId: 200,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(404);
+        expect(body).toHaveProperty("message");
         done();
       })
       .catch((err) => {

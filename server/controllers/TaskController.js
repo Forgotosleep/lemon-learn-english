@@ -71,21 +71,14 @@ class TaskController {
         returning: true,
       });
 
-      // IF CLASS NOT FOUND
-      if (!result[0]) {
-        throw { name: "TaskNotFound", id };
-      }
-
       res
         .status(200)
         .json({ result: result[1][0], message: `Task with ID ${id} Updated` });
-      // res.status(200).json({ message: "Task Updated" });
     } catch (err) {
+      console.log("rito:", err.name);
       next(err);
     }
   }
-
-
 }
 
 module.exports = TaskController;

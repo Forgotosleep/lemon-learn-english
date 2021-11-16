@@ -5,7 +5,8 @@
     "database": "lemon-learn-english",
     "host": "localhost",
     "dialect": "postgres",
-    "port": "5433"
+    "port": "5433",
+    "logging": false
   },
   "test": {
     "username": "postgres",
@@ -13,7 +14,8 @@
     "database": "lemon-learn-english-test",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "port": "5433"
+    "port": "5433",
+    "logging": false
   },
   "production": {
     "use_env_variable": "DATABASE_URL",

@@ -90,6 +90,24 @@ describe("GET /materials", () => {
         done(err);
       });
   });
+
+  test("200 success get materials with query", (done) => {
+    request(app)
+      .get("/materials?classId=1")
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(Array.isArray(body)).toBeTruthy();
+        expect(body.length).toBe(3);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
 });
 
 describe("GET /materials/:id", () => {

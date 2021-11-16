@@ -126,7 +126,6 @@ class StudentClassController {
   static async getClassEnrolled(req, res, next) {
     try {
       const { id } = req.user;
-      if (!Number(id)) throw { name: "InvalidDataType" };
       const resp = await StudentClass.findAll({
         where: {
           studentId: id,
