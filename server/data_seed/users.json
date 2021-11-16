@@ -22,5 +22,21 @@
     "role": "student",
     "name": "MacTavish",
     "photo": "http://www.internationalhero.co.uk/m/mactavish1.jpg"
+  },
+  {
+    "username": "braun",
+    "email": "braun@mail.com",
+    "password": "$2a$10$5znqu1Q2kkClaSylk5LKhOqXGt2X6xoMFWG3o2PPQpaDQWLiFhjCS",
+    "role": "teacher",
+    "name": "braun",
+    "photo": "https://cdn.onlinewebfonts.com/svg/img_181369.png"
+  },
+  {
+    "username": "mario",
+    "email": "mario@mail.com",
+    "password": "$2a$10$5znqu1Q2kkClaSylk5LKhOqXGt2X6xoMFWG3o2PPQpaDQWLiFhjCS",
+    "role": "student",
+    "name": "mario",
+    "photo": "https://cdn.onlinewebfonts.com/svg/img_181369.png"
   }
 ]

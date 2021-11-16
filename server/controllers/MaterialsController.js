@@ -66,9 +66,7 @@ class MaterialController {
   static async deleteMaterialByID(req, res, next) {
     try {
       const { id } = req.params;
-      if (!Number(id)) throw { name: "InvalidMaterialId" };
       const resp = await Material.findByPk(id);
-      if (!resp) throw { name: "MaterialNotFound", id };
       await Material.destroy({
         where: {
           id,
@@ -83,11 +81,8 @@ class MaterialController {
   static async updateMaterial(req, res, next) {
     try {
       const { id } = req.params;
-      if (!Number(id)) throw { name: "InvalidMaterialId" };
       const { name, description, materialUrl, classID } = req.body;
-      const material = await Material.findByPk(id);
-      if (!material) throw { name: "MaterialNotFound", id };
-      const resp = await Material.update(
+      await Material.update(
         {
           name,
           description,

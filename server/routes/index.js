@@ -11,10 +11,6 @@ const StudentClassRouter = require("./StudentClassRouter");
 const ScoreRouter = require("./ScoreRouter");
 const authentication = require("../middlewares/authentication");
 const errorHandler = require("../middlewares/errorHandler");
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/development
 
 route.post("/register", UsersController.newUser);
 route.post("/login", UsersController.login);

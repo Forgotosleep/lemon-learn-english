@@ -8,7 +8,7 @@ beforeAll((done) => {
   request(app)
     .post("/login")
     .send({
-      email: "mason@mail.com",
+      email: "soap@mail.com",
       password: "password",
     })
     .then((response) => {
@@ -95,7 +95,7 @@ describe("GET /materials", () => {
 describe("GET /materials/:id", () => {
   test("200 success get materials by id", (done) => {
     request(app)
-      .get(`/levels/${1}`)
+      .get(`/materials/${1}`)
       .set({
         access_token: token,
       })
