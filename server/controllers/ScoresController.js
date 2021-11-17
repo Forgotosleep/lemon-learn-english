@@ -8,7 +8,7 @@ class ScoresController {
       const resp = await Score.findAll();
       res.status(200).json(resp);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       next(err);
     }
   }
