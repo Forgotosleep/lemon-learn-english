@@ -7,7 +7,6 @@ import RegisterPage from "./RegisterPage";
 import StudentTask from "./Task";
 import SpeakingStudent from "./Speaking";
 import { useSelector } from "react-redux";
-import { alertLoading } from "../assets/js/sweetalert2";
 import NavTeacher from "../components/teacher/Nav";
 import ListeningAnswer from "./ListeningAnswer";
 import HomeGuard from "../privateRoute/HomeGuard";
