@@ -149,6 +149,45 @@ class UsersController {
       next(err);
     }
   }
+
+  static async googleLogin(req, res, next) {
+    try {
+      const { token } = req.body;
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.AUDIENCE,
+        // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+      });
+      const payload = ticket.getPayload();
+      const userid = payload["sub"];
+      const nameGoogle = payload.name;
+      const emailFromGoogle = payload.email;
+      const [user, isCreated] = await User.findOrCreate({
+        where: {
+          email: emailFromGoogle,
+        },
+        defaults: {
+          name: nameGoogle,
+          email: emailFromGoogle,
+          password: "password",
+        },
+      });
+      console.log(user);
+      console.log(isCreated);
+      const tokenFromServer = require("jsonwebtoken").sign(
+        {
+          id: user.id,
+          email: user.email,
+        },
+        process.env.JWT_SECRET
+      );
+      res.status(200).json({ access_token: tokenFromServer });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = UsersController;

@@ -4,7 +4,7 @@
   "description": "Learn English with Pokemon~",
   "main": "app.js",
   "scripts": {
-    "test": "sequelize --env=test db:drop && sequelize --env=test db:create && sequelize --env=test db:migrate && sequelize --env=test db:seed:all && npx jest --detectOpenHandles --verbose --collect-coverage",
+    "test": "sequelize --env=test db:drop && sequelize --env=test db:create && sequelize --env=test db:migrate && sequelize --env=test db:seed:all && npx jest --watchAll --detectOpenHandles --verbose --collect-coverage --forceExit",
     "migrate": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "start": "npx nodemon bin/www"
   },

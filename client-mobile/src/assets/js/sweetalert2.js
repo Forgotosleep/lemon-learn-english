@@ -19,6 +19,13 @@ export function alertError(text) {
   });
 }
 
+export function alertErrorClick(text) {
+  Swal.fire({
+    text: text,
+    icon: "error",
+  });
+}
+
 export async function alertSure() {
   const result = await Swal.fire({
     title: "Are you Sure ?",
@@ -38,7 +45,7 @@ export function alertLoading() {
     imageWidth: 400,
     imageHeight: 200,
     imageAlt: "Custom image",
-    timer: 2500,
+    timer: 1500,
     showConfirmButton: false,
   });
 }

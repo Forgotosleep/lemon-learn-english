@@ -19,22 +19,29 @@ class ScoresController {
       if (!resp) throw { name: "ScoreNotFound", id };
       res.status(200).json(resp);
     } catch (err) {
+      console.log("score ayaya", err);
       next(err);
     }
   }
   static async createScore(req, res, next) {
     try {
-      const soundUrl = await uploadAudio(req.file);
-      const { score, studentId, taskId, answer } = req.body;
-      // const { score } = req.body; // harcode ver
+      const { id } = req.user;
+      let soundUrl;
 
+      if (req.file) {
+        soundUrl = await uploadAudio(req.file);
+      }
+
+      const { score, taskId, answer } = req.body;
       const resp = await Score.create({
         score,
-        studentId, //: 1, // harcode req.user.id (student)
+        studentId: id, //: 1, // harcode req.user.id (student)
         taskId, //: 1, // harcode
         soundUrl,
-        answer, //: "ngasal", // harcode
+        answer,
       });
+      console.log("resp nice", resp);
+      console.log("soundUrl", soundUrl);
       res.status(201).json(resp);
     } catch (err) {
       next(err);
@@ -44,7 +51,8 @@ class ScoresController {
   static async getScore(req, res, next) {
     try {
       const file = req.file;
-      const resp = await getScore(file);
+      const { question } = req.body;
+      const resp = await getScore(file, question);
       res.status(200).json(resp);
     } catch (err) {
       next(err);

@@ -3,7 +3,11 @@ const app = require("../app");
 
 // admin token
 let token;
-
+const { closeRedis } = require("../helpers/redis");
+afterAll((done) => {
+  closeRedis();
+  done();
+});
 beforeAll((done) => {
   // set initial data
   request(app)
@@ -141,6 +145,23 @@ describe("POST /login", () => {
         const { body, status } = response;
         expect(status).toBe(401);
         expect(body).toHaveProperty("message", "Invalid email/password");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+  test("401 failed login ", (done) => {
+    request(app)
+      .post("/google")
+      .send({
+        email,
+        password: "wrongpassword",
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(500);
+        expect(body).toHaveProperty("message");
         done();
       })
       .catch((err) => {

@@ -1,38 +1,27 @@
+import { fetchMyClasses } from "../store/actions/actionMyClasses";
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from "react";
+import BoxMyClass from "../components/BoxMyClass";
 function Class() {
+  const dispatch = useDispatch()
+  const { myClasses, isLoading, isError } = useSelector(state => state.myClasses)
+  const getMyClasses = () => {
+    dispatch(fetchMyClasses())
+  }
+  useEffect(() => {
+    getMyClasses()
+  }, [])
+
   return (
     <>
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
-      <h1>class</h1>
-      <br />
+      <div className="container">
+        <h1>Your Classes</h1>
+        {
+          myClasses?.map(myClass => (
+            <BoxMyClass myClass={myClass} ></BoxMyClass>
+          ))
+        }
+      </div>
     </>
   );
 }

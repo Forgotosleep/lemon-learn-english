@@ -106,7 +106,9 @@ export function deleteTask(id) {
         },
       });
 
-      dispatch(getTasks());
+      // dispatch(getTasks());
+
+      return true;
     } catch (err) {
       dispatch(setTasksError(true));
       console.log("errors", err);

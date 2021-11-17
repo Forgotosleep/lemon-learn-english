@@ -14,6 +14,7 @@ const errorHandler = require("../middlewares/errorHandler");
 
 route.post("/register", UsersController.newUser);
 route.post("/login", UsersController.login);
+route.post("/google", UsersController.googleLogin);
 route.use(authentication);
 route.use("/users", UserRouter);
 route.use("/tasks", TaskRouter);
