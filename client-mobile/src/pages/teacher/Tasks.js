@@ -1,10 +1,15 @@
 import { brown } from "@mui/material/colors";
-import { ListGroup, Badge, Button } from "react-bootstrap";
-import { useLocation } from "react-router";
+import { ListGroup, Button } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router";
 import ModalAddTask from "../../components/teacher/ModalAddTasks";
 
 function Tasks() {
+  const navigate = useNavigate();
   const { state } = useLocation();
+
+  const goToSearchSong = () => {
+    navigate("/search-song", { state: { category: state.category, classId: state.classId } });
+  };
   return (
     <>
       <div className="container mb-5 ">
@@ -16,7 +21,14 @@ function Tasks() {
         >
           List Tasks
         </h1>
-        {state.category === "speaking" ? <ModalAddTask classId={state.classId} /> : ""}
+        {state.category === "speaking" ? (
+          <ModalAddTask classId={state.classId} />
+        ) : (
+          <Button onClick={goToSearchSong} variant="outline-success">
+            Add Task
+          </Button>
+        )}
+
         <ListGroup as="ol" className="mt-3" numbered>
           {state.tasks.map((el) => (
             <ListGroup.Item key={el.id} as="li" className="d-flex justify-content-between align-items-start">

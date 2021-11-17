@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Icon, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { yellow, brown } from "@mui/material/colors";
 import { ArrowBack } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -28,6 +28,10 @@ export default function Header() {
       setValue("Speaking");
     } else if (location.pathname.substr(0, 8) === "/myclass") {
       setValue("My Class");
+    } else if (location.pathname === "/search-song") {
+      setValue("Search Song");
+    } else if (location.pathname.substr(0, 22) === "/create-listening-task") {
+      setValue("Create Task");
     } else {
       setValue(capitalizeFirstLetter(location.pathname.substr(1)));
     }
@@ -41,6 +45,14 @@ export default function Header() {
               <ArrowBack />
             </IconButton>
           ) : value === "Tasks" ? (
+            <IconButton component={Link} to="/">
+              <ArrowBack />
+            </IconButton>
+          ) : value === "Search Song" ? (
+            <IconButton component={Link} to="/">
+              <ArrowBack />
+            </IconButton>
+          ) : value === "Create Task" ? (
             <IconButton component={Link} to="/">
               <ArrowBack />
             </IconButton>
