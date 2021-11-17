@@ -49,7 +49,7 @@ export function getScore(payload, question) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       dispatch(setScoresIsLoading(true))
-      const file = new File([payload.blob], "newData.wav", { type: "audio/wav", lastModified: Date.now() });
+      const file = new File([payload.blob], `newData.wav`, { type: "audio/wav", lastModified: Date.now() });
       let form = new FormData()
       form.append("audioBuffer", file)
       form.append("question", question)

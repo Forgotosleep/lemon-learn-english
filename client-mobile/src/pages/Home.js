@@ -59,7 +59,7 @@ function Home() {
   };
   useEffect(() => {
     dispatch(getClassesActive());
-  }, [isLoggedIn]);
+  }, []);
 
   return (
     <>
