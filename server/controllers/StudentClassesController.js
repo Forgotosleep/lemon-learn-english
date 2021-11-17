@@ -162,6 +162,11 @@ class StudentClassController {
         },
         include: {
           model: Class,
+          where: {
+            status: {
+              [Op.notLike]: '%hidden%'
+            }
+          },
           include: {
             model: User,
             as: "teacher",

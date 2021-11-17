@@ -12,6 +12,7 @@ function ModalDetailTasks(props) {
     setShow(true);
   };
 
+    console.log(tasks)
   return (
     <>
       <Button onClick={handleShow} variant="outline-info">

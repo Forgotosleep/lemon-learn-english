@@ -2,8 +2,9 @@ const cloudinary = require("cloudinary");
 const fs = require("fs");
 const uploadAudio = async (file) => {
   try {
+
     const { path } = file;
-    const fName = file.originalname.split(".")[0];
+    const fName = new Date() + file.originalname.split(".")[0] 
     cloudinary.config({
       cloud_name: "mrsnputra",
       api_key: "198126765278442",
