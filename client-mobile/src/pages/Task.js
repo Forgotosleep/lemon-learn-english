@@ -1,27 +1,30 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { fetchTasks } from '../store/actions/actionTasks'
 import { alertSuccess } from '../assets/js/sweetalert2'
-import  Ratings  from '../components/Rating'
+import Ratings from '../components/Rating'
+import { updateRating } from '../store/actions/actionClasses'
+import { updateStudentStatus } from '../store/actions/actionMyClasses'
 
 function StudentTask() {
   const { tasks } = useSelector(state => state.tasks)
   const { user } = useSelector(state => state.user)
   const { id } = useParams()
+  const { state } = useLocation()
   const [completed, setCompleted] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
   const checkCompletedTask = () => {
     let temp = 0
     for (let i = 0; i < tasks.length; i++) {
       if (tasks[i].Score && tasks[i].Score.studentId == user.id) temp++
     }
-    if (temp === tasks.length) return true
+    if (temp === tasks.length) {
+      return true
+    }
     return false
   }
-
   const getTasks = () => {
     dispatch(fetchTasks(id))
   }
@@ -38,9 +41,15 @@ function StudentTask() {
   }
 
   const handleRate = (e, newValue) => {
-    let tmp = 0
-    if(e.target.value) tmp = e.target.value
-    if(tmp) console.log(tmp) 
+    let rating = 0
+    if (e.target.value) rating = e.target.value
+    if (rating) {
+      dispatch(updateStudentStatus(tasks[0]?.classId))
+        .then((data) => {
+          dispatch(updateRating({ rating, id }))
+        })
+
+    }
   }
 
   return (
@@ -48,7 +57,7 @@ function StudentTask() {
       <div className="container">
         <h1 className="mb-4">StudentTask</h1>
         {
-          checkCompletedTask() ? <Ratings handleRate={handleRate} /> : ''
+          checkCompletedTask() ? <Ratings status={state.status} handleRate={handleRate} /> : ''
         }
         {
           tasks.map(task => (

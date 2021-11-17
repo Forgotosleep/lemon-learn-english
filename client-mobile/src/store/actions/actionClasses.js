@@ -200,3 +200,25 @@ export function addTask(payload) {
     }
   };
 }
+
+
+export function updateRating(payload) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      ApiServer({
+        url: `/classes/${payload.id}`,
+        method: "PATCH",
+        headers: {
+          access_token: localStorage.getItem("access_token"),
+        },
+        data: {ratings: payload.rating},
+      })
+      .then(({data})=>{
+        resolve()
+      })
+      .catch((err)=>{
+        console.log(err.response)
+      })
+    })
+  }
+}

@@ -5,7 +5,6 @@ import BoxMyClass from "../components/BoxMyClass";
 function Class() {
   const dispatch = useDispatch()
   const { myClasses, isLoading, isError } = useSelector(state => state.myClasses)
-
   const getMyClasses = () => {
     dispatch(fetchMyClasses())
   }
