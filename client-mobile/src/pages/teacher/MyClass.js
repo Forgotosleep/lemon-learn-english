@@ -29,7 +29,6 @@ function MyClass() {
     }
   };
   const handlePage = (e, value) => {
-    console.log(value);
     dispatch(getMyStudents({ id: id, ...params, page: value }));
   };
 

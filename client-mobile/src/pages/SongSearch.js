@@ -1,103 +1,116 @@
-import React from 'react'
-import { Stack } from '@mui/material';
+import React from "react";
+import { Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useLocation } from 'react-router-dom';
-import { searchSongs, getSongDetail, getListeningQuestion } from '../store/actions/actionTasks'
+import { useNavigate, useLocation } from "react-router-dom";
+import { searchSongs, getSongDetail, getListeningQuestion } from "../store/actions/actionTasks";
+import { Row, Col, Container, Card, CardGroup } from "react-bootstrap";
+import { brown } from "@mui/material/colors";
 
 function SongSearch() {
-  // const { classId } = useLocation()
-  const classId = 1 // Hardcoded for testing purpoises
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { songs, isLoading } = useSelector((state) => state["tasks"])
+  const { state } = useLocation();
+  const { classId } = state;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { songs, isLoading } = useSelector((state) => state["tasks"]);
   const [searchParam, setSearchParam] = useState({
     artist: "",
-    title: ""
-  })
+    title: "",
+  });
 
   const handleChange = (e) => {
     console.log(e.target, "<<<< VALUE");
     setSearchParam({
       ...searchParam,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     console.log(searchParam);
-    dispatch(searchSongs(searchParam))
-  }
+    dispatch(searchSongs(searchParam));
+  };
 
   const handleClick = (e, id) => {
-    e.preventDefault()
+    e.preventDefault();
     console.log(id, "<<< SONG ID");
     navigate("/create-listening-task/" + id, {
-      state: { classId }
-    })
-  }
+      state: { classId },
+    });
+  };
 
   useEffect(() => {
     console.log(songs, "<<< SEARCH RESULT SONGS");
-  }, [handleSubmit])
+  }, [handleSubmit]);
 
   if (isLoading) {
-    return <h1>Loading...</h1>
+    return <h1>Loading...</h1>;
   }
 
   return (
-    <div>
+    <Container
+      style={{
+        color: brown[400],
+      }}
+    >
       <div>
-        <h1>This is the Song Search Page</h1>
+        <h1>Search Song</h1>
       </div>
 
-      <div>
-        <form onSubmit={handleSubmit}>
-          <div>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="form-group col-md-6">
             <label for="artist">Artist/Band Name</label>
-            <div>
-              <input type="text" id="artist" placeholder="Coldplay" name="artist" value={searchParam.artist} onChange={handleChange} />
-            </div>
+
+            <input type="text" id="artist" className="form-control" placeholder="Coldplay" name="artist" value={searchParam.artist} onChange={handleChange} />
           </div>
 
-          <div>
+          <div className="form-group col-md-6">
             <label for="title">Song Title</label>
-            <div>
-              <input type="text" id="title" placeholder="Yellow" name="title" value={searchParam.title} onChange={handleChange} />
-            </div>
+            <input className="form-control" type="text" id="title" placeholder="Yellow" name="title" value={searchParam.title} onChange={handleChange} />
           </div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary mt-3">
+          Search
+        </button>
+      </form>
 
-          <br />
-
-          <div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-
-        </form>
-      </div>
-
-      <div>
-        <Stack>
-          {songs?.map(song => (
-            // <h2>{JSON.stringify(song)}</h2>
-            <a href="" key={song.id} onClick={(e) => handleClick(e, song.id)}>
-              <div >
-                <div>
-                  <img src={song?.albumArt} width="15%" height="15%" alt="Album Cover" />
-                </div>
-
-                <div>
-                  {song?.title}
-                </div>
-              </div>
+      <Row className="g-4 mb-3 mt-3">
+        {songs?.map((song) => (
+          <Col>
+            <a
+              href=""
+              style={{
+                color: brown[400],
+                textDecoration: "none",
+              }}
+              key={song.id}
+              onClick={(e) => handleClick(e, song.id)}
+            >
+              <Card style={{ width: "18rem", height: "25rem" }}>
+                <Card.Img variant="top" src={song?.albumArt} />
+                <Card.Body>
+                  <Card.Text>{song?.title}</Card.Text>
+                </Card.Body>
+              </Card>
             </a>
-          ))}
-        </Stack>
-      </div>
+          </Col>
 
-    </div>
-  )
+          // <h2>{JSON.stringify(song)}</h2>
+          // <a href="" key={song.id} onClick={(e) => handleClick(e, song.id)}>
+          //   <div>
+          //     <div>
+          //       <img src={song?.albumArt} width="15%" height="15%" alt="Album Cover" />
+          //     </div>
+
+          //     <div>{song?.title}</div>
+          //   </div>
+          // </a>
+        ))}
+      </Row>
+    </Container>
+  );
 }
 
-export default SongSearch
+export default SongSearch;
