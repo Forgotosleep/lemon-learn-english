@@ -14,7 +14,6 @@ class ScoresController {
   static async displayOne(req, res, next) {
     try {
       const { id } = req.params;
-      console.log("score ayase", id);
       const resp = await Score.findOne({ where: { id } });
       if (!resp) throw { name: "ScoreNotFound", id };
       res.status(200).json(resp);

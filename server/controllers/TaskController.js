@@ -195,12 +195,12 @@ class TaskController {
         const cachedSong = JSON.parse(checkCache);
         if (cachedSong.id == id) {
           const { splitLyrics } = cachedSong; //JSON.parse(cachedSong);
-          const score = await getListeningScore(splitLyrics, answer, index);
+          const score = getListeningScore(splitLyrics, answer, index);
           res.status(200).json({ score });
         }
       } else {
         const { splitLyrics } = song;
-        const score = await getListeningScore(splitLyrics, answer, index);
+        const score = getListeningScore(splitLyrics, answer, index);
         res.status(200).json({ score });
       }
     } catch (err) {
