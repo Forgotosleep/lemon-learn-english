@@ -16,6 +16,9 @@ function SpeakingStudent() {
   const { task } = useSelector((state) => state.tasks);
   useEffect(() => {
     dispatch(fetchTask(taskId));
+    return () => {
+      dispatch(setTask({}));
+    };
   }, []);
 
   const submitAudio = () => {

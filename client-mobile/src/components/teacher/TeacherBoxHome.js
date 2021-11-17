@@ -13,7 +13,7 @@ function TeacherBoxHome() {
                 marginLeft: 20,
               }}
             >
-              Hello , {user["name"]}, {user["role"]}
+              Hello {user["name"]},
               <br />
               Are you ready to teach some students?
             </p>

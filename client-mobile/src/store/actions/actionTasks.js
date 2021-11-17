@@ -125,7 +125,7 @@ export function getListeningQuestion(payload) {
       // console.log(data, "<<< FROM LISTENING QUESTION ACTION");
       dispatch(setTask(data));
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
     }
   };
 }

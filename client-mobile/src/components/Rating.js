@@ -14,7 +14,7 @@ const labels = {
 function Ratings(props) {
   const [value, setValue] = React.useState(2);
   const [hover, setHover] = React.useState(-1);
-  const { handleRate } = props
+  const { handleRate, status } = props
   return (
     <Box
       sx={{
@@ -22,24 +22,48 @@ function Ratings(props) {
         display: 'flex',
         alignItems: 'center',
       }}
-    >
-      <Rating
-        name="hover-feedback"
-        value={value}
-        precision={1}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        onClick={handleRate}
-        onChangeActive={(event, newHover) => {
-          setHover(newHover);
-        }}
-        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-      />
+    > {
+        status === 'incomplete' ? (
+          <Rating
+            name="hover-feedback"
+            value={value}
+            precision={1}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            onClick={handleRate}
+            onChangeActive={(event, newHover) => {
+              setHover(newHover);
+            }}
+            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+          />
+        ) :
+          (
+            <Rating
+              name="hover-feedback"
+              value={value}
+              precision={1}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+              onClick={handleRate}
+              onChangeActive={(event, newHover) => {
+                setHover(newHover);
+              }}
+              disabled
+              emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+            />
+          )
+      }
+
       {value !== null && (
-        <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+        <Box sx={{ ml: 2 }}>{status !== 'complete' ? (labels[hover !== -1 ? hover : value]) : 'You already give ratings to this class'}</Box>
       )}
     </Box>
   );
 }
+
+// {value !== null && (
+//   <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+// )}
 export default Ratings

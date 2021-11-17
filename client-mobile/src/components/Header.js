@@ -1,18 +1,23 @@
 import { AppBar, Toolbar, Icon, IconButton, Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { yellow, brown } from "@mui/material/colors";
 import { ArrowBack } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import psyduck from "../assets/icon/psyduck.svg";
 import { useDispatch } from "react-redux";
+<<<<<<< HEAD
 import { getUser, setUser } from "../store/actions/actionUser";
 import { setScore, setScores } from "../store/actions/actionScores";
 import { setTask, setTasks } from "../store/actions/actionTasks";
 import { setClasses } from "../store/actions/actionClasses";
 import { useNavigate } from "react-router-dom";
+=======
+import { setTask } from "../store/actions/actionTasks";
+>>>>>>> 0832f195c82b7b7626d85cc96981ae22913d7840
 
 export default function Header() {
+  const dispatch = useDispatch()
   const location = useLocation();
   const [value, setValue] = useState(location.pathname);
   const color = {
@@ -23,6 +28,9 @@ export default function Header() {
     return [first.toUpperCase(), ...rest].join("");
   }
 
+  const setEmpty = () => {
+    dispatch(setTask({}))
+  }
   useEffect(() => {
     if (location.pathname === "/") {
       setValue("Home");
@@ -34,6 +42,12 @@ export default function Header() {
       setValue("Speaking");
     } else if (location.pathname.substr(0, 8) === "/myclass") {
       setValue("My Class");
+    } else if (location.pathname === "/search-song") {
+      setValue("Search Song");
+    } else if (location.pathname.substr(0, 22) === "/create-listening-task") {
+      setValue("Create Task");
+    } else if (location.pathname.substr(0, 17) === "/listening-answer") {
+      setValue("Listening Answer");
     } else {
       setValue(capitalizeFirstLetter(location.pathname.substr(1)));
     }
@@ -68,6 +82,18 @@ export default function Header() {
             <IconButton component={Link} to="/">
               <ArrowBack />
             </IconButton>
+          ) : value === "Search Song" ? (
+            <IconButton component={Link} to="/">
+              <ArrowBack />
+            </IconButton>
+          ) : value === "Create Task" ? (
+            <IconButton component={Link} to="/">
+              <ArrowBack />
+            </IconButton>
+          ) : value === "Listening Answer" ? (
+            <IconButton onClick={setEmpty} component={Link} to={`/tasks/${location.state?.id}`}>
+              <ArrowBack />
+            </IconButton>
           ) : (
             <Icon sx={{ mr: 2 }}>
               <img src={psyduck} alt="psyduck" height={25} width={25} />
@@ -90,7 +116,13 @@ export default function Header() {
 
   return (
     <header>
+<<<<<<< HEAD
       <AppBar style={color}>{DisplayDesktop()}</AppBar>
+=======
+      <AppBar position="static" style={color}>
+        {displayDesktop()}
+      </AppBar>
+>>>>>>> 0832f195c82b7b7626d85cc96981ae22913d7840
     </header>
   );
 }
