@@ -27,14 +27,14 @@ const errorHandler = (err, req, res, next) => {
       });
       res.status(400).json({ message });
       break;
-    // case "SequelizeForeignKeyConstraintError":
-    //   err.errors.map((error) => {
-    //     message.push(error.message);
-    //   });
-    //   res.status(400).json({ message });
-    //   break;
+    case "SequelizeForeignKeyConstraintError":
+      err.errors.map((error) => {
+        message.push(error.message);
+      });
+      res.status(400).json({ message });
+      break;
     case "SequelizeDatabaseError":
-      console.log(err, "<<< SEQ DATABASE ERR");
+      // console.log(err, "<<< SEQ DATABASE ERR");
       err.errors?.map((error) => {
         message.push(error.message);
       });
@@ -120,11 +120,11 @@ const errorHandler = (err, req, res, next) => {
     case "LoginError":
       res.status(401).json({ message: "Invalid email/password" });
       break;
-    // case "MissingToken":
-    //   res.status(401).json({
-    //     message: err.message || "Please provide a valid access token",
-    //   });
-    //   break;
+    case "MissingToken":
+      res.status(401).json({
+        message: err.message || "Please provide a valid access token",
+      });
+      break;
     case "JsonWebTokenError":
       res.status(401).json({ message: err.message });
       break;
@@ -135,14 +135,14 @@ const errorHandler = (err, req, res, next) => {
     case "duplicate class":
       res.status(400).json({ message: err.name });
       break;
-    // case "maxStudentClass":
-    //   res.status(400).json({ message: "Class Over Student" });
-    //   break;
-    // case "notCompletedClass":
-    //   res
-    //     .status(400)
-    //     .json({ message: "your status is not completed for this class" });
-    //   break;
+    case "maxStudentClass":
+      res.status(400).json({ message: "Class Over Student" });
+      break;
+    case "notCompletedClass":
+      res
+        .status(400)
+        .json({ message: "your status is not completed for this class" });
+      break;
     case "register":
       res
         .status(400)
