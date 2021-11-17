@@ -23,21 +23,21 @@ module.exports = {
      */
     const levels = format(require("../data_seed/levels.json"));
     const categories = format(require("../data_seed/categories.json"));
-    // const users = format(require("../data_seed/users.json"));
-    // const classes = format(require("../data_seed/classes.json"));
-    // const studentClasses = format(require("../data_seed/studentClasses.json"));
-    // const materials = format(require("../data_seed/materials.json"));
-    // const tasks = format(require("../data_seed/tasks.json"));
-    // const scores = format(require("../data_seed/scores.json"));
+    const users = format(require("../data_seed/users.json"));
+    const classes = format(require("../data_seed/classes.json"));
+    const studentClasses = format(require("../data_seed/studentClasses.json"));
+    const materials = format(require("../data_seed/materials.json"));
+    const tasks = format(require("../data_seed/tasks.json"));
+    const scores = format(require("../data_seed/scores.json"));
 
     await queryInterface.bulkInsert("Levels", levels, {});
     await queryInterface.bulkInsert("Categories", categories, {});
-    // await queryInterface.bulkInsert("Users", users, {});
-    // await queryInterface.bulkInsert("Classes", classes, {});
-    // await queryInterface.bulkInsert("Materials", materials, {});
-    // await queryInterface.bulkInsert("StudentClasses", studentClasses, {});
-    // await queryInterface.bulkInsert("Tasks", tasks, {});
-    // await queryInterface.bulkInsert("Scores", scores, {});
+    await queryInterface.bulkInsert("Users", users, {});
+    await queryInterface.bulkInsert("Classes", classes, {});
+    await queryInterface.bulkInsert("Materials", materials, {});
+    await queryInterface.bulkInsert("StudentClasses", studentClasses, {});
+    await queryInterface.bulkInsert("Tasks", tasks, {});
+    await queryInterface.bulkInsert("Scores", scores, {});
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -50,11 +50,11 @@ module.exports = {
 
     await queryInterface.bulkDelete("Levels", null, {});
     await queryInterface.bulkDelete("Categories", null, {});
-    // await queryInterface.bulkDelete("Users", null, {});
-    // await queryInterface.bulkDelete("Classes", null, {});
-    // await queryInterface.bulkDelete("Materials", null, {});
-    // await queryInterface.bulkDelete("StudentClasses", null, {});
-    // await queryInterface.bulkDelete("Tasks", null, {});
-    // await queryInterface.bulkDelete("Scores", null, {});
+    await queryInterface.bulkDelete("Users", null, {});
+    await queryInterface.bulkDelete("Classes", null, {});
+    await queryInterface.bulkDelete("Materials", null, {});
+    await queryInterface.bulkDelete("StudentClasses", null, {});
+    await queryInterface.bulkDelete("Tasks", null, {});
+    await queryInterface.bulkDelete("Scores", null, {});
   },
 };
