@@ -5,8 +5,6 @@ import { setUser } from '../store/actions/actionUser';
 import { setScore, setScores } from '../store/actions/actionScores';
 import { setTask, setTasks } from '../store/actions/actionTasks';
 
-
-
 function Profile() {
   const navigate = useNavigate()
   const dispatch = useDispatch();

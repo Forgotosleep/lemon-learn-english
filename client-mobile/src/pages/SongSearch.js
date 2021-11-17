@@ -56,13 +56,19 @@ function SongSearch() {
         <form onSubmit={handleSubmit}>
           <div>
             <label for="artist">Artist/Band Name</label>
-            <input type="text" id="artist" placeholder="Coldplay" name="artist" value={searchParam.artist} onChange={handleChange} />
+            <div>
+              <input type="text" id="artist" placeholder="Coldplay" name="artist" value={searchParam.artist} onChange={handleChange} />
+            </div>
           </div>
 
           <div>
             <label for="title">Song Title</label>
-            <input type="text" id="title" placeholder="Yellow" name="title" value={searchParam.title} onChange={handleChange} />
+            <div>
+              <input type="text" id="title" placeholder="Yellow" name="title" value={searchParam.title} onChange={handleChange} />
+            </div>
           </div>
+
+          <br />
 
           <div>
             <button type="submit" class="btn btn-primary">Submit</button>
