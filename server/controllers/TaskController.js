@@ -66,6 +66,10 @@ class TaskController {
         throw { name: "TaskNotFound", id };
       }
 
+      if (task.soundUrl) {
+        task.question = JSON.parse(task.question)
+      }
+
       res.status(200).json(task);
     } catch (err) {
       next(err);
@@ -156,8 +160,9 @@ class TaskController {
           const question = convertLyricsToQuestion(cachedSong, index)
           const payload = {
             name: song.title,
-            description: "Listening task",
+            description: "listening",
             classId,
+            soundUrl: song.media[0].url,
             question: JSON.stringify({ index, id, song, question })
           }
           const result = await Task.create(payload)
@@ -170,8 +175,9 @@ class TaskController {
         const question = convertLyricsToQuestion(song, index)
         const payload = {
           name: song.title,
-          description: "Listening task",
+          description: "listening",
           classId,
+          soundUrl: song.media[0].url,
           question: JSON.stringify({ index, id, song, question })
         }
         const result = await Task.create(payload)

@@ -131,28 +131,28 @@ export function getListeningQuestion(payload) {
 }
 
 
-// export function getListeningScore(payload) {  // Also submits student's answer
-//   return async (dispatch, getState) => {
-//     try {
-//       const { data } = await ApiServer({
-//         url: "/tasks/get-listening-score",
-//         method: "GET",
-//         headers: {
-//           access_token: localStorage.getItem("access_token"),
-//         },
-//         data: {
-//           answer: payload.answer,
-//           song: payload.song,
-//           id: payload.id,
-//           index: payload.index,
-//         }
-//       });
-//       dispatch(setScore(data));  // Gotta get to score stuff
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// }
+export function getListeningScore(payload) {  // Also submits student's answer
+  return async (dispatch, getState) => {
+    try {
+      const { data } = await ApiServer({
+        url: "/tasks/get-listening-score",
+        method: "GET",
+        headers: {
+          access_token: localStorage.getItem("access_token"),
+        },
+        data: {
+          answer: payload.answer,
+          song: payload.song,
+          id: payload.id,
+          index: payload.index,
+        }
+      });
+      dispatch(setScore(data));  // Gotta get to score stuff
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
 
 
 
@@ -163,19 +163,19 @@ export function fetchTasks(payload) {
       ApiServer({
         url: `/tasks/class/${payload}`,
         method: 'GET',
-        headers: {access_token: localStorage.getItem('access_token')}
+        headers: { access_token: localStorage.getItem('access_token') }
       })
-      .then(({data})=>{
-        dispatch(setTasks(data))
-        resolve()
-      })
-      .catch((err)=>{
-        dispatch(setTasksMessageError(err))
-        reject(err)
-      })
-      .finally(()=>{
-        dispatch(setTasksIsLoading(false))
-      })
+        .then(({ data }) => {
+          dispatch(setTasks(data))
+          resolve()
+        })
+        .catch((err) => {
+          dispatch(setTasksMessageError(err))
+          reject(err)
+        })
+        .finally(() => {
+          dispatch(setTasksIsLoading(false))
+        })
     })
   }
 }
@@ -187,19 +187,19 @@ export function fetchTask(payload) {
       ApiServer({
         url: `/tasks/${payload}`,
         method: 'GET',
-        headers: {access_token: localStorage.getItem('access_token')}
+        headers: { access_token: localStorage.getItem('access_token') }
       })
-      .then(({data})=>{
-        dispatch(setTask(data))
-        resolve()
-      })
-      .catch((err)=>{
-        dispatch(setTasksMessageError(err))
-        reject(err)
-      })
-      .finally(()=>{
-        dispatch(setTasksIsLoading(false))
-      })
+        .then(({ data }) => {
+          dispatch(setTask(data))
+          resolve()
+        })
+        .catch((err) => {
+          dispatch(setTasksMessageError(err))
+          reject(err)
+        })
+        .finally(() => {
+          dispatch(setTasksIsLoading(false))
+        })
     })
   }
 }

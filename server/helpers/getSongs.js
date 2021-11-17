@@ -80,7 +80,7 @@ function getListeningScore(splitLyrics, answer, index) {  // This function accep
     let correctMatch = 0
 
     trueAnswers.forEach((word, index) => {
-      if (studentAnswers[index] === word) {
+      if (studentAnswers[index].toLowerCase() === word.toLowerCase()) {
         correctMatch++
       }
     });
