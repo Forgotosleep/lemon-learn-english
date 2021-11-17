@@ -1,10 +1,16 @@
-import { AppBar, Toolbar, Icon, IconButton } from "@mui/material";
+import { AppBar, Toolbar, Icon, IconButton, Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { yellow, brown } from "@mui/material/colors";
 import { ArrowBack } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import psyduck from "../assets/icon/psyduck.svg";
+import { useDispatch } from "react-redux";
+import { getUser, setUser } from "../store/actions/actionUser";
+import { setScore, setScores } from "../store/actions/actionScores";
+import { setTask, setTasks } from "../store/actions/actionTasks";
+import { setClasses } from "../store/actions/actionClasses";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const location = useLocation();
@@ -32,7 +38,25 @@ export default function Header() {
       setValue(capitalizeFirstLetter(location.pathname.substr(1)));
     }
   }, [location.pathname]);
-  const displayDesktop = () => {
+
+  const DisplayDesktop = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    function logout() {
+      dispatch(setUser({}));
+      dispatch(setClasses([]));
+
+      dispatch(setTask({}));
+      dispatch(setTasks([]));
+
+      dispatch(setScore({}));
+      dispatch(setScores([]));
+
+      localStorage.removeItem("access_token");
+      navigate("/login");
+    }
+
     return (
       <>
         <Toolbar>
@@ -50,6 +74,15 @@ export default function Header() {
             </Icon>
           )}
           <strong>{value}</strong>
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={logout}
+            style={{ marginLeft: "auto", padding: "10px" }}
+          >
+            Logout
+          </Button>
         </Toolbar>
       </>
     );
@@ -57,7 +90,7 @@ export default function Header() {
 
   return (
     <header>
-      <AppBar style={color}>{displayDesktop()}</AppBar>
+      <AppBar style={color}>{DisplayDesktop()}</AppBar>
     </header>
   );
 }

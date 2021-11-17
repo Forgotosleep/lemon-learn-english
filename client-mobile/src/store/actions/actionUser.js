@@ -1,4 +1,9 @@
-import { SET_USER, SET_ISLOGGEDIN, SET_ISLOADING, SET_ISERROR } from "../actionTypes";
+import {
+  SET_USER,
+  SET_ISLOGGEDIN,
+  SET_ISLOADING,
+  SET_ISERROR,
+} from "../actionTypes";
 
 import ApiServer from "../api/axios";
 
@@ -20,6 +25,7 @@ export function getUser() {
         },
       });
 
+      console.log("get user:", data);
       dispatch(setUser(data));
     } catch (error) {
       console.log(error);
