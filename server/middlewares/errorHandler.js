@@ -27,14 +27,8 @@ const errorHandler = (err, req, res, next) => {
       });
       res.status(400).json({ message });
       break;
-    case "SequelizeForeignKeyConstraintError":
-      err.errors.map((error) => {
-        message.push(error.message);
-      });
-      res.status(400).json({ message });
-      break;
     case "SequelizeDatabaseError":
-      console.log(err, "<<< SEQ DATABASE ERR");
+      // console.log(err, "<<< SEQ DATABASE ERR");
       err.errors?.map((error) => {
         message.push(error.message);
       });
@@ -43,7 +37,7 @@ const errorHandler = (err, req, res, next) => {
       });
       break;
     case "InvalidDataType":
-      console.log(err, "<<< INVALID DATA TYPE");
+      // console.log(err, "<<< INVALID DATA TYPE");
       res.status(400).json({ message: `Invalid input data type` });
       break;
 
@@ -120,11 +114,6 @@ const errorHandler = (err, req, res, next) => {
     case "LoginError":
       res.status(401).json({ message: "Invalid email/password" });
       break;
-    case "MissingToken":
-      res.status(401).json({
-        message: err.message || "Please provide a valid access token",
-      });
-      break;
     case "JsonWebTokenError":
       res.status(401).json({ message: err.message });
       break;
@@ -150,8 +139,8 @@ const errorHandler = (err, req, res, next) => {
       break;
     /* WE HAVENT HANDLED THAT ONE YET ERROR */
     default:
-      // res.status(500).json(err)  // For troubleshooting
-      console.log(err, "<<< 500 ERRORHANDLER"); // For testing purpoises
+      // res.status(500).json(err); // For troubleshooting
+      // console.log(err, "<<< 500 ERRORHANDLER"); // For testing purpoises
       // console.log(err.name, "<<<>>>> Name of error"); //Display error name
       res.status(500).json({ message: "Internal server error" });
   }

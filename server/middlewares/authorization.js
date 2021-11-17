@@ -39,8 +39,8 @@ const authorizationTask = async (req, res, next) => {
     const classId = task.classId;
     const teacherClass = await Class.findByPk(classId);
     // const user = await User.findByPk(teacherId)
-    console.log(teacherClass, "<<< TEACHER CLASS");
-    console.log(req.user, "<<< REQ USER");
+    // console.log(teacherClass, "<<< TEACHER CLASS");
+    // console.log(req.user, "<<< REQ USER");
 
     if (
       teacherClass?.teacherId === teacherId ||
@@ -70,8 +70,8 @@ const authorizationMaterial = async (req, res, next) => {
 
     const teacherClass = await Class.findByPk(classId);
     // const user = await User.findByPk(teacherId)
-    console.log(teacherClass, "<<< TEACHER CLASS");
-    console.log(req.user, "<<< REQ USER");
+    // console.log(teacherClass, "<<< TEACHER CLASS");
+    // console.log(req.user, "<<< REQ USER");
 
     if (
       teacherClass?.teacherId === teacherId ||

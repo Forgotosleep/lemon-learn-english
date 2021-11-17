@@ -1,8 +1,15 @@
 const { Op } = require("sequelize");
 const { Task, Class, Score } = require("../models");
-const Redis = require("ioredis");
-const redis = new Redis();
-const { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore } = require('../helpers/getSongs')
+const { initRedis } = require("../helpers/redis");
+const redis = initRedis();
+// const Redis = require("ioredis");
+
+const {
+  searchSongs,
+  getSongDetailById,
+  convertLyricsToQuestion,
+  getListeningScore,
+} = require("../helpers/getSongs");
 
 class TaskController {
   static async create(req, res, next) {
@@ -37,23 +44,23 @@ class TaskController {
 
   static async getTaskByClass(req, res, next) {
     try {
-      const { classId } = req.params
-      const studentId = req.user.id
+      const { classId } = req.params;
+      const studentId = req.user.id;
       if (!Number(classId)) throw { name: "InvalidMaterialId" };
-      const classData = await Class.findByPk(classId)
+      const classData = await Class.findByPk(classId);
       if (!classData) throw { name: "ClassNotFound", id: classId };
       const resp = await Task.findAll({
         where: {
-          classId
+          classId,
         },
         include: {
-          model: Score
+          model: Score,
         },
-        distinct: true
-      })
-      res.status(200).json(resp)
+        distinct: true,
+      });
+      res.status(200).json(resp);
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
@@ -67,7 +74,7 @@ class TaskController {
       }
 
       if (task.soundUrl) {
-        task.question = JSON.parse(task.question)
+        task.question = JSON.parse(task.question);
       }
 
       res.status(200).json(task);
@@ -79,7 +86,7 @@ class TaskController {
   static async delete(req, res, next) {
     const id = req.params.id;
     try {
-      const task = await Task.findByPk(id);
+      // const task = await Task.findByPk(id);
 
       await Task.destroy({ where: { id } });
 
@@ -100,119 +107,104 @@ class TaskController {
         returning: true,
       });
 
-      // IF CLASS NOT FOUND
-      if (!result[0]) {
-        throw { name: "TaskNotFound", id };
-      }
-
       res
         .status(200)
         .json({ result: result[1][0], message: `Task with ID ${id} Updated` });
-      // res.status(200).json({ message: "Task Updated" });
     } catch (err) {
       next(err);
     }
   }
 
   static async searchSong(req, res, next) {
-    const { artist, title } = req.query
-    const songs = await searchSongs(artist, title)
+    try {
+      const { artist, title } = req.query;
+      const songs = await searchSongs(artist, title);
 
-    res.status(200).json(songs)
-
-  } catch(err) {
-    console.log(err);
-    next(err)
+      res.status(200).json(songs);
+    } catch (err) {
+      next(err);
+    }
   }
 
   static async getSongDetails(req, res, next) {
     try {
-      const { songId } = req.params
-      const checkCache = await redis.get(songId)
+      const { songId } = req.params;
+      const checkCache = await redis.get(songId);
       // console.log(checkCache, "<<<");
       if (checkCache) {
-        const cachedSong = JSON.parse(checkCache)
+        const cachedSong = JSON.parse(checkCache);
         if (cachedSong.id == songId) {
-          res.status(200).json(cachedSong)
-          return
+          res.status(200).json(cachedSong);
+          return;
         }
       }
 
-      const songDetail = await getSongDetailById(songId)
-      redis.set(songId, JSON.stringify(songDetail))
+      const songDetail = await getSongDetailById(songId);
+      redis.set(songId, JSON.stringify(songDetail));
 
-      res.status(200).json(songDetail)
+      res.status(200).json(songDetail);
     } catch (err) {
-      console.log(err);
-      next(err)
+      next(err);
     }
   }
 
   static async getQuestion(req, res, next) {
     try {
-      const { id, song, index, classId } = req.body
+      const { id, song, index, classId } = req.body;
       // console.log(req.body, "<<< BODY");
-      const checkCache = await redis.get(id)
+      const checkCache = await redis.get(id);
       if (checkCache) {
         // console.log("GOT CACHE");
-        const cachedSong = JSON.parse(checkCache)
+        const cachedSong = JSON.parse(checkCache);
         if (cachedSong.id == id) {
-          const question = convertLyricsToQuestion(cachedSong, index)
+          const question = convertLyricsToQuestion(cachedSong, index);
           const payload = {
             name: song.title,
             description: "listening",
             classId,
             soundUrl: song.media[0].url,
-            question: JSON.stringify({ index, id, song, question })
-          }
-          const result = await Task.create(payload)
-          res.status(200).json({ result })
+            question: JSON.stringify({ index, id, song, question }),
+          };
+          const result = await Task.create(payload);
+          res.status(200).json({ result });
         }
-      }
-
-      else {
+      } else {
         // console.log("NOT GOT CACHE");
-        const question = convertLyricsToQuestion(song, index)
+        const question = convertLyricsToQuestion(song, index);
         const payload = {
           name: song.title,
           description: "listening",
           classId,
           soundUrl: song.media[0].url,
-          question: JSON.stringify({ index, id, song, question })
-        }
-        const result = await Task.create(payload)
-        res.status(200).json({ result })
+          question: JSON.stringify({ index, id, song, question }),
+        };
+        const result = await Task.create(payload);
+        res.status(200).json({ result });
       }
     } catch (err) {
-      console.log(err);
-      next(err)
+      next(err);
     }
   }
 
   static async getListeningScore(req, res, next) {
     try {
-      const { answer, index, id, song } = req.body
+      const { answer, index, id, song } = req.body;
 
-      // const checkCache = await redis.get(id)
-      // if (checkCache) {
-      //   const cachedSong = JSON.parse(checkCache)
-      //   if (cachedSong.id == id) {
-      //     const { splitLyrics } = JSON.parse(cachedSong)
-      //     const score = getListeningScore(splitLyrics, answer, index)
-      //     res.status(200).json({ score })
-      //   }
-      // }
-      // else {
-      // }
-      const { splitLyrics } = song
-      // console.log(req.body, "<<< GET LISTENING SCORE");
-      const score = await getListeningScore(splitLyrics, answer, index)
-      // console.log(score, "<<< SCOER FROM CONTROLLER");
-      res.status(200).json({ score })
-
+      const checkCache = await redis.get(id);
+      if (checkCache) {
+        const cachedSong = JSON.parse(checkCache);
+        if (cachedSong.id == id) {
+          const { splitLyrics } = cachedSong; //JSON.parse(cachedSong);
+          const score = getListeningScore(splitLyrics, answer, index);
+          res.status(200).json({ score });
+        }
+      } else {
+        const { splitLyrics } = song;
+        const score = getListeningScore(splitLyrics, answer, index);
+        res.status(200).json({ score });
+      }
     } catch (err) {
-      console.log(err);
-      next(err)
+      next(err);
     }
   }
 }

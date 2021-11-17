@@ -3,7 +3,11 @@ const app = require("../app");
 
 // admin token
 let token;
-
+const { closeRedis } = require("../helpers/redis");
+afterAll((done) => {
+  closeRedis();
+  done();
+});
 beforeAll((done) => {
   // set initial data
   request(app)

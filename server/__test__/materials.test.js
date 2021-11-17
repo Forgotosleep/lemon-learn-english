@@ -2,7 +2,11 @@ const request = require("supertest");
 const app = require("../app");
 
 let token;
-
+const { closeRedis } = require("../helpers/redis");
+afterAll((done) => {
+  closeRedis();
+  done();
+});
 beforeAll((done) => {
   // set initial data
   request(app)
@@ -76,6 +80,24 @@ describe("GET /materials", () => {
   test("200 success get materials", (done) => {
     request(app)
       .get("/materials")
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(Array.isArray(body)).toBeTruthy();
+        expect(body.length).toBe(3);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("200 success get materials with query", (done) => {
+    request(app)
+      .get("/materials?classId=1")
       .set({
         access_token: token,
       })
