@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { brown } from "@mui/material/colors";
-import { Button as ButBos } from "react-bootstrap";
+import { Badge, Button as ButBos } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateStatusClass } from "../../store/actions/actionClasses";
 import { alertSure } from "../../assets/js/sweetalert2";
@@ -35,21 +35,29 @@ function TeacherBoxClass(props) {
           <CardContent sx={{ flex: "1 0 auto" }}>
             <Typography
               fontSize={{
-                md: 20,
-                xs: 15,
+                md: 25,
+                xs: 25,
               }}
             >
-              {data.name} ({data.Category.name})
+              {data.name}
             </Typography>
             <Typography
               fontSize={{
                 md: 15,
                 xs: 15,
               }}
-              color="text.secondary"
             >
-              {data.Level.name}
+              <Badge bg={data.Category.name === "listening" ? "warning" : "info"}>{data.Category.name}</Badge>
+              <Badge
+                style={{
+                  marginLeft: "0.4rem",
+                }}
+                bg={data.Level.name === "beginner" ? "secondary" : data.Level.name === "medium" ? "danger" : "primary"}
+              >
+                {data.Level.name}
+              </Badge>
             </Typography>
+
             <Typography
               fontSize={{
                 md: 20,

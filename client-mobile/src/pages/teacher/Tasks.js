@@ -10,6 +10,8 @@ function Tasks() {
   const goToSearchSong = () => {
     navigate("/search-song", { state: { category: state.category, classId: state.classId } });
   };
+
+  console.log(state.tasks);
   return (
     <>
       <div className="container mb-5 ">
@@ -31,7 +33,7 @@ function Tasks() {
 
         <ListGroup as="ol" className="mt-3" numbered>
           {state.tasks.map((el) => (
-            <ListGroup.Item key={el.id} as="li" className="d-flex justify-content-between align-items-start">
+            <ListGroup.Item key={el.id} as="li" action onClick={() => alert("wkwkwk")} className="d-flex justify-content-between align-items-start">
               <div className="ms-2 me-auto">
                 <div className="fw-bold">{el.name}</div>
                 {el.description}

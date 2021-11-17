@@ -19,6 +19,13 @@ export function alertError(text) {
   });
 }
 
+export function alertErrorClick(text) {
+  Swal.fire({
+    text: text,
+    icon: "error",
+  });
+}
+
 export async function alertSure() {
   const result = await Swal.fire({
     title: "Are you Sure ?",

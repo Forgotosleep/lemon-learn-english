@@ -22,9 +22,9 @@ function App() {
   const access_token = localStorage.getItem("access_token");
   const { isLoggedIn, isLoading, isError, user } = useSelector((state) => state.user);
 
-  if (isLoading) {
-    alertLoading();
-  }
+  // if (isLoading) {
+  //   alertLoading();
+  // }
 
   return (
     <>
