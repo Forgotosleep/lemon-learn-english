@@ -54,6 +54,23 @@ class StudentClassController {
     }
   }
 
+  static async updateStudentComplete(req, res, next) {
+    try {
+      const { id: studentId } = req.user
+      const { id: classId } = req.params
+      const resp = await StudentClass.update({
+        status: 'complete'
+      }, {
+        where: {
+          studentId,
+          classId
+        }
+      })
+      res.status(200).json({message: "Success update status"})
+    } catch (err) {
+      next(err)
+    }
+  }
   static async updateStudentHidden(req, res, next) {
     try {
       const { id } = req.params;

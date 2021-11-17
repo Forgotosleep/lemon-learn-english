@@ -5,8 +5,6 @@ import { yellow, brown } from "@mui/material/colors";
 import { ArrowBack } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import psyduck from "../assets/icon/psyduck.svg";
-import { ArrowBack } from "@mui/icons-material";
-import { Link } from "react-router-dom";
 export default function Header() {
   const location = useLocation();
   const [value, setValue] = useState(location.pathname);
@@ -50,9 +48,6 @@ export default function Header() {
               <img src={psyduck} alt="psyduck" height={25} width={25} />
             </Icon>
           )}
-          <Icon sx={{ mr: 2 }}>
-            <img src={psyduck} alt="psyduck" height={25} width={25} />
-          </Icon>
           <strong>{value}</strong>
         </Toolbar>
       </>

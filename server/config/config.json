@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "laripagi",
-    "database": "lemon-learn-english1",
+    "database": "lemon-learn-english",
     "host": "localhost",
     "dialect": "postgres"
   },

@@ -44,8 +44,28 @@ export function fetchMyClasses(payload) {
     } catch (err) {
       dispatch(setIsErrorMyClasses(err))
     }
-
-
   };
 }
 
+export function updateStudentStatus(payload) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      ApiServer({
+        url: `/student-class/status/${payload}`,
+        method: "PATCH",
+        headers: {
+          access_token: localStorage.getItem("access_token"),
+        }
+      })
+      .then(({data})=>{
+        resolve()
+      })
+      .catch((err)=>{
+
+      })
+      .finally(()=>{
+        
+      })
+    })
+  }
+}

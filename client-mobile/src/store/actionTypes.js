@@ -12,9 +12,6 @@ export const SET_MY_CLASSES = 'myclasses/set'
 export const SET_LOADING_MYCLASSES = 'myclasses/loading'
 export const SET_ERROR_MYCLASSES = 'myclasses/error'
 
-export const SET_CLASSES_TEACHER = "classes/teacher";
-export const SET_TEACHER_STUDENTS = "students/teacher";
-
 /* TASKS */
 export const SET_TASK = "task/set";
 export const SET_TASKS = "tasks/set";
