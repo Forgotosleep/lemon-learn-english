@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import ReactPlayer from "react-player"
-import { fetchTask, getListeningScore } from '../store/actions/actionTasks'
+import { fetchTask, getListeningScore, setTask } from '../store/actions/actionTasks'
 import { addScoreListening } from '../store/actions/actionScores'
+import "../assets/css/App.css";
 
 const ListeningAnswer = () => {
-  // const { id } = useParams()
-  const id = 8  // Hardcoded for testing purpoises
+  const { id } = useParams()// Hardcoded for testing purpoises
   const { state } = useLocation()
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -20,10 +20,14 @@ const ListeningAnswer = () => {
     missingLyrics: [],
     missingIndex: []
   })
+  const [disabledInput, setDisabledInput] = useState(false)
   const [answerArr, setAnswerArr] = useState([])
-
+  const [score, setScore] = useState()
   useEffect(() => {
     dispatch(fetchTask(id));
+    return () => {
+      dispatch(setTask({}))
+    }
   }, [dispatch]);
 
   if (isLoading) {
@@ -39,42 +43,40 @@ const ListeningAnswer = () => {
     setAnswerArr(list);
   }
 
-  const submitAnswer = () => {
+  const submitAnswer = (e) => {
+    e.preventDefault()
     let answers = answerArr.filter(answer => {
       return answer !== undefined
     })
-
-    // console.log(answers);
-
     let payload = {
       answer: answers,
       song: task.question.song,
       id: task.question.id,
       index: task.question.index,
     }
-
-    // console.log(payload, "<<< PAYLOAD");
-
     dispatch(getListeningScore(payload))
       .then((data) => {
-        // console.log(data, "<<< SCORE");
+        setScore(data.score)
+        setDisabledInput(true)
         dispatch(addScoreListening({
           score: data?.score,
           taskId: id,
           answer: JSON.stringify(answers),
         }))
       })
-      .finally(() => {
-        navigate("/")
-      })
+    // .finally(() => {
+    //   navigate("/")
+    // })
   }
 
   return (
     <div>
-      <ReactPlayer
-        url={task?.soundUrl}
-        volume={0.5}
-      />
+      {
+        score || score == 0 ? <h5>Your Score Is: {score}</h5> : ''
+      }
+      <div className="player-wrapper">
+        <ReactPlayer url={task?.soundUrl} className="react-player" playing width="100%" height="100%" />
+      </div>
 
       <h1>Test</h1>
       <h1>Test</h1>
@@ -84,7 +86,7 @@ const ListeningAnswer = () => {
       </div> */}
 
       <div>
-        <Stack>
+        <Stack >
           {task?.question?.question.map((row, index) => (
             row === "__________" ? <input key={index} type="text" onChange={(e) => handleChange(e, index)} name="answer" /> : (row === "" ? (<br />) : (<div className="mt-1"> {row} </div>))
           ))}
@@ -92,7 +94,14 @@ const ListeningAnswer = () => {
       </div>
 
       <div>
-        <button onClick={submitAnswer}>Submit Answer</button>
+        {
+          !disabledInput ? (
+            <a className="btn btn-success" onClick={submitAnswer}>Submit Answer</a>
+          ) :
+            (
+              <a className="btn btn-success">Submitted</a>
+            )
+        }
       </div>
     </div>
   );

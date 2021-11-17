@@ -28,7 +28,7 @@ function BoxMyClass(props) {
   };
 
   const toTask = (id, status) => {
-    navigate(`/tasks/${id}`, { state: { status } })
+    navigate(`/tasks/${id}`, { state: { status, categoryId: myClass.Class.categoryId  } })
   }
 
   return (
