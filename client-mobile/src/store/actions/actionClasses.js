@@ -135,6 +135,7 @@ export function addClass(payload) {
     }
   };
 }
+
 export function updateStatusClass(payload) {
   return async (dispatch, getState) => {
     try {
@@ -181,7 +182,6 @@ export function getMyStudents(payload) {
     }
   };
 }
-
 export function addTask(payload) {
   return async (dist, state) => {
     try {

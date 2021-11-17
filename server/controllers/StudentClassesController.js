@@ -63,7 +63,7 @@ class StudentClassController {
       if (!studentClassData) throw { name: "StudentClassNotFound", id };
       if (studentClassData["studentId"] !== studentId) throw { name: "Unauthorized" };
 
-      const resp = await StudentClass.update(
+      await StudentClass.update(
         {
           status: "hidden",
         },

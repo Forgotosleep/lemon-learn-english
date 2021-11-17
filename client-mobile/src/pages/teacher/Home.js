@@ -9,6 +9,7 @@ import { alertError, alertSuccess } from "../../assets/js/sweetalert2";
 function Home() {
   const dispatch = useDispatch();
   const { teacherClasses: classes, messageError, messageSuccess } = useSelector((state) => state["classes"]);
+
   useEffect(() => {
     if (messageError) {
       alertError(messageError);

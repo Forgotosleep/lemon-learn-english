@@ -2,6 +2,8 @@ import { AppBar, Toolbar, Icon, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { yellow, brown } from "@mui/material/colors";
+import { ArrowBack } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import psyduck from "../assets/icon/psyduck.svg";
 import { ArrowBack } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -19,6 +21,8 @@ export default function Header() {
   useEffect(() => {
     if (location.pathname === "/") {
       setValue("Home");
+    } else if (location.pathname.substr(0, 8) === "/myclass") {
+      setValue("My Class");
     } else if (location.pathname.substr(0, 6) === "/tasks") {
       setValue("Tasks");
     } else if (location.pathname.substr(0, 9) === "/speaking") {
@@ -46,7 +50,9 @@ export default function Header() {
               <img src={psyduck} alt="psyduck" height={25} width={25} />
             </Icon>
           )}
-
+          <Icon sx={{ mr: 2 }}>
+            <img src={psyduck} alt="psyduck" height={25} width={25} />
+          </Icon>
           <strong>{value}</strong>
         </Toolbar>
       </>

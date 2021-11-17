@@ -2,6 +2,7 @@ import { SET_CLASSES, SET_ISLOADING, SET_ISERROR, SET_ERROR_CLASSES, SET_MESSAGE
 
 const initialState = {
   classes: {},
+  teacherClasses: [],
   isLoading: false,
   isError: null,
   messageSuccess: "",

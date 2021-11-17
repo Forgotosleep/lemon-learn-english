@@ -13,19 +13,19 @@ import SpeakingStudent from "./Speaking";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getUser } from "../store/actions/actionUser";
+import ProfileTeacher from "./teacher/Profile";
 import { alertLoading } from "../assets/js/sweetalert2";
-import CreateListeningTask from "./CreateListeningTask";
-import SongSearch from "./SongSearch";
-import ListeningAnswer from "./ListeningAnswer";
 import NavTeacher from "../components/teacher/Nav";
 import ClassTeacher from "./teacher/MyClass";
 import Tasks from "./teacher/Tasks";
-import ProfileTeacher from "./teacher/Profile";
+import CreateListeningTask from "./CreateListeningTask";
+import SongSearch from "./SongSearch";
+import ListeningAnswer from "./ListeningAnswer";
+
 function App() {
   const access_token = localStorage.getItem("access_token");
   const dispatch = useDispatch();
   const { isLoggedIn, isLoading, isError, user } = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(false);
   const home = () => {
     return <>{user?.role === "student" ? <Home /> : user?.role === "teacher" ? <HomeTeacher /> : ""}</>;
   };
