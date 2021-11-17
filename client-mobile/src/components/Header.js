@@ -69,7 +69,9 @@ export default function Header() {
 
   return (
     <header>
-      <AppBar style={color}>{displayDesktop()}</AppBar>
+      <AppBar position="static" style={color}>
+        {displayDesktop()}
+      </AppBar>
     </header>
   );
 }
