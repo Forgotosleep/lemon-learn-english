@@ -1,9 +1,10 @@
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import { setClasses } from "../store/actions/actionClasses";
-import { setUser } from '../store/actions/actionUser';
-import { setScore, setScores } from '../store/actions/actionScores';
-import { setTask, setTasks } from '../store/actions/actionTasks';
+import { setClasses } from "../../store/actions/actionClasses";
+import { setUser } from '../../store/actions/actionUser';
+import { setScore, setScores } from '../../store/actions/actionScores';
+import { setTask, setTasks } from '../../store/actions/actionTasks';
+
 
 function Profile() {
   const navigate = useNavigate()
@@ -25,7 +26,7 @@ function Profile() {
 
   return (
     <>
-      <h1>Profile</h1>
+      <h1>Profile teacher</h1>
       <button onClick={logout}>Logout</button>
     </>
   );

@@ -1,4 +1,4 @@
-const { StudentClass, Class, User } = require("../models/index");
+const { StudentClass, Class, User, Score, Task } = require("../models/index");
 const { getPagingData } = require("../helpers/pagination");
 const { Op } = require("sequelize");
 
@@ -65,7 +65,7 @@ class StudentClassController {
       if (studentClassData["studentId"] !== studentId)
         throw { name: "Unauthorized" };
 
-      const resp = await StudentClass.update(
+      await StudentClass.update(
         {
           status: "hidden",
         },
@@ -104,11 +104,24 @@ class StudentClassController {
         include: {
           model: User,
           as: "student",
+          include: {
+            model: Score,
+            include: {
+              model: Task,
+              where: {
+                classId,
+              },
+            },
+          },
+
           where: {},
           attributes: {
             exclude: ["createdAt", "updatedAt", "role", "password"],
           },
+          order: [["id", "DESC"]],
         },
+
+        distinct: true,
         limit: limit,
         offset,
       };

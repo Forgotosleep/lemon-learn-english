@@ -38,7 +38,7 @@ export function alertLoading() {
     imageWidth: 400,
     imageHeight: 200,
     imageAlt: "Custom image",
-    timer: 2500,
+    timer: 1500,
     showConfirmButton: false,
   });
 }

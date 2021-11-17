@@ -19,6 +19,7 @@ function Home() {
   const handleListening = (payload) => {
     if (payload === "Listening") {
       setShowListening("Hide");
+      setShowSpeaking("Speaking");
       setParamListening({ ...params, ...paramsListening, categoryId: 1 });
       dispatch(getClassesActive({ ...params, ...paramsListening, categoryId: 1 }));
     } else {
@@ -32,6 +33,7 @@ function Home() {
   const handleSpeaking = (payload) => {
     if (payload === "Speaking") {
       setShowSpeaking("Hide");
+      setShowListening("Listening");
       setParamSpeaking({ ...params, ...paramsSpeaking, categoryId: 2 });
       dispatch(getClassesActive({ ...params, ...paramsSpeaking, categoryId: 2 }));
     } else {
