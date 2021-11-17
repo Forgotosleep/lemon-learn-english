@@ -1,68 +1,15 @@
-import { Badge, Button, Col, Container, Modal, Row, Toast } from "react-bootstrap";
+import { Badge, Button, Col, Modal, Row } from "react-bootstrap";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addClass } from "../../store/actions/actionClasses";
-import { alertSure } from "../../assets/js/sweetalert2";
 
 function ModalDetailTasks(props) {
-  const dispatch = useDispatch();
   const { tasks } = props;
   const [show, setShow] = useState(false);
-  const [data, setData] = useState({});
-  const [validate, setValidate] = useState({
-    name: false,
-    levelId: false,
-    categoryId: false,
-  });
   const handleClose = () => {
     setShow(false);
-    setData({});
-    setValidate({ name: false, levelId: false, categoryId: false });
-  };
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-
-    if (!value) {
-      setValidate({ ...validate, [e.target.name]: true });
-    }
-
-    setData({ ...data, [e.target.name]: value });
   };
 
   const handleShow = () => {
     setShow(true);
-    setData({});
-    setValidate({ name: false, levelId: false, categoryId: false });
-  };
-
-  const toast = (show) => {
-    return (
-      <Toast className="mb-1" bg="danger" show={show}>
-        <Toast.Header closeButton={false}>
-          <strong className="me-auto">required</strong>
-          <small className="text-muted">just now</small>
-        </Toast.Header>
-      </Toast>
-    );
-  };
-
-  const handleSubmit = async (e) => {
-    if (!data["name"]) {
-      setValidate({ name: true });
-    } else if (!data["levelId"]) {
-      setValidate({ levelId: true });
-    } else if (!data["categoryId"]) {
-      setValidate({ categoryId: true });
-    } else {
-      setShow(false);
-      setValidate({ name: false, levelId: false, categoryId: false });
-      const result = await alertSure();
-
-      if (result.value) {
-        dispatch(addClass(data));
-      }
-    }
   };
 
   return (

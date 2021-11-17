@@ -158,18 +158,45 @@ export function updateStatusClass(payload) {
 export function getMyStudents(payload) {
   return async (dis, state) => {
     try {
+      const { id } = payload;
+      let params = {};
+      if (payload.status) {
+        params["status"] = payload.status;
+      }
+      if (payload.page) {
+        params["page"] = payload.page;
+      }
       dis(setIsLoading(true));
       const { data } = await ApiServer({
         method: "get",
-        url: "/student-class/" + payload,
+        url: "/student-class/" + id,
         headers: {
           access_token: localStorage.getItem("access_token"),
         },
+        params,
       });
       dis(setMyStudents(data));
       dis(setIsLoading(false));
     } catch (error) {
       console.log(error);
+    }
+  };
+}
+export function addTask(payload) {
+  return async (dist, state) => {
+    try {
+      const { data } = await ApiServer({
+        url: "/tasks",
+        method: "POST",
+        headers: {
+          access_token: localStorage.getItem("access_token"),
+        },
+        data: payload,
+      });
+      dist(getTeacherClases());
+      dist(setMessageClasses("success add new task"));
+    } catch (err) {
+      dist(setErrorClasses(err.response.data.message));
     }
   };
 }

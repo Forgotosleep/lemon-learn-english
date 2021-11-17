@@ -176,8 +176,7 @@ class ClassController {
         throw { name: "ClassNotFound", id };
       }
 
-      if (checkStatus["status"].toLowerCase() !== "complete")
-        throw { name: "notCompletedClass" };
+      if (checkStatus["status"].toLowerCase() !== "complete") throw { name: "notCompletedClass" };
 
       const result = await Class.findByPk(+id);
       if (!result) throw { name: "ClassNotFound", id };
@@ -195,9 +194,7 @@ class ClassController {
           },
         }
       );
-      res
-        .status(200)
-        .json({ message: `Succeess in rating class ${result["name"]}` });
+      res.status(200).json({ message: `Succeess in rating class ${result["name"]}` });
     } catch (err) {
       next(err);
     }
@@ -345,9 +342,7 @@ class ClassController {
       const destroyed = Class.destroy({
         where: { id },
       });
-      res
-        .status(200)
-        .json({ message: `Successfully deleted Class ${result.name}` });
+      res.status(200).json({ message: `Successfully deleted Class ${result.name}` });
     } catch (err) {
       next(err);
     }

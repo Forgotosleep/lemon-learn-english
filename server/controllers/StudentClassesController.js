@@ -37,8 +37,7 @@ class StudentClassController {
       if (!Number(id)) throw { name: "InvalidDataType" };
       const studentClassData = await StudentClass.findByPk(id);
       if (!studentClassData) throw { name: "StudentClassNotFound", id: id };
-      if (studentClassData["studentId"] !== studentId)
-        throw { name: "Unauthorized" };
+      if (studentClassData["studentId"] !== studentId) throw { name: "Unauthorized" };
       const resp = await StudentClass.update(
         {
           status: "incomplete",
@@ -62,8 +61,7 @@ class StudentClassController {
       if (!Number(id)) throw { name: "InvalidDataType" };
       const studentClassData = await StudentClass.findByPk(Number(id));
       if (!studentClassData) throw { name: "StudentClassNotFound", id };
-      if (studentClassData["studentId"] !== studentId)
-        throw { name: "Unauthorized" };
+      if (studentClassData["studentId"] !== studentId) throw { name: "Unauthorized" };
 
       await StudentClass.update(
         {
@@ -126,8 +124,7 @@ class StudentClassController {
         offset,
       };
       if (status) option["where"]["status"] = status;
-      if (studentName)
-        option["include"]["where"]["name"] = { [Op.iLike]: `%${studentName}%` };
+      if (studentName) option["include"]["where"]["name"] = { [Op.iLike]: `%${studentName}%` };
       const result = await StudentClass.findAndCountAll(option);
       const data = getPagingData(result, page, limit);
       res.status(200).json(data);
@@ -148,14 +145,14 @@ class StudentClassController {
           model: Class,
           include: {
             model: User,
-            as: 'teacher',
-            attributes: ['name']
-          }
+            as: "teacher",
+            attributes: ["name"],
+          },
         },
-      })
+      });
       res.status(200).json(resp);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       next(err);
     }
   }

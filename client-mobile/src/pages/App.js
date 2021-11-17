@@ -13,7 +13,6 @@ import SpeakingStudent from "./Speaking";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getUser } from "../store/actions/actionUser";
-import HomeTeacher from "./teacher/Home";
 import ProfileTeacher from "./teacher/Profile";
 import { alertLoading } from "../assets/js/sweetalert2";
 import NavTeacher from "../components/teacher/Nav";
@@ -30,6 +29,10 @@ function App() {
   const home = () => {
     return <>{user?.role === "student" ? <Home /> : user?.role === "teacher" ? <HomeTeacher /> : ""}</>;
   };
+  const profile = () => {
+    return <>{user?.role === "student" ? <Profile /> : user?.role === "teacher" ? <ProfileTeacher /> : ""}</>;
+  };
+
   const myClass = () => {
     return <>{user?.role === "student" ? <Class /> : <Navigate to="/login" />}</>;
   };
@@ -39,11 +42,6 @@ function App() {
   const tasks = () => {
     return <>{user?.role === "student" ? <Navigate to="/login" /> : <Tasks />}</>;
   };
-
-  const profile = () => {
-    return <>{user?.role === "student" ? <Profile /> : user?.role === "teacher" ? <ProfileTeacher /> : ""}</>;
-  };
-
   useEffect(() => {
     dispatch(getUser());
   }, [isLoggedIn]);
@@ -59,8 +57,6 @@ function App() {
           <Route path="/class" element={access_token ? myClass() : <Navigate to="/login" />} />
           <Route path="/profile" element={access_token ? profile() : <Navigate to="/login" />} />
           <Route path="/tasks" element={access_token ? tasks() : <Navigate to="/login" />} />
-          <Route path="/class" element={access_token ? <Class /> : <Navigate to="/login" />} />
-          <Route path="/profile" element={access_token ? <Profile /> : <Navigate to="/login" />} />
 
           <Route path="/create-listening-task/:id" element={access_token ? <CreateListeningTask /> : <Navigate to="/login" />} />
           <Route path="/search-song" element={access_token ? <SongSearch /> : <Navigate to="/login" />} />

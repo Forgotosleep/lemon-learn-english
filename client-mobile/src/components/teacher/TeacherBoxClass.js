@@ -73,7 +73,7 @@ function TeacherBoxClass(props) {
             >
               {data.status === "active" ? "hide" : "active"}
             </ButBos>
-            <ButBos style={{ marginLeft: "1vh" }} variant="outline-info" onClick={() => navigate("/tasks", { state: { category: data.Category.name, tasks: data.Tasks } })}>
+            <ButBos style={{ marginLeft: "1vh" }} variant="outline-info" onClick={() => navigate("/tasks", { state: { category: data.Category.name, tasks: data.Tasks, classId: data.id } })}>
               Tasks
             </ButBos>
           </Box>

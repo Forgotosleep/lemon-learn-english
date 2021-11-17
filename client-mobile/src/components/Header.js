@@ -5,6 +5,8 @@ import { yellow, brown } from "@mui/material/colors";
 import { ArrowBack } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import psyduck from "../assets/icon/psyduck.svg";
+import { ArrowBack } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 export default function Header() {
   const location = useLocation();
   const [value, setValue] = useState(location.pathname);
@@ -22,9 +24,11 @@ export default function Header() {
     } else if (location.pathname.substr(0, 8) === "/myclass") {
       setValue("My Class");
     } else if (location.pathname.substr(0, 6) === "/tasks") {
-      setValue("Task")
+      setValue("Tasks");
     } else if (location.pathname.substr(0, 9) === "/speaking") {
-      setValue("Speaking")
+      setValue("Speaking");
+    } else if (location.pathname.substr(0, 8) === "/myclass") {
+      setValue("My Class");
     } else {
       setValue(capitalizeFirstLetter(location.pathname.substr(1)));
     }
