@@ -15,8 +15,8 @@ route.get(
   authorizationTeacher,
   TaskController.getSongDetails
 );
-route.get("/question", authorizationTeacher, TaskController.getQuestion);
-route.get(
+route.post("/question", authorizationTeacher, TaskController.getQuestion);
+route.post(
   "/get-listening-score",
   authorizationTeacher,
   TaskController.getListeningScore

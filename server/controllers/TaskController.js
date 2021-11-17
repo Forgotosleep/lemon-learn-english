@@ -141,7 +141,6 @@ class TaskController {
 
       res.status(200).json(songDetail);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -149,22 +148,31 @@ class TaskController {
   static async getQuestion(req, res, next) {
     // Still uses Redis to transport the 'song' atm
     try {
-      const { id, song, index } = req.body;
-      const Redis = require("ioredis");
-      const redis = new Redis();
-      const checkCache = await redis.get(id);
-      if (checkCache) {
-        const cachedSong = JSON.parse(checkCache);
-        if (cachedSong.id == id) {
-          const question = convertLyricsToQuestion(cachedSong, index);
-          res.status(200).json({ question });
-        }
-      } else {
-        const question = convertLyricsToQuestion(song, index);
-        res.status(200).json({ question });
-      }
+      const { id, song, index, classId } = req.body;
+      // const Redis = require("ioredis");
+      // const redis = new Redis();
+      // const checkCache = await redis.get(id);
+      // if (checkCache) {
+      //   const cachedSong = JSON.parse(checkCache);
+      //   if (cachedSong.id == id) {
+      //     const question = convertLyricsToQuestion(cachedSong, index);
+      //     res.status(200).json({ question });
+      //   }
+      // } else {
+      //   const question = convertLyricsToQuestion(song, index);
+      //   res.status(200).json({ question });
+      // }
+      const question = convertLyricsToQuestion(song, index);
+      const payload = {
+        name: song.title,
+        description: "Listening task",
+        classId,
+        question: JSON.stringify({ index, id, song, question }),
+      };
+      const result = await Task.create(payload);
+      res.status(200).json({ result });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       next(err);
     }
   }
@@ -173,21 +181,24 @@ class TaskController {
     // Still uses Redis to transport the 'song' atm
     try {
       const { answer, index, id, song } = req.body;
-      const Redis = require("ioredis");
-      const redis = new Redis();
-      const checkCache = await redis.get(id);
-      if (checkCache) {
-        const cachedSong = JSON.parse(checkCache);
-        if (cachedSong.id == id) {
-          const { splitLyrics } = JSON.parse(cachedSong);
-          const score = getListeningScore(splitLyrics, answer, index);
-          res.status(200).json({ score });
-        }
-      } else {
-        const { splitLyrics } = song;
-        const score = getListeningScore(splitLyrics, answer, index);
-        res.status(200).json({ score });
-      }
+      // const Redis = require("ioredis");
+      // const redis = new Redis();
+      // const checkCache = await redis.get(id);
+      // if (checkCache) {
+      //   const cachedSong = JSON.parse(checkCache);
+      //   if (cachedSong.id == id) {
+      //     const { splitLyrics } = JSON.parse(cachedSong);
+      //     const score = getListeningScore(splitLyrics, answer, index);
+      //     res.status(200).json({ score });
+      //   }
+      // } else {
+      //   const { splitLyrics } = song;
+      //   const score = getListeningScore(splitLyrics, answer, index);
+      //   res.status(200).json({ score });
+      // }
+      const { splitLyrics } = song;
+      const score = getListeningScore(splitLyrics, answer, index);
+      res.status(200).json({ score });
     } catch (err) {
       console.log(err);
       next(err);

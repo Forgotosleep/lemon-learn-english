@@ -19,17 +19,14 @@ async function searchSongs(artist, title) {
     // console.log(artist, title);
     const options = {
       apiKey: accessToken,
-      // title: !req.body?.title ? "''" : req.body.title,
-      // artist: !req.body?.artist ? "''" : req.body.artist,
-      title: title,
-      artist: artist,
+      title: !title ? "''" : title,
+      artist: !artist ? "''" : artist,
       optimizeQuery: true,
     };
-
     const songs = await searchSong(options);
     return songs;
   } catch (err) {
-    console.log(err, "<<< ERR SEARCH SONGS");
+    // console.log(err, "<<< ERR SEARCH SONGS");
     // next(err);
     throw err;
     // INSERT ERROR HANDLER HERE
@@ -41,27 +38,27 @@ async function getSongDetailById(id) {
   try {
     // const Redis = require("ioredis");
     // const redis = new Redis();
-    const lyrics = await backOff(async () => {
-      const { lyrics, media } = await lyricist.song(id, { fetchLyrics: true });
+    const songById = await backOff(async () => {
+      const { lyrics, media, title } = await lyricist.song(id, {
+        fetchLyrics: true,
+      });
       // console.log(media);
       if (!lyrics) {
         return Promise.reject();
       }
-
       let splitLyrics = lyrics.split("\n");
-
-      const song = { lyrics, media, splitLyrics };
-
+      const song = { id, title, lyrics, media, splitLyrics };
       return song;
     });
-    return lyrics;
+    return songById;
   } catch (err) {
-    console.log(err, "<<< ERR GET LYRICS BY ID");
-    next(err);
+    // console.log(err, "<<< ERR GET LYRICS BY ID");
+    throw err;
   }
 }
-console.log(getSongDetailById(188004));
+// console.log(getSongDetailById(188004));
 function convertLyricsToQuestion(song, index) {
+  // console.log(song, "<<<<");
   // This function accepts a song object (the result from getSongDetailById func) and the intentionally emptied out parts' index. Based on its index, the parts of the splitLyrics is replaced with a fixed character (underscores atm), and then returns the splitLyrics (now question) as an Array of Strings.
   const { lyrics, splitLyrics, media } = song;
   let count = 0;
@@ -95,7 +92,9 @@ function getListeningScore(splitLyrics, answer, index) {
     scores.push(correctMatch / trueAnswers.length);
   });
 
-  let avgScore = scores.reduce((total, num) => (total += num)) / scores.length;
+  let avgScore = Math.round(
+    (scores.reduce((total, num) => (total += num)) / scores.length) * 100
+  );
   return avgScore;
 }
 
