@@ -131,12 +131,36 @@ export function getListeningQuestion(payload) {
 }
 
 
-export function getListeningScore(payload) {  // Also submits student's answer
-  return async (dispatch, getState) => {
-    try {
-      const { data } = await ApiServer({
+// export function getListeningScore(payload) {  // Also submits student's answer
+//   return async (dispatch, getState) => {
+//     try {
+//       const { data } = await ApiServer({
+//         url: "/tasks/get-listening-score",
+//         method: "GET",
+//         headers: {
+//           access_token: localStorage.getItem("access_token"),
+//         },
+//         data: {
+//           answer: payload.answer,
+//           song: payload.song,
+//           id: payload.id,
+//           index: payload.index,
+//         }
+//       });
+//       // dispatch(setScore(data));  // Gotta get to score stuff
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// }
+
+export function getListeningScore(payload) {
+  return (dispatch, getStarte) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setTasksIsLoading(true))
+      ApiServer({
         url: "/tasks/get-listening-score",
-        method: "GET",
+        method: "POST",
         headers: {
           access_token: localStorage.getItem("access_token"),
         },
@@ -146,12 +170,19 @@ export function getListeningScore(payload) {  // Also submits student's answer
           id: payload.id,
           index: payload.index,
         }
-      });
-      dispatch(setScore(data));  // Gotta get to score stuff
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      })
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch((err) => {
+          dispatch(setTasksMessageError(err))
+          reject(err)
+        })
+        .finally(() => {
+          dispatch(setTasksIsLoading(false))
+        })
+    })
+  }
 }
 
 

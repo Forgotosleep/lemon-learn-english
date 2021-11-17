@@ -74,19 +74,23 @@ function convertLyricsToQuestion(song, index) {  // This function accepts a song
 function getListeningScore(splitLyrics, answer, index) {  // This function accepts splitLyrics (Array of Strings), the student's answer (Array of Strings), and the missing lyric part's index (array of Number). The way it works is that the function grabs parts of splitLyrics based on the index params, splits them into each words, and compare each words to those of the answers (within the same index). A score is produced for each line, which is then averaged and rounded, then returned. Voila!
   const scores = []
 
+  // console.log(splitLyrics, answer);
+
   index.forEach((i1, i2) => {
-    const trueAnswers = splitLyrics[i1].split(" ")
-    const studentAnswers = answer[i2].split(" ")
+    const trueAnswers = splitLyrics[i1]?.split(" ") || ""
+    const studentAnswers = answer[i2]?.split(" ") || ""
     let correctMatch = 0
 
     trueAnswers.forEach((word, index) => {
-      if (studentAnswers[index].toLowerCase() === word.toLowerCase()) {
+      if (studentAnswers[index] === word) {
         correctMatch++
       }
     });
 
     scores.push(correctMatch / trueAnswers.length)
   });
+
+  // console.log(scores, "<<< GET LISTEINGIN SCORE HELPER");
 
   let avgScore = Math.round((scores.reduce((total, num) => total += num)) / scores.length * 100)
   return avgScore

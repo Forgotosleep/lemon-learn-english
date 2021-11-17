@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import ReactPlayer from "react-player"
-import { getSongDetail, getListeningQuestion, fetchTask } from '../store/actions/actionTasks'
+import { fetchTask, getListeningScore } from '../store/actions/actionTasks'
+import { addScoreListening } from '../store/actions/actionScores'
 
 const ListeningAnswer = () => {
   // const { id } = useParams()
@@ -21,38 +22,21 @@ const ListeningAnswer = () => {
   })
   const [answerArr, setAnswerArr] = useState([])
 
-  // const splitLyrics = song?.splitLyrics
-
   useEffect(() => {
     dispatch(fetchTask(id));
-    // const { index, song, question } = JSON.parse(task?.question)
-    // setQuestion({
-    //   media: song.media,
-    //   missingLyrics: question
-    // })
   }, [dispatch]);
 
   if (isLoading) {
     return <h1>Loading...</h1>
   }
 
-
   // console.log(task, "<<< task");
 
   const handleChange = (e, index) => {
-    // console.log(index, "<<<< index");
-    // console.log(e.target.name, "<<<< name");
-    // console.log(e.target.value, "<<<< VALUE");
-
     const { name, value } = e.target;
     const list = [...answerArr];
     list[index] = value.toLowerCase();
     setAnswerArr(list);
-    // console.log(answerArr, "<<<");
-  }
-
-  const handleClick = (input) => {
-
   }
 
   const submitAnswer = () => {
@@ -60,24 +44,30 @@ const ListeningAnswer = () => {
       return answer !== undefined
     })
 
-    console.log(answers);
+    // console.log(answers);
 
+    let payload = {
+      answer: answers,
+      song: task.question.song,
+      id: task.question.id,
+      index: task.question.index,
+    }
 
+    // console.log(payload, "<<< PAYLOAD");
 
-
-
-    // let payload = {
-    //   song,
-    //   id: song.id,
-    //   index: choiceIndex,
-    //   classId: state.classId
-    // }
-    // console.log(payload, "<<< ABOUT TO BE SENT");  // For testing purpoises
-    // dispatch(getListeningQuestion(payload))
-    // navigate("/")
+    dispatch(getListeningScore(payload))
+      .then((data) => {
+        // console.log(data, "<<< SCORE");
+        dispatch(addScoreListening({
+          score: data?.score,
+          taskId: id,
+          answer: JSON.stringify(answers),
+        }))
+      })
+      .finally(() => {
+        navigate("/")
+      })
   }
-
-
 
   return (
     <div>

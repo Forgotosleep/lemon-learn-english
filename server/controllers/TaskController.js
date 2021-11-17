@@ -193,20 +193,22 @@ class TaskController {
     try {
       const { answer, index, id, song } = req.body
 
-      const checkCache = await redis.get(id)
-      if (checkCache) {
-        const cachedSong = JSON.parse(checkCache)
-        if (cachedSong.id == id) {
-          const { splitLyrics } = JSON.parse(cachedSong)
-          const score = getListeningScore(splitLyrics, answer, index)
-          res.status(200).json({ score })
-        }
-      }
-      else {
-        const { splitLyrics } = song
-        const score = getListeningScore(splitLyrics, answer, index)
-        res.status(200).json({ score })
-      }
+      // const checkCache = await redis.get(id)
+      // if (checkCache) {
+      //   const cachedSong = JSON.parse(checkCache)
+      //   if (cachedSong.id == id) {
+      //     const { splitLyrics } = JSON.parse(cachedSong)
+      //     const score = getListeningScore(splitLyrics, answer, index)
+      //     res.status(200).json({ score })
+      //   }
+      // }
+      // else {
+      // }
+      const { splitLyrics } = song
+      // console.log(req.body, "<<< GET LISTENING SCORE");
+      const score = await getListeningScore(splitLyrics, answer, index)
+      // console.log(score, "<<< SCOER FROM CONTROLLER");
+      res.status(200).json({ score })
 
     } catch (err) {
       console.log(err);
