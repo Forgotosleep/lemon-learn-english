@@ -58,8 +58,8 @@ function App() {
           <Route path="/profile" element={access_token ? profile() : <Navigate to="/login" />} />
           <Route path="/tasks" element={access_token ? tasks() : <Navigate to="/login" />} />
 
-          <Route path="/create-listening-task/:id" element={access_token ? <CreateListeningTask /> : <Navigate to="/login" />} />
           <Route path="/search-song" element={access_token ? <SongSearch /> : <Navigate to="/login" />} />
+          <Route path="/create-listening-task/:id" element={access_token ? <CreateListeningTask /> : <Navigate to="/login" />} />
           <Route path="/listening-answer" element={access_token ? <ListeningAnswer /> : <Navigate to="/login" />} />
 
           <Route path="/tasks/:id" element={access_token ? <StudentTask /> : <Navigate to="/login" />} />

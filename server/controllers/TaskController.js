@@ -66,6 +66,10 @@ class TaskController {
         throw { name: "TaskNotFound", id };
       }
 
+      if (task.soundUrl) {
+        task.question = JSON.parse(task.question)
+      }
+
       res.status(200).json(task);
     } catch (err) {
       next(err);
@@ -156,8 +160,9 @@ class TaskController {
           const question = convertLyricsToQuestion(cachedSong, index)
           const payload = {
             name: song.title,
-            description: "Listening task",
+            description: "listening",
             classId,
+            soundUrl: song.media[0].url,
             question: JSON.stringify({ index, id, song, question })
           }
           const result = await Task.create(payload)
@@ -170,8 +175,9 @@ class TaskController {
         const question = convertLyricsToQuestion(song, index)
         const payload = {
           name: song.title,
-          description: "Listening task",
+          description: "listening",
           classId,
+          soundUrl: song.media[0].url,
           question: JSON.stringify({ index, id, song, question })
         }
         const result = await Task.create(payload)
@@ -187,20 +193,22 @@ class TaskController {
     try {
       const { answer, index, id, song } = req.body
 
-      const checkCache = await redis.get(id)
-      if (checkCache) {
-        const cachedSong = JSON.parse(checkCache)
-        if (cachedSong.id == id) {
-          const { splitLyrics } = JSON.parse(cachedSong)
-          const score = getListeningScore(splitLyrics, answer, index)
-          res.status(200).json({ score })
-        }
-      }
-      else {
-        const { splitLyrics } = song
-        const score = getListeningScore(splitLyrics, answer, index)
-        res.status(200).json({ score })
-      }
+      // const checkCache = await redis.get(id)
+      // if (checkCache) {
+      //   const cachedSong = JSON.parse(checkCache)
+      //   if (cachedSong.id == id) {
+      //     const { splitLyrics } = JSON.parse(cachedSong)
+      //     const score = getListeningScore(splitLyrics, answer, index)
+      //     res.status(200).json({ score })
+      //   }
+      // }
+      // else {
+      // }
+      const { splitLyrics } = song
+      // console.log(req.body, "<<< GET LISTENING SCORE");
+      const score = await getListeningScore(splitLyrics, answer, index)
+      // console.log(score, "<<< SCOER FROM CONTROLLER");
+      res.status(200).json({ score })
 
     } catch (err) {
       console.log(err);

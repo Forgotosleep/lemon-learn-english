@@ -5,6 +5,7 @@ import { yellow, brown } from "@mui/material/colors";
 import { ArrowBack } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import psyduck from "../assets/icon/psyduck.svg";
+
 export default function Header() {
   const location = useLocation();
   const [value, setValue] = useState(location.pathname);

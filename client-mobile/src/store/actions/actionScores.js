@@ -103,3 +103,32 @@ export function addScore(payload) {
   }
 }
 
+export function addScoreListening(payload) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setScoresIsLoading(true))
+
+      console.log(payload, "<< PAYLOAD FROM ADDSCORE LISTEN ACTION");
+
+      ApiServer({
+        url: '/scores',
+        method: 'POST',
+        data: payload,
+        headers: { access_token: localStorage.getItem('access_token') }
+      })
+        .then(({ data }) => {
+          console.log(data)
+          resolve(data)
+        })
+        .catch((err) => {
+          reject(err)
+          console.log(err.response);
+          // dispatch(setScoresMessageError(err.ressponse.data))
+        })
+        .finally(() => {
+          dispatch(setScoresIsLoading(false))
+        })
+    })
+  }
+}
+
