@@ -1,4 +1,8 @@
-const { Task } = require("../models");
+const { Op } = require("sequelize");
+const { Task, Class, Score } = require("../models");
+const Redis = require("ioredis");
+const redis = new Redis();
+const { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore } = require('../helpers/getSongs')
 
 class TaskController {
   static async create(req, res, next) {
@@ -9,20 +13,47 @@ class TaskController {
       const result = await Task.create(input);
 
       res.status(201).json({ result });
-      // res.status(201).json({ message: "Task Created" });
     } catch (err) {
       next(err);
-      // res.status(500).json({ message: "error" });
     }
   }
 
   static async get(req, res, next) {
     try {
-      const tasks = await Task.findAll();
+      const { classId } = req.query;
+
+      let opt = { where: {} };
+      if (classId) {
+        opt.where.classId = classId;
+      }
+
+      const tasks = await Task.findAll(opt);
 
       res.status(200).json(tasks);
     } catch (err) {
       next(err);
+    }
+  }
+
+  static async getTaskByClass(req, res, next) {
+    try {
+      const { classId } = req.params
+      const studentId = req.user.id
+      if (!Number(classId)) throw { name: "InvalidMaterialId" };
+      const classData = await Class.findByPk(classId)
+      if (!classData) throw { name: "ClassNotFound", id: classId };
+      const resp = await Task.findAll({
+        where: {
+          classId
+        },
+        include: {
+          model: Score
+        },
+        distinct: true
+      })
+      res.status(200).json(resp)
+    } catch (err) {
+      next(err)
     }
   }
 
@@ -79,7 +110,103 @@ class TaskController {
     }
   }
 
+  static async searchSong(req, res, next) {
+    const { artist, title } = req.query
+    const songs = await searchSongs(artist, title)
 
+    res.status(200).json(songs)
+
+  } catch(err) {
+    console.log(err);
+    next(err)
+  }
+
+  static async getSongDetails(req, res, next) {
+    try {
+      const { songId } = req.params
+      const checkCache = await redis.get(songId)
+      // console.log(checkCache, "<<<");
+      if (checkCache) {
+        const cachedSong = JSON.parse(checkCache)
+        if (cachedSong.id == songId) {
+          res.status(200).json(cachedSong)
+          return
+        }
+      }
+
+      const songDetail = await getSongDetailById(songId)
+      redis.set(songId, JSON.stringify(songDetail))
+
+      res.status(200).json(songDetail)
+    } catch (err) {
+      console.log(err);
+      next(err)
+    }
+  }
+
+  static async getQuestion(req, res, next) {
+    try {
+      const { id, song, index, classId } = req.body
+      // console.log(req.body, "<<< BODY");
+      const checkCache = await redis.get(id)
+      if (checkCache) {
+        // console.log("GOT CACHE");
+        const cachedSong = JSON.parse(checkCache)
+        if (cachedSong.id == id) {
+          const question = convertLyricsToQuestion(cachedSong, index)
+          const payload = {
+            name: song.title,
+            description: "Listening task",
+            classId,
+            question: JSON.stringify({ index, id, song, question })
+          }
+          const result = await Task.create(payload)
+          res.status(200).json({ result })
+        }
+      }
+
+      else {
+        // console.log("NOT GOT CACHE");
+        const question = convertLyricsToQuestion(song, index)
+        const payload = {
+          name: song.title,
+          description: "Listening task",
+          classId,
+          question: JSON.stringify({ index, id, song, question })
+        }
+        const result = await Task.create(payload)
+        res.status(200).json({ result })
+      }
+    } catch (err) {
+      console.log(err);
+      next(err)
+    }
+  }
+
+  static async getListeningScore(req, res, next) {
+    try {
+      const { answer, index, id, song } = req.body
+
+      const checkCache = await redis.get(id)
+      if (checkCache) {
+        const cachedSong = JSON.parse(checkCache)
+        if (cachedSong.id == id) {
+          const { splitLyrics } = JSON.parse(cachedSong)
+          const score = getListeningScore(splitLyrics, answer, index)
+          res.status(200).json({ score })
+        }
+      }
+      else {
+        const { splitLyrics } = song
+        const score = getListeningScore(splitLyrics, answer, index)
+        res.status(200).json({ score })
+      }
+
+    } catch (err) {
+      console.log(err);
+      next(err)
+    }
+  }
 }
 
 module.exports = TaskController;

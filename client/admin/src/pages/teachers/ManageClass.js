@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import Breadcrumb from "../../components/Breadcrumb";
 import ClassList from "../../components/teachers/ClassList";
 
 export default function () {
@@ -10,16 +11,18 @@ export default function () {
 
   return (
     <>
-      <h3 className="mb-4" style={{ float: "left" }}>
-        Manage Class
-      </h3>
-      <button
-        class="btn btn-primary me-4"
-        onClick={onAddClass}
-        style={{ float: "right" }}
-      >
-        Add New Class
-      </button>
+      <div class="" style={{ overflow: "hidden", marginTop: "36px" }}>
+        <h2 className="ms-3 mb-4" style={{ float: "left" }}>
+          Classes
+        </h2>
+        <button
+          class="btn btn-primary me-4"
+          onClick={onAddClass}
+          style={{ float: "right" }}
+        >
+          Add New Class
+        </button>
+      </div>
       <ClassList />
     </>
   );

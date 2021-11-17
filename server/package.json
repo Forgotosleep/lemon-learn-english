@@ -4,7 +4,7 @@
   "description": "Learn English with Pokemon~",
   "main": "app.js",
   "scripts": {
-    "test": "npx jest --detectOpenHandles --verbose --collect-coverage",
+    "test": "sequelize --env=test db:drop && sequelize --env=test db:create && sequelize --env=test db:migrate && sequelize --env=test db:seed:all && npx jest --detectOpenHandles --verbose --collect-coverage",
     "migrate": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "start": "npx nodemon bin/www"
   },
@@ -20,8 +20,11 @@
     "dotenv": "^10.0.0",
     "exponential-backoff": "^3.1.0",
     "express": "^4.17.1",
+    "genius-lyrics-api": "^3.2.0",
+    "ioredis": "^4.28.0",
     "jest": "^27.3.1",
     "jsonwebtoken": "^8.5.1",
+    "lyricist": "^2.2.2",
     "multer": "^1.4.3",
     "nodemon": "^2.0.15",
     "pg": "^8.7.1",

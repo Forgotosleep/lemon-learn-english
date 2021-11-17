@@ -44,7 +44,7 @@ class UsersController {
           exclude: ["createdAt", "updatedAt", "password"],
         },
       });
-      if (!result) throw { name: "UserNotFound", id };
+      // if (!result) throw { name: "UserNotFound", id };
       res.status(200).json(result);
     } catch (err) {
       next(err);
@@ -90,7 +90,9 @@ class UsersController {
           id: Number(id),
         },
       });
-      res.status(200).json({ message: `User with id ${cekUser["id"]} has been deleted` });
+      res
+        .status(200)
+        .json({ message: `User with id ${cekUser["id"]} has been deleted` });
     } catch (err) {
       next(err);
     }
@@ -98,7 +100,8 @@ class UsersController {
 
   static async newUser(req, res, next) {
     try {
-      const { username, email, password, role, name, photo, phone, address } = req.body;
+      const { username, email, password, role, name, photo, phone, address } =
+        req.body;
 
       const result = await User.create({
         username,

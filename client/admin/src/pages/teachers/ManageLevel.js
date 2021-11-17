@@ -71,9 +71,6 @@ export default function () {
     setName(e.target.value);
   }
 
-  //   const handleClose = () => setShow(false);
-  //   const handleShow = () => setShow(true);
-
   return (
     <>
       <h3 className="mb-4" style={{ float: "left" }}>
@@ -142,7 +139,7 @@ export default function () {
                   Name
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   class="form-control"
                   id="name"
                   name="name"
@@ -164,7 +161,6 @@ export default function () {
               <button
                 type="button"
                 class="btn btn-primary"
-                // data-bs-dismiss="modal"
                 onClick={onClickModal}
               >
                 {actionType}

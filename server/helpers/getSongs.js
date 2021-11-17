@@ -1,9 +1,10 @@
 /* SETUP */
-const { getLyrics, getSong, searchSong, getAlbumArt, getSongById } = require('genius-lyrics-api')
+const { getLyrics, getSong, searchSong, getAlbumArt } = require('genius-lyrics-api')
 const Lyricist = require('lyricist/node6');
 const { backOff } = require("exponential-backoff")
-const accessToken = 'Emmh0nWJW5bLOM7upFEGZHuabVmKQZQGX683zYuWhQLpHtW4BitKMv8xa8eb-IoQ'  // Get this thing into a .env BEFORE DEPLOYING
-const lyricist = new Lyricist(accessToken);
+
+const accessToken = process.env.GENIUSTOKEN  // Get this thing into a .env BEFORE DEPLOYING
+const lyricist = new Lyricist("Emmh0nWJW5bLOM7upFEGZHuabVmKQZQGX683zYuWhQLpHtW4BitKMv8xa8eb-IoQ");
 
 
 /* FUNCTIONS */
@@ -11,9 +12,9 @@ async function searchSongs(artist, title) {
   // This function attempts to search the database for song(s) based on its provided artist & title data. Returns an array that contains the song's Genius ID, title, albumArt image URL and its lyrics page in Genius' own website. Most useful is the song's ID.
   try {
     const options = {
-      apiKey: accessToken,
-      title: !req.body?.title ? "''" : req.body.title,
-      artist: !req.body?.artist ? "''" : req.body.artist,
+      apiKey: "Emmh0nWJW5bLOM7upFEGZHuabVmKQZQGX683zYuWhQLpHtW4BitKMv8xa8eb-IoQ",
+      title: !title ? "''" : title,
+      artist: !artist ? "''" : artist,
       optimizeQuery: true
     };
 
@@ -22,39 +23,43 @@ async function searchSongs(artist, title) {
 
   } catch (err) {
     console.log(err, "<<< ERR SEARCH SONGS");
-    next(err)
+    throw (err)
     // INSERT ERROR HANDLER HERE
   }
 }
 
 async function getSongDetailById(id) {  // returns an object containing the original lyrics (string), split lyrics (array), index of missing words (array) and the URL to its video/music
+
   try {
-    const lyrics = await backOff(async () => {
-      const { lyrics, media } = await lyricist.song(id, { fetchLyrics: true });
-      // console.log(media);
+    const songById = await backOff(async () => {
+      const { lyrics, media, title } = await lyricist.song(id, { fetchLyrics: true });
+
       if (!lyrics) {
-        return Promise.reject()
+        return Promise.reject({ name: "SearchSongByIdFail" })
       }
 
       let splitLyrics = lyrics.split('\n')
 
-      const song = { lyrics, media, splitLyrics }
+      const song = { id, title, lyrics, media, splitLyrics }
 
-      redis.set(id, song)
       return song
     });
 
+    return songById
+
   } catch (err) {
     console.log(err, "<<< ERR GET LYRICS BY ID");
-    next(err)
+    throw (err)
   }
 }
 
 function convertLyricsToQuestion(song, index) {  // This function accepts a song object (the result from getSongDetailById func) and the intentionally emptied out parts' index. Based on its index, the parts of the splitLyrics is replaced with a fixed character (underscores atm), and then returns the splitLyrics (now question) as an Array of Strings.
+  // console.log(song, "<<<<");
   const { lyrics, splitLyrics, media } = song
   let count = 0
+  // console.log(splitLyrics);
   let question = splitLyrics.map((row, i) => {
-    if (i !== index[count] || count > index.length) {
+    if (i !== +index[count] || count > index.length) {
       return row
     }
     else {
@@ -83,7 +88,7 @@ function getListeningScore(splitLyrics, answer, index) {  // This function accep
     scores.push(correctMatch / trueAnswers.length)
   });
 
-  let avgScore = (scores.reduce((total, num) => total += num)) / scores.length
+  let avgScore = Math.round((scores.reduce((total, num) => total += num)) / scores.length * 100)
   return avgScore
 }
 

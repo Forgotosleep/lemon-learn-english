@@ -38,7 +38,9 @@ const errorHandler = (err, req, res, next) => {
       err.errors?.map((error) => {
         message.push(error.message);
       });
-      res.status(400).json({ message: message.length ? message : `Invalid input data type` });
+      res.status(400).json({
+        message: message.length ? message : `Invalid input data type`,
+      });
       break;
     case "InvalidDataType":
       console.log(err, "<<< INVALID DATA TYPE");
@@ -99,11 +101,6 @@ const errorHandler = (err, req, res, next) => {
     case "InvalidUserId":
       res.status(400).json({ message: `Please check your ID` });
       break;
-    case "MaterialNotFound":
-      res.status(404).json({
-        message: err.message || `Material with ID ${err?.id} not found`,
-      });
-      break;
 
     /* CATEGORIES ERRORS */
     case "CategoryNotFound":
@@ -147,13 +144,15 @@ const errorHandler = (err, req, res, next) => {
         .json({ message: "your status is not completed for this class" });
       break;
     case "register":
-      res.status(400).json({ message: "User is already enrolled in the class" });
+      res
+        .status(400)
+        .json({ message: "User is already enrolled in the class" });
       break;
     /* WE HAVENT HANDLED THAT ONE YET ERROR */
     default:
       // res.status(500).json(err)  // For troubleshooting
       console.log(err, "<<< 500 ERRORHANDLER"); // For testing purpoises
-      console.log(err.name, "<<<>>>> Name of error"); //Display error name
+      // console.log(err.name, "<<<>>>> Name of error"); //Display error name
       res.status(500).json({ message: "Internal server error" });
   }
 };

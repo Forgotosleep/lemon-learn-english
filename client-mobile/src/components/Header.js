@@ -15,11 +15,16 @@ export default function Header() {
   function capitalizeFirstLetter([first, ...rest]) {
     return [first.toUpperCase(), ...rest].join("");
   }
+
   useEffect(() => {
     if (location.pathname === "/") {
       setValue("Home");
     } else if (location.pathname.substr(0, 8) === "/myclass") {
       setValue("My Class");
+    } else if (location.pathname.substr(0, 6) === "/tasks") {
+      setValue("Task")
+    } else if (location.pathname.substr(0, 9) === "/speaking") {
+      setValue("Speaking")
     } else {
       setValue(capitalizeFirstLetter(location.pathname.substr(1)));
     }
@@ -41,7 +46,9 @@ export default function Header() {
               <img src={psyduck} alt="psyduck" height={25} width={25} />
             </Icon>
           )}
-
+          <Icon sx={{ mr: 2 }}>
+            <img src={psyduck} alt="psyduck" height={25} width={25} />
+          </Icon>
           <strong>{value}</strong>
         </Toolbar>
       </>

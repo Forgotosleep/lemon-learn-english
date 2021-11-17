@@ -117,6 +117,8 @@ describe("Failed create score", () => {
         score: "score test",
         studentId: 3,
         taskId: 1,
+        soundUrl: "url",
+        answer: "answer",
       })
       .set({
         access_token: token,
