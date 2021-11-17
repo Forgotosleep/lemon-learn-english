@@ -5,6 +5,12 @@ let token; // teacher token 1
 let token2; // teacher token 2
 let studentToken;
 
+const { closeRedis } = require("../helpers/redis");
+afterAll((done) => {
+  closeRedis();
+  done();
+});
+
 beforeAll((done) => {
   // set initial data
   request(app)
@@ -104,9 +110,9 @@ describe("GET /classes", () => {
       });
   });
 
-  test("200 success get class with query teacherName", (done) => {
+  test("200 success get class with query", (done) => {
     request(app)
-      .get("/classes?teacherName=Mason")
+      .get("/classes?teacherName=Mason&categoryId=1&levelId=1&name=test")
       .set({
         access_token: token,
       })
@@ -115,7 +121,6 @@ describe("GET /classes", () => {
         expect(status).toBe(200);
         expect(body).toHaveProperty("result");
         expect(Array.isArray(body.result)).toBeTruthy();
-        expect(body.result.length).toBe(3);
         done();
       })
       .catch((err) => {
@@ -144,9 +149,9 @@ describe("GET /classes/active", () => {
       });
   });
 
-  test("200 success get active class with query teacherName", (done) => {
+  test("200 success get active class with query", (done) => {
     request(app)
-      .get("/classes/active?teacherName=Mason")
+      .get("/classes/active?teacherName=Mason&categoryId=1&levelId=1&name=test")
       .set({
         access_token: studentToken,
       })
@@ -155,7 +160,6 @@ describe("GET /classes/active", () => {
         expect(status).toBe(200);
         expect(body).toHaveProperty("result");
         expect(Array.isArray(body.result)).toBeTruthy();
-        expect(body.result.length).toBe(3);
         done();
       })
       .catch((err) => {

@@ -3,6 +3,12 @@ const app = require("../app");
 
 let token;
 
+const { closeRedis } = require("../helpers/redis");
+afterAll((done) => {
+  closeRedis();
+  done();
+});
+
 beforeAll((done) => {
   // set initial data
   request(app)
@@ -43,7 +49,7 @@ describe("GET /scores", () => {
 describe("GET /scores/:id", () => {
   test("200 success get score by id", (done) => {
     request(app)
-      .get(`/scores/1`)
+      .get(`/scores/2`)
       .set({
         access_token: token,
       })
@@ -51,7 +57,7 @@ describe("GET /scores/:id", () => {
         const { body, status } = response;
         console.log(response);
         expect(status).toBe(200);
-        expect(body).toHaveProperty("id", 1);
+        expect(body).toHaveProperty("id", 2);
         expect(body).toHaveProperty("score");
         expect(body).toHaveProperty("taskId");
         expect(body).toHaveProperty("answer");

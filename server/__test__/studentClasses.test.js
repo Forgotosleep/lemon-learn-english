@@ -4,7 +4,11 @@ const app = require("../app");
 let token; // teacher token
 let studentToken;
 let studentToken2;
-
+const { closeRedis } = require("../helpers/redis");
+afterAll((done) => {
+  closeRedis();
+  done();
+});
 beforeAll((done) => {
   // set initial data
   request(app)

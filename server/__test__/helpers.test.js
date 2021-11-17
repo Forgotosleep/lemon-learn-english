@@ -2,6 +2,11 @@ const request = require("supertest");
 const app = require("../app");
 
 let token;
+const { closeRedis } = require("../helpers/redis");
+afterAll((done) => {
+  closeRedis();
+  done();
+});
 
 beforeAll((done) => {
   // set initial data
@@ -26,20 +31,20 @@ describe("Test UploadCloudinary and AIPronouncation", () => {
     request(app)
       .post("/scores/get-score")
       .attach("audioBuffer", "__test__/file/sound.wav")
-      .field("taskId", 2)
+      .field("question", "i don't understand")
       .set({
         access_token: token,
       })
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
+        // expect(body).toBe("message", "test");
         done();
       })
       .catch((err) => {
         done(err);
       });
   });
-
   test("201 success create scores", (done) => {
     request(app)
       .post("/scores")
