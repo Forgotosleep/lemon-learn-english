@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { getScore, addScore } from '../store/actions/actionScores';
-import { fetchTask } from '../store/actions/actionTasks';
+import { fetchTask, setTask } from '../store/actions/actionTasks';
 
 function SpeakingStudent() {
   const dispatch = useDispatch()
@@ -14,6 +14,9 @@ function SpeakingStudent() {
   const { task } = useSelector(state => state.tasks)
   useEffect(() => {
     dispatch(fetchTask(taskId))
+    return () => {
+      dispatch(setTask({}))
+    }
   }, [])
 
   const submitAudio = () => {

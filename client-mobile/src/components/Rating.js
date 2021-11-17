@@ -15,7 +15,6 @@ function Ratings(props) {
   const [value, setValue] = React.useState(2);
   const [hover, setHover] = React.useState(-1);
   const { handleRate, status } = props
-  console.log(status)
   return (
     <Box
       sx={{

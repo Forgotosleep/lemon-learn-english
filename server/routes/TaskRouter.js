@@ -11,7 +11,7 @@ route.get("/class/:classId", TaskController.getTaskByClass);
 route.get("/search-songs", authorizationTeacher, TaskController.searchSong)  // Accepts two queries of 'artist' and 'title'. Returns an array of object (songs) that matches said criteria. If no matches are found, some kind of popular songs is still returned from the API.
 route.get("/search-songs/:songId", authorizationTeacher, TaskController.getSongDetails)
 route.post("/question", authorizationTeacher, TaskController.getQuestion)
-route.post("/get-listening-score", authorizationTeacher, TaskController.getListeningScore)
+route.post("/get-listening-score", TaskController.getListeningScore)
 route.get("/:id", TaskController.getById);
 // Teachers gets to create, update and delete task for students.
 route.post("/", authorizationTeacher, TaskController.create);

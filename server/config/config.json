@@ -4,9 +4,7 @@
     "password": "postgres",
     "database": "lemon-learn-english",
     "host": "localhost",
-    "dialect": "postgres",
-    "port": "5433",
-    "logging": false
+    "dialect": "postgres"
   },
   "test": {
     "username": "postgres",

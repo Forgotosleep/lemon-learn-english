@@ -39,7 +39,7 @@ function App() {
 
           <Route path="/search-song" element={<SearchSongGuard />} />
           <Route path="/create-listening-task/:id" element={<CreateTaskGuard />} />
-          <Route path="/listening-answer" element={access_token ? <ListeningAnswer /> : <Navigate to="/login" />} />
+          <Route path="/listening-answer/:id" element={access_token ? <ListeningAnswer /> : <Navigate to="/login" />} />
 
           <Route path="/tasks/:id" element={access_token ? <StudentTask /> : <Navigate to="/login" />} />
           <Route path="/speaking/:id" element={access_token ? <SpeakingStudent /> : <Navigate to="/login" />} />
