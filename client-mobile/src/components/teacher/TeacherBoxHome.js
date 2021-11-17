@@ -1,9 +1,7 @@
-import "../assets/css/App.css";
 import { Grid, Box } from "@mui/material";
-import pikachugif from "../assets/image/pikachugif.gif";
 import { brown } from "@mui/material/colors";
 import { useSelector } from "react-redux";
-function BoxHome() {
+function TeacherBoxHome() {
   const { user } = useSelector((state) => state["user"]);
   return (
     <>
@@ -15,9 +13,9 @@ function BoxHome() {
                 marginLeft: 20,
               }}
             >
-              Hello , {user["name"]}
+              Hello , {user["name"]}, {user["role"]}
               <br />
-              are you ready to join a class ?
+              Are you ready to teach some students?
             </p>
           </Grid>
         </Grid>
@@ -26,4 +24,4 @@ function BoxHome() {
   );
 }
 
-export default BoxHome;
+export default TeacherBoxHome;
