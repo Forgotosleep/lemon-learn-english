@@ -1,7 +1,7 @@
 const getScore = require("../helpers/pronunciation");
 const uploadAudio = require("../helpers/uploadCloudinary");
 
-const { Score, Task } = require("../models");
+const { Score } = require("../models");
 class ScoresController {
   static async displayAll(req, res, next) {
     try {
@@ -14,32 +14,24 @@ class ScoresController {
   static async displayOne(req, res, next) {
     try {
       const { id } = req.params;
+      console.log("score ayase", id);
       const resp = await Score.findOne({ where: { id } });
       if (!resp) throw { name: "ScoreNotFound", id };
       res.status(200).json(resp);
     } catch (err) {
+      console.log("score ayaya", err);
       next(err);
     }
   }
   static async createScore(req, res, next) {
     try {
-<<<<<<< HEAD
-      const soundUrl = await uploadAudio(req.file);
-      const { score, studentId, taskId, answer } = req.body;
-      console.log("soundUrl:", soundUrl);
-      const resp = await Score.create({
-        score,
-        studentId,
-        taskId,
-=======
-      const { id } = req.user
+      const { id } = req.user;
       const soundUrl = await uploadAudio(req.file);
       const { score, taskId, answer } = req.body;
       const resp = await Score.create({
         score,
         studentId: id, //: 1, // harcode req.user.id (student)
         taskId, //: 1, // harcode
->>>>>>> upstream/development
         soundUrl,
         answer,
       });
@@ -53,17 +45,9 @@ class ScoresController {
 
   static async getScore(req, res, next) {
     try {
-<<<<<<< HEAD
-      const { taskId } = req.body;
       const file = req.file;
-      const task = await Task.findByPk(taskId);
-      if (!task) throw { name: "TaskNotFound", taskId };
-      const resp = await getScore(file, task.question); //task.question
-=======
-      const file = req.file;
-      const { question } = req.body
+      const { question } = req.body;
       const resp = await getScore(file, question);
->>>>>>> upstream/development
       res.status(200).json(resp);
     } catch (err) {
       next(err);

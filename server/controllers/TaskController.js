@@ -1,7 +1,9 @@
 const { Op } = require("sequelize");
 const { Task, Class, Score } = require("../models");
-const Redis = require("ioredis");
-const redis = new Redis();
+const { initRedis } = require("../helpers/redis");
+const redis = initRedis();
+// const Redis = require("ioredis");
+
 const {
   searchSongs,
   getSongDetailById,
@@ -80,7 +82,7 @@ class TaskController {
   static async delete(req, res, next) {
     const id = req.params.id;
     try {
-      const task = await Task.findByPk(id);
+      // const task = await Task.findByPk(id);
 
       await Task.destroy({ where: { id } });
 
@@ -105,20 +107,19 @@ class TaskController {
         .status(200)
         .json({ result: result[1][0], message: `Task with ID ${id} Updated` });
     } catch (err) {
-      console.log("rito:", err.name);
       next(err);
     }
   }
 
   static async searchSong(req, res, next) {
-    const { artist, title } = req.query;
-    const songs = await searchSongs(artist, title);
+    try {
+      const { artist, title } = req.query;
+      const songs = await searchSongs(artist, title);
 
-    res.status(200).json(songs);
-  }
-  catch(err) {
-    console.log(err);
-    next(err);
+      res.status(200).json(songs);
+    } catch (err) {
+      next(err);
+    }
   }
 
   static async getSongDetails(req, res, next) {
@@ -139,7 +140,6 @@ class TaskController {
 
       res.status(200).json(songDetail);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -176,7 +176,6 @@ class TaskController {
         res.status(200).json({ result });
       }
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -189,7 +188,7 @@ class TaskController {
       if (checkCache) {
         const cachedSong = JSON.parse(checkCache);
         if (cachedSong.id == id) {
-          const { splitLyrics } = JSON.parse(cachedSong);
+          const { splitLyrics } = cachedSong; //JSON.parse(cachedSong);
           const score = getListeningScore(splitLyrics, answer, index);
           res.status(200).json({ score });
         }
@@ -199,7 +198,6 @@ class TaskController {
         res.status(200).json({ score });
       }
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
