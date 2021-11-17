@@ -67,7 +67,7 @@ class StudentClassController {
           classId
         }
       })
-      res.status(200).json({message: "Success update status"})
+      res.status(200).json({ message: "Success update status" })
     } catch (err) {
       next(err)
     }
@@ -162,6 +162,11 @@ class StudentClassController {
         },
         include: {
           model: Class,
+          where: {
+            status: {
+              [Op.notLike]: '%hidden%'
+            }
+          },
           include: {
             model: User,
             as: "teacher",

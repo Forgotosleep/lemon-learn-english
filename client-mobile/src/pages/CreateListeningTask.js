@@ -35,7 +35,7 @@ const CreateListeningTask = () => {
   useEffect(() => {
     if (!isLoading) {
       if (cekMedia) {
-        alertError("this song didnt have a sound url, you must add sound url manually");
+        alertError("This song doesn't have a valid playback URL, please add one manually");
       }
     }
   }, [cekMedia]);
@@ -63,7 +63,7 @@ const CreateListeningTask = () => {
 
     if (cekMedia) {
       if (soundUrl === "") {
-        alertError("this song didnt have a sound url, you must add sound url manually");
+        alertError("This song doesn't have a valid playback URL, please add one manually");
       } else {
         payload.song.media = [{ url: soundUrl }];
         const result = await alertSure();
@@ -193,7 +193,7 @@ const CreateListeningTask = () => {
                       marginBottom: "2rem",
                     }}
                   >
-                    Choice liric for your task
+                    Press on the lyrics to designate as your questions (you can choose more than one)
                   </h5>
                 </div>
                 {splitLyrics?.map((row, index) =>
