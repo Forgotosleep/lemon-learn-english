@@ -1,16 +1,8 @@
 /* SETUP */
-const {
-  getLyrics,
-  getSong,
-  searchSong,
-  getAlbumArt,
-  getSongById,
-} = require("genius-lyrics-api");
+const { getLyrics, getSong, searchSong, getAlbumArt, getSongById } = require("genius-lyrics-api");
 const Lyricist = require("lyricist/node6");
 const { backOff } = require("exponential-backoff");
 const geniusToken = process.env.GENIUSTOKEN
-
-const accessToken = process.env.GENIUSTOKEN; // Get this thing into a .env BEFORE DEPLOYING
 const lyricist = new Lyricist(
   geniusToken
 );
@@ -100,9 +92,7 @@ function getListeningScore(splitLyrics, answer, index) {
 
   // console.log(scores, "<<< GET LISTEINGIN SCORE HELPER");
 
-  let avgScore = Math.round(
-    (scores.reduce((total, num) => (total += num)) / scores.length) * 100
-  );
+  let avgScore = Math.round((scores.reduce((total, num) => (total += num)) / scores.length) * 100);
 
   return avgScore;
 }

@@ -1,5 +1,6 @@
 import { brown } from "@mui/material/colors";
-import { Col, Row, Image, Card, Badge } from "react-bootstrap";
+import { Col, Row, Image, Card, Badge, Dropdown } from "react-bootstrap";
+import ModalDetailListening from "./ModalDetailListening";
 import ModalDetailTasks from "./ModalDetailTasks";
 function CardStudent(props) {
   const { data, state } = props;
@@ -47,9 +48,20 @@ function CardStudent(props) {
               </Row>
             </Col>
             <Col md={12} xs={12}>
-              <div className="d-grid mt-2 gap-2">
-                <ModalDetailTasks tasks={data.student.Scores} />
-              </div>
+              {state.category === "speaking" ? (
+                <div className="d-grid mt-2 gap-2">
+                  <ModalDetailTasks tasks={data.student.Scores} />
+                </div>
+              ) : (
+                <Dropdown className="d-grid mt-2 gap-2" id="dropdown-basic">
+                  <Dropdown.Toggle variant="outline-success">Detail Task</Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {data.student.Scores.map((el) => (
+                      <ModalDetailListening key={el.id} tasks={el} />
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
             </Col>
           </Row>
         </div>
