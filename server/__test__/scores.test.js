@@ -88,59 +88,55 @@ describe("Failed get score by id", () => {
   });
 });
 
-// describe("POSTS /scores", () => {
-//   test("201 success create scores", (done) => {
-//     request(app)
-//       .post("/scores")
-//       .send({
-//         score: "90",
-//         studentId: 1,
-//         taskId: 1,
-//         soundUrl: "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
-//         answer: "https://www.youtube.com/watch?v=IIZn_cEP9Jg",
-//       })
-//       .set({
-//         access_token: token,
-//       })
-//       .then((response) => {
-//         const { body, status } = response;
-//         expect(status).toBe(201);
-//         expect(body).toHaveProperty("score", 90);
-//         expect(body).toHaveProperty("studentId", 1);
-//         expect(body).toHaveProperty("taskId", 1);
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
-// });
-
-// describe("Failed create score", () => {
-//   test("400 failed create score", (done) => {
-//     request(app)
-//       .post("/scores")
-//       .send({
-//         score: "score test",
-//         studentId: 3,
-//         taskId: 1,
-//         soundUrl: "url",
-//         answer: "answer",
-//       })
-//       .set({
-//         access_token: token,
-//       })
-//       .then((response) => {
-//         const { body, status } = response;
-//         expect(status).toBe(400);
-//         expect(body).toHaveProperty("message", ["Score has to be a number"]);
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
-// });
+describe("POSTS /scores", () => {
+  test("201 success create scores", (done) => {
+    request(app)
+      .post("/scores")
+      .attach("soundUrl", "__test__/file/sound.wav")
+      .field("score", "90")
+      .field("studentId", 1)
+      .field("taskId", 1)
+      .field("answer", "https://www.youtube.com/watch?v=IIZn_cEP9Jg")
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(201);
+        expect(body).toHaveProperty("score", 90);
+        expect(body).toHaveProperty("studentId", 1);
+        expect(body).toHaveProperty("taskId", 1);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
+describe("Failed create score", () => {
+  test("400 failed create score", (done) => {
+    request(app)
+      .post("/scores")
+      .attach("soundUrl", "__test__/file/sound.wav")
+      .field("score", "score test")
+      .field("studentId", 3)
+      .field("taskId", 1)
+      .field("answer", "answer")
+      .set({
+        access_token: token,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(400);
+        2;
+        expect(body).toHaveProperty("message", ["Score has to be a number"]);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
 
 describe("UPDATE /scores/:id", () => {
   test("200 success update score", (done) => {

@@ -1,4 +1,9 @@
-import { SET_USER, SET_ISLOGGEDIN, SET_ISLOADING, SET_ISERROR } from "../actionTypes";
+import {
+  SET_USER,
+  SET_ISLOGGEDIN,
+  SET_ISLOADING,
+  SET_ISERROR,
+} from "../actionTypes";
 
 import ApiServer from "../api/axios";
 
@@ -20,6 +25,7 @@ export function getUser() {
         },
       });
 
+      console.log("get user:", data);
       dispatch(setUser(data));
     } catch (error) {
       console.log(error);
@@ -56,6 +62,33 @@ export function fetchLogin(payload) {
         url: "/login",
         method: "POST",
         data: payload,
+      })
+        .then(({ data }) => {
+          localStorage.setItem("access_token", data.access_token);
+          dispatch(setIsLoggedIn(true));
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
+    });
+  };
+}
+
+export function googleLogin(payload) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setIsLoading(true));
+      // console.log(payload);
+      ApiServer({
+        url: "/google",
+        method: "POST",
+        data: {
+          token: payload,
+        },
       })
         .then(({ data }) => {
           localStorage.setItem("access_token", data.access_token);

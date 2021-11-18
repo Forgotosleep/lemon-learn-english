@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Icon, IconButton } from "@mui/material";
+import { AppBar, Toolbar, Icon, IconButton, Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { yellow, brown } from "@mui/material/colors";
@@ -6,10 +6,13 @@ import { ArrowBack } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import psyduck from "../assets/icon/psyduck.svg";
 import { useDispatch } from "react-redux";
-import { setTask } from "../store/actions/actionTasks";
+import { getUser, setUser } from "../store/actions/actionUser";
+import { setScore, setScores } from "../store/actions/actionScores";
+import { setTask, setTasks } from "../store/actions/actionTasks";
+import { setClasses } from "../store/actions/actionClasses";
 
 export default function Header() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const location = useLocation();
   const [value, setValue] = useState(location.pathname);
   const color = {
@@ -21,8 +24,8 @@ export default function Header() {
   }
 
   const setEmpty = () => {
-    dispatch(setTask({}))
-  }
+    dispatch(setTask({}));
+  };
   useEffect(() => {
     if (location.pathname === "/") {
       setValue("Home");
@@ -44,7 +47,25 @@ export default function Header() {
       setValue(capitalizeFirstLetter(location.pathname.substr(1)));
     }
   }, [location.pathname]);
-  const displayDesktop = () => {
+
+  const DisplayDesktop = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    function logout() {
+      dispatch(setUser({}));
+      dispatch(setClasses([]));
+
+      dispatch(setTask({}));
+      dispatch(setTasks([]));
+
+      dispatch(setScore({}));
+      dispatch(setScores([]));
+
+      localStorage.removeItem("access_token");
+      navigate("/login");
+    }
+
     return (
       <>
         <Toolbar>
@@ -65,7 +86,11 @@ export default function Header() {
               <ArrowBack />
             </IconButton>
           ) : value === "Listening Answer" ? (
-            <IconButton onClick={setEmpty} component={Link} to={`/tasks/${location.state?.id}`}>
+            <IconButton
+              onClick={setEmpty}
+              component={Link}
+              to={`/tasks/${location.state?.id}`}
+            >
               <ArrowBack />
             </IconButton>
           ) : (
@@ -74,6 +99,15 @@ export default function Header() {
             </Icon>
           )}
           <strong>{value}</strong>
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            onClick={logout}
+            style={{ marginLeft: "auto", padding: "10px" }}
+          >
+            Logout
+          </Button>
         </Toolbar>
       </>
     );
@@ -82,7 +116,7 @@ export default function Header() {
   return (
     <header>
       <AppBar position="static" style={color}>
-        {displayDesktop()}
+        {DisplayDesktop()}
       </AppBar>
     </header>
   );

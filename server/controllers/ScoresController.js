@@ -8,6 +8,7 @@ class ScoresController {
       const resp = await Score.findAll();
       res.status(200).json(resp);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }
@@ -18,7 +19,6 @@ class ScoresController {
       if (!resp) throw { name: "ScoreNotFound", id };
       res.status(200).json(resp);
     } catch (err) {
-      console.log("score ayaya", err);
       next(err);
     }
   }
@@ -32,6 +32,7 @@ class ScoresController {
       }
 
       const { score, taskId, answer } = req.body;
+
       const resp = await Score.create({
         score,
         studentId: id, //: 1, // harcode req.user.id (student)
@@ -39,8 +40,6 @@ class ScoresController {
         soundUrl,
         answer,
       });
-      console.log("resp nice", resp);
-      console.log("soundUrl", soundUrl);
       res.status(201).json(resp);
     } catch (err) {
       next(err);

@@ -89,6 +89,28 @@ describe("POSTS /classes", () => {
         done(err);
       });
   });
+
+  test("403 failed create class forbidden", (done) => {
+    request(app)
+      .post("/classes")
+      .send({
+        name: "class test",
+        levelId: 3,
+        categoryId: 1,
+      })
+      .set({
+        access_token: studentToken,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(403);
+        expect(body).toHaveProperty("message");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
 });
 
 describe("GET /classes", () => {
