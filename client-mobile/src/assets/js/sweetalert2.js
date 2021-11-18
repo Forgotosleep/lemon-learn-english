@@ -26,6 +26,18 @@ export function alertErrorClick(text) {
   });
 }
 
+export function alertScore(text) {
+  let temp = text;
+  if (text === 0) {
+    temp = "0";
+  }
+  Swal.fire({
+    title: "your score",
+    text: temp,
+    icon: "success",
+  });
+}
+
 export async function alertSure() {
   const result = await Swal.fire({
     title: "Are you Sure ?",
