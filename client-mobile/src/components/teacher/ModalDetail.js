@@ -30,11 +30,11 @@ function ModalDetail(props) {
         </Modal.Header>
         <Modal.Body>
           {category === "listening" ? (
-            <p>
+            <pre>
               {song.song.splitLyrics.map((el, idx) => (
-                <>{song.index.includes(idx) ? <b style={{ color: "lightseagreen" }}>{el} </b> : el + " "}</>
+                <>{song.index.includes(idx) ? <b style={{ color: "lightseagreen" }}>{el + "\n"}</b> : el + "\n"}</>
               ))}
-            </p>
+            </pre>
           ) : (
             task.question
           )}

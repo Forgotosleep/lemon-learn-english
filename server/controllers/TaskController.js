@@ -3,7 +3,9 @@ const { Op } = require("sequelize");
 const { Task, Class, Score } = require("../models");
 const { initRedis } = require("../helpers/redis");
 const redis = initRedis();
+
 // const Redis = require("ioredis");
+// const redis = new Redis(process.env.REDIS_URL);
 
 const {
   searchSongs,
@@ -82,6 +84,7 @@ class TaskController {
 
       res.status(200).json(task);
     } catch (err) {
+      console.log("xderror", err);
       next(err);
     }
   }

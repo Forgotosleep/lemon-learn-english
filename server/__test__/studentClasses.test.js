@@ -276,3 +276,22 @@ describe("PATCH /student-class/:id", () => {
       });
   });
 });
+
+describe("GET /student-class/:classId", () => {
+  test("200 success student complete class", (done) => {
+    request(app)
+      .patch("/student-class/status/1")
+      .set({
+        access_token: studentToken,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("message", "Success update status");
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+});
