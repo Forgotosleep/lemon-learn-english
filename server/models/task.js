@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Task.belongsTo(models.Class, { foreignKey: "classId" });
-      Task.hasOne(models.Score, { foreignKey: "taskId" });
+      Task.hasMany(models.Score, { foreignKey: "taskId" });
     }
   }
   Task.init(

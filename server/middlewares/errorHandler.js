@@ -28,7 +28,7 @@ const errorHandler = (err, req, res, next) => {
       res.status(400).json({ message });
       break;
     case "SequelizeDatabaseError":
-      // console.log(err, "<<< SEQ DATABASE ERR");
+      console.log(err, "<<< SEQ DATABASE ERR");
       err.errors?.map((error) => {
         message.push(error.message);
       });

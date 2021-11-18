@@ -46,18 +46,17 @@ class TaskController {
   static async getTaskByClass(req, res, next) {
     try {
       const { classId } = req.params;
-
       const studentId = req.user.id;
-
-      if (!Number(classId)) throw { name: "InvalidMaterialId" };
+      const id = Number(classId)
+      if (!Number(id)) throw { name: "InvalidMaterialId" };
       const classData = await Class.findByPk(classId);
       if (!classData) throw { name: "ClassNotFound", id: classId };
       const resp = await Task.findAll({
         where: {
-          classId,
+          classId: id,
         },
         include: {
-          model: Score,
+          model: Score
         },
         distinct: true,
       });
