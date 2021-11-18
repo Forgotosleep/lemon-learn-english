@@ -1,18 +1,21 @@
 import AudioReactRecorder, { RecordState } from "audio-react-recorder";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { getScore, addScore } from "../store/actions/actionScores";
 import { fetchTask, setTasks } from "../store/actions/actionTasks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone, faStop } from "@fortawesome/free-solid-svg-icons";
+import { alertSuccess } from "../assets/js/sweetalert2";
 
 function SpeakingStudent() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [recordState, setRecordState] = useState(null);
   const [audioData, setAudioData] = useState();
   const [score, setScore] = useState();
   const { id: taskId } = useParams();
+  const { state } = useLocation();
   const { task } = useSelector((state) => state.tasks);
   useEffect(() => {
     dispatch(fetchTask(taskId));
@@ -29,6 +32,10 @@ function SpeakingStudent() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        navigate("/class");
+        alertSuccess("your task is complete");
       });
   };
 
@@ -47,8 +54,7 @@ function SpeakingStudent() {
   };
 
   function onClick() {
-    let state =
-      recordState === RecordState.START ? RecordState.STOP : RecordState.START;
+    let state = recordState === RecordState.START ? RecordState.STOP : RecordState.START;
     setRecordState(state);
   }
 
@@ -81,25 +87,13 @@ function SpeakingStudent() {
         </div>
         {score ? (
           <div className="d-flex flex-row mt-3 justify-content-around">
-            <button
-              disabled
-              className="button rounded btn-secondary mb-2 w-25"
-              onClick={start}
-            >
+            <button disabled className="button rounded btn-secondary mb-2 w-25" onClick={start}>
               START
             </button>
-            <button
-              disabled
-              className="button rounded btn-warning mb-2 w-25"
-              onClick={stop}
-            >
+            <button disabled className="button rounded btn-warning mb-2 w-25" onClick={stop}>
               STOP
             </button>
-            <button
-              disabled
-              className="button rounded btn-success mb-2 w-25"
-              onClick={submitAudio}
-            >
+            <button disabled className="button rounded btn-success mb-2 w-25" onClick={submitAudio}>
               SUBMIT
             </button>
           </div>
@@ -128,25 +122,9 @@ function SpeakingStudent() {
               }}
               onClick={onClick}
             >
-              {recordState === RecordState.START ? (
-                <FontAwesomeIcon
-                  icon={faStop}
-                  color="white"
-                  size="3x"
-                ></FontAwesomeIcon>
-              ) : (
-                <FontAwesomeIcon
-                  icon={faMicrophone}
-                  color="white"
-                  size="3x"
-                ></FontAwesomeIcon>
-              )}
+              {recordState === RecordState.START ? <FontAwesomeIcon icon={faStop} color="white" size="3x"></FontAwesomeIcon> : <FontAwesomeIcon icon={faMicrophone} color="white" size="3x"></FontAwesomeIcon>}
             </button>
-            <button
-              className="btn rounded btn-success"
-              onClick={submitAudio}
-              style={{ width: "100px" }}
-            >
+            <button className="btn rounded btn-success" onClick={submitAudio} style={{ width: "100px" }}>
               SUBMIT
             </button>
           </div>
