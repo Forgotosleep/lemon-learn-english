@@ -13,8 +13,11 @@ import { setClasses } from "../store/actions/actionClasses";
 
 export default function Header() {
   const dispatch = useDispatch();
+
   const location = useLocation();
+  const id = Number(location.pathname.substr(7));
   const [value, setValue] = useState(location.pathname);
+  console.log("/tasks/" + id, location.pathname, value);
   const color = {
     backgroundColor: yellow[600],
     color: brown[700],
@@ -31,6 +34,8 @@ export default function Header() {
       setValue("Home");
     } else if (location.pathname.substr(0, 8) === "/myclass") {
       setValue("My Class");
+    } else if (location.pathname === "/tasks/" + id) {
+      setValue("My Tasks");
     } else if (location.pathname.substr(0, 6) === "/tasks") {
       setValue("Tasks");
     } else if (location.pathname.substr(0, 9) === "/speaking") {
@@ -85,12 +90,12 @@ export default function Header() {
             <IconButton component={Link} to="/">
               <ArrowBack />
             </IconButton>
+          ) : value === "My Tasks" ? (
+            <IconButton component={Link} to="/class">
+              <ArrowBack />
+            </IconButton>
           ) : value === "Listening Answer" ? (
-            <IconButton
-              onClick={setEmpty}
-              component={Link}
-              to={`/tasks/${location.state?.id}`}
-            >
+            <IconButton onClick={setEmpty} component={Link} to={`/tasks/${location.state?.id}`}>
               <ArrowBack />
             </IconButton>
           ) : (
@@ -99,13 +104,7 @@ export default function Header() {
             </Icon>
           )}
           <strong>{value}</strong>
-          <Button
-            size="small"
-            variant="contained"
-            color="primary"
-            onClick={logout}
-            style={{ marginLeft: "auto", padding: "10px" }}
-          >
+          <Button size="small" variant="contained" color="primary" onClick={logout} style={{ marginLeft: "auto", padding: "10px" }}>
             Logout
           </Button>
         </Toolbar>

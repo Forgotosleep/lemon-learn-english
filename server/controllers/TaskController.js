@@ -7,12 +7,7 @@ const redis = initRedis();
 // const Redis = require("ioredis");
 // const redis = new Redis(process.env.REDIS_URL);
 
-const {
-  searchSongs,
-  getSongDetailById,
-  convertLyricsToQuestion,
-  getListeningScore,
-} = require("../helpers/getSongs");
+const { searchSongs, getSongDetailById, convertLyricsToQuestion, getListeningScore } = require("../helpers/getSongs");
 
 class TaskController {
   static async create(req, res, next) {
@@ -54,16 +49,23 @@ class TaskController {
       if (!Number(classId)) throw { name: "InvalidMaterialId" };
       const classData = await Class.findByPk(classId);
       if (!classData) throw { name: "ClassNotFound", id: classId };
-      const resp = await Task.findAll({
+      const tasks = await Task.findAll({
         where: {
           classId,
         },
-        include: {
-          model: Score,
-        },
-        distinct: true,
       });
-      res.status(200).json(resp);
+      let temp = [];
+      for (const key in tasks) {
+        temp.push(tasks[key]["id"]);
+      }
+      const score = await Score.findAll({
+        where: {
+          studentId,
+          taskId: temp,
+        },
+      });
+      const result = { tasks, score };
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }
@@ -113,9 +115,7 @@ class TaskController {
         returning: true,
       });
 
-      res
-        .status(200)
-        .json({ result: result[1][0], message: `Task with ID ${id} Updated` });
+      res.status(200).json({ result: result[1][0], message: `Task with ID ${id} Updated` });
     } catch (err) {
       next(err);
     }

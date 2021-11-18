@@ -16,7 +16,11 @@ class StudentClassController {
       });
       if (checkMaxClass.length > maxClass) throw { name: "maxStudentClass" };
       const checkResgiter = await StudentClass.findOne({
-        where: { studentId: id, status: "incomplete", classId },
+        where: {
+          studentId: id,
+          status: ["incomplete", "complete"],
+          classId,
+        },
       });
       if (checkResgiter) throw { name: "register" };
       const resp = await StudentClass.create({
@@ -37,8 +41,7 @@ class StudentClassController {
       if (!Number(id)) throw { name: "InvalidDataType" };
       const studentClassData = await StudentClass.findByPk(id);
       if (!studentClassData) throw { name: "StudentClassNotFound", id: id };
-      if (studentClassData["studentId"] !== studentId)
-        throw { name: "Unauthorized" };
+      if (studentClassData["studentId"] !== studentId) throw { name: "Unauthorized" };
       const resp = await StudentClass.update(
         {
           status: "incomplete",
@@ -57,19 +60,22 @@ class StudentClassController {
 
   static async updateStudentComplete(req, res, next) {
     try {
-      const { id: studentId } = req.user
-      const { id: classId } = req.params
-      const resp = await StudentClass.update({
-        status: 'complete'
-      }, {
-        where: {
-          studentId,
-          classId
+      const { id: studentId } = req.user;
+      const { id: classId } = req.params;
+      const resp = await StudentClass.update(
+        {
+          status: "complete",
+        },
+        {
+          where: {
+            studentId,
+            classId,
+          },
         }
-      })
-      res.status(200).json({ message: "Success update status" })
+      );
+      res.status(200).json({ message: "Success update status" });
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
   static async updateStudentHidden(req, res, next) {
@@ -79,8 +85,7 @@ class StudentClassController {
       if (!Number(id)) throw { name: "InvalidDataType" };
       const studentClassData = await StudentClass.findByPk(Number(id));
       if (!studentClassData) throw { name: "StudentClassNotFound", id };
-      if (studentClassData["studentId"] !== studentId)
-        throw { name: "Unauthorized" };
+      if (studentClassData["studentId"] !== studentId) throw { name: "Unauthorized" };
 
       await StudentClass.update(
         {
@@ -143,8 +148,7 @@ class StudentClassController {
         offset,
       };
       if (status) option["where"]["status"] = status;
-      if (studentName)
-        option["include"]["where"]["name"] = { [Op.iLike]: `%${studentName}%` };
+      if (studentName) option["include"]["where"]["name"] = { [Op.iLike]: `%${studentName}%` };
       const result = await StudentClass.findAndCountAll(option);
       const data = getPagingData(result, page, limit);
       res.status(200).json(data);
@@ -164,8 +168,8 @@ class StudentClassController {
           model: Class,
           where: {
             status: {
-              [Op.notLike]: '%hidden%'
-            }
+              [Op.notLike]: "%hidden%",
+            },
           },
           include: {
             model: User,

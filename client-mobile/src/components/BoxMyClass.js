@@ -10,11 +10,12 @@ import charizard from "../assets/image/charizard.png";
 import squirtle from "../assets/image/squirtle.png";
 import wartortle from "../assets/image/wartortle.png";
 import blastoise from "../assets/image/blastoise.png";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { Badge } from "react-bootstrap";
 
 function BoxMyClass(props) {
   const { myClass } = props;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const checkLevel = () => {
     if (myClass.Class.categoryId === 1) {
       if (myClass.Class.levelId === 1) return charmander;
@@ -28,8 +29,8 @@ function BoxMyClass(props) {
   };
 
   const toTask = (id, status) => {
-    navigate(`/tasks/${id}`, { state: { status, categoryId: myClass.Class.categoryId  } })
-  }
+    navigate(`/tasks/${id}`, { state: { status, categoryId: myClass.Class.categoryId } });
+  };
 
   return (
     <>
@@ -44,6 +45,7 @@ function BoxMyClass(props) {
             >
               {myClass?.Class.name}
             </Typography>
+            <Badge bg={myClass?.Class.categoryId === 1 ? "primary" : "danger"}>{myClass?.Class.categoryId === 1 ? "listening" : "speaking"}</Badge>
             <Typography
               fontSize={{
                 md: 15,
@@ -53,11 +55,10 @@ function BoxMyClass(props) {
             >
               {myClass?.Class.teacher.name}
             </Typography>
+            <Badge style={{ fontSize: 16 }} className="mt-5" bg={myClass?.status === "complete" ? "success" : "warning"}>
+              {myClass?.status}
+            </Badge>
           </CardContent>
-          {
-            myClass?.status === 'complete' ? <h5 style={{ marginLeft: 10, color: 'white' }} className="bg-success w-100 text-center rounded">{myClass?.status.toUpperCase()}</h5> :
-              <h5 style={{ marginLeft: 10, color: 'white' }} className="bg-warning w-100 text-center rounded">{myClass?.status.toUpperCase()}</h5>
-          }
         </Box>
         <CardMedia component="img" sx={{ width: 151, ml: 3 }} image={checkLevel()} alt="Live from space album cover" />
       </Card>
