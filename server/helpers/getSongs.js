@@ -8,14 +8,12 @@ const {
 } = require("genius-lyrics-api");
 const Lyricist = require("lyricist/node6");
 const { backOff } = require("exponential-backoff");
-const accessToken =
-  "Emmh0nWJW5bLOM7upFEGZHuabVmKQZQGX683zYuWhQLpHtW4BitKMv8xa8eb-IoQ"; // Get this thing into a .env BEFORE DEPLOYING
-const lyricist = new Lyricist(accessToken);
+const geniusToken = process.env.GENIUSTOKEN
 
-// const accessToken = process.env.GENIUSTOKEN; // Get this thing into a .env BEFORE DEPLOYING
-// const lyricist = new Lyricist(
-//   "Emmh0nWJW5bLOM7upFEGZHuabVmKQZQGX683zYuWhQLpHtW4BitKMv8xa8eb-IoQ"
-// );
+const accessToken = process.env.GENIUSTOKEN; // Get this thing into a .env BEFORE DEPLOYING
+const lyricist = new Lyricist(
+  geniusToken
+);
 
 /* FUNCTIONS */
 async function searchSongs(artist, title) {
@@ -23,7 +21,8 @@ async function searchSongs(artist, title) {
   try {
     // console.log(artist, title);
     const options = {
-      apiKey: accessToken,
+      apiKey:
+        geniusToken,
       title: !title ? "''" : title,
       artist: !artist ? "''" : artist,
       optimizeQuery: true,
