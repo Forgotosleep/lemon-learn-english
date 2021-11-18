@@ -4,7 +4,8 @@ let isStarted = false;
 
 function initRedis() {
   if (!isStarted) {
-    redis = new Redis();
+    // redis = new Redis();
+    redis = new Redis(process.env.REDIS_URL);
     isStarted = true;
   }
   return redis;

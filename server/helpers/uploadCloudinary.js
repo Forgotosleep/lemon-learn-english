@@ -1,14 +1,18 @@
 const cloudinary = require("cloudinary");
 const fs = require("fs");
+
+const cloudinaryKey = process.env.CLOUDINARY_API_KEY
+const cloudinarySecret = process.env.CLOUDINARY_API_SECRET
+
 const uploadAudio = async (file) => {
   try {
 
     const { path } = file;
-    const fName = new Date() + file.originalname.split(".")[0] 
+    const fName = new Date() + file.originalname.split(".")[0]
     cloudinary.config({
       cloud_name: "mrsnputra",
-      api_key: "198126765278442",
-      api_secret: "rGovGck73LODNcl51VuGAgTXKmw",
+      api_key: cloudinaryKey,
+      api_secret: cloudinarySecret,
     });
     const resp = await cloudinary.v2.uploader.upload(path, {
       resource_type: "raw",
