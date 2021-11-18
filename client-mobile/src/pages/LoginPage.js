@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { fetchLogin } from '../store/actions/actionUser';
 function LoginPage() {
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ function LoginPage() {
       [name]: value
     })
   }
-  
+
   const submitLogin = (e) => {
     e.preventDefault()
     dispatch(fetchLogin(loginData))
@@ -54,6 +54,13 @@ function LoginPage() {
           </div>
           LOGIN WITH GOOGLE
         </div>
+
+        <footer className="footer py-3" style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+          <hr style={{ minWidth: 'fit-content' }} />
+          <div className="container">
+            <span className="text-muted">Don't have an account? <Link to="/register" style={{ textDecoration: "none", color: "black", fontWeight: "bolder" }}>Sign up.</Link> </span>
+          </div>
+        </footer>
       </div >
     </>
 
