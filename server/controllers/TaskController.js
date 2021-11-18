@@ -82,6 +82,7 @@ class TaskController {
 
       res.status(200).json(task);
     } catch (err) {
+      console.log("xderror", err);
       next(err);
     }
   }
