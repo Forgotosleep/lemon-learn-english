@@ -8,3 +8,8 @@
   top: 0;
   left: 0;
 }
+audio {
+  width: 150px;
+  display: block;
+  margin: 20px;
+}

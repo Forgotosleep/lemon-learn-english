@@ -1,3 +1,4 @@
+import { alertError, alertSuccess } from "../../assets/js/sweetalert2";
 import { SET_CLASSES, SET_ISLOADING, SET_ISERROR, SET_MESSAGE_CLASSES, SET_ERROR_CLASSES, SET_CLASSES_TEACHER, SET_TEACHER_STUDENTS } from "../actionTypes";
 
 import ApiServer from "../api/axios";
@@ -201,7 +202,6 @@ export function addTask(payload) {
   };
 }
 
-
 export function updateRating(payload) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
@@ -211,14 +211,33 @@ export function updateRating(payload) {
         headers: {
           access_token: localStorage.getItem("access_token"),
         },
-        data: {ratings: payload.rating},
+        data: { ratings: payload.rating },
       })
-      .then(({data})=>{
-        resolve()
-      })
-      .catch((err)=>{
-        console.log(err.response)
-      })
-    })
-  }
+        .then(({ data }) => {
+          resolve();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    });
+  };
+}
+
+export function updateScore(payload) {
+  return async (dispatch, getState) => {
+    try {
+      const { data } = await ApiServer({
+        url: "/scores/" + payload.id,
+        method: "put",
+        headers: {
+          access_token: localStorage.getItem("access_token"),
+        },
+        data: { score: payload.score },
+      });
+      dispatch(getMyStudents({ id: payload.classId }));
+      alertSuccess("success update score");
+    } catch (error) {
+      alertError("failed to update score");
+    }
+  };
 }

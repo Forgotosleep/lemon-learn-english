@@ -1,5 +1,6 @@
-import { Badge, Button, Col, Modal, Row } from "react-bootstrap";
+import { Button, ListGroup, Modal } from "react-bootstrap";
 import { useState } from "react";
+import List from "./List";
 
 function ModalDetailTasks(props) {
   const { tasks } = props;
@@ -12,7 +13,9 @@ function ModalDetailTasks(props) {
     setShow(true);
   };
 
-    console.log(tasks)
+  const afterUpdate = (value) => {
+    setShow(false);
+  };
   return (
     <>
       <Button onClick={handleShow} variant="outline-info">
@@ -23,31 +26,11 @@ function ModalDetailTasks(props) {
           <Modal.Title>Detail Tasks</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Row>
-            {tasks.map((el, idx) => (
-              <>
-                <Col md={1} xm={1} className="mt-">
-                  <label>{idx + 1}. </label>
-                </Col>
-                <Col md={6} xm={6}>
-                  <label>{el.Task.question} </label>
-                </Col>
-                <Col md={5} xm={5}>
-                  <label>
-                    score : <Badge bg="secondary">{el.score}</Badge>{" "}
-                  </label>
-                </Col>
-
-                <Col md={12} xm={12} className="mt-1">
-                  <div align="center">
-                    <audio controls>
-                      <source src={el.soundUrl} type="audio/wav" />
-                    </audio>
-                  </div>
-                </Col>
-              </>
+          <ListGroup as="ol" numbered>
+            {tasks.map((el) => (
+              <List key={el.id} afterUpdate={afterUpdate} data={el} />
             ))}
-          </Row>
+          </ListGroup>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-secondary" onClick={handleClose}>
