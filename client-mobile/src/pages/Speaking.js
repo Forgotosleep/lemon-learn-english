@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { getScore, addScore } from "../store/actions/actionScores";
-import { fetchTask, setTasks } from "../store/actions/actionTasks";
+import { fetchTask, setTask, setTasks } from "../store/actions/actionTasks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone, faStop } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,22 +14,29 @@ function SpeakingStudent() {
   const [score, setScore] = useState();
   const { id: taskId } = useParams();
   const { task } = useSelector((state) => state.tasks);
+  const { isLoading } = useSelector((state) => state.score);
+  const [noData, setNoData] = useState(false)
+  const { user } = useSelector(state => state.user)
+  
   useEffect(() => {
     dispatch(fetchTask(taskId));
     return () => {
-      dispatch(setTasks({}));
+      dispatch(setTask({}));
     };
   }, []);
 
   const submitAudio = () => {
-    dispatch(getScore(audioData, task?.question))
-      .then((data) => {
-        setScore(data);
-        sendAudio({ audioData, scoreData: data, taskId });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!audioData) setNoData(true)
+    else {
+      dispatch(getScore(audioData, task?.question))
+        .then((data) => {
+          setScore(data);
+          sendAudio({ audioData, scoreData: data, taskId });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const sendAudio = (data) => {
@@ -79,79 +86,84 @@ function SpeakingStudent() {
           />
           <audio src={audioData?.url} className="mt-2" controls></audio>
         </div>
-        {score ? (
-          <div className="d-flex flex-row mt-3 justify-content-around">
-            <button
-              disabled
-              className="button rounded btn-secondary mb-2 w-25"
-              onClick={start}
-            >
-              START
-            </button>
-            <button
-              disabled
-              className="button rounded btn-warning mb-2 w-25"
-              onClick={stop}
-            >
-              STOP
-            </button>
-            <button
-              disabled
-              className="button rounded btn-success mb-2 w-25"
-              onClick={submitAudio}
-            >
-              SUBMIT
-            </button>
-          </div>
-        ) : (
-          <div className="d-flex flex-row mt-3 justify-content-center">
-            {/* <button
-              className="button rounded btn-secondary mb-2 w-25"
-              onClick={start}
-            >
-              START
-            </button>
-            <button
-              className="button rounded btn-warning mb-2 w-25"
-              onClick={stop}
-            >
-              STOP
-            </button> */}
-            <button
-              style={{
-                width: "70px",
-                height: "70px",
-                background: "#f4133e",
-                borderRadius: "2000px",
-                border: "none",
-                marginRight: "15px",
-              }}
-              onClick={onClick}
-            >
-              {recordState === RecordState.START ? (
-                <FontAwesomeIcon
-                  icon={faStop}
-                  color="white"
-                  size="3x"
-                ></FontAwesomeIcon>
-              ) : (
-                <FontAwesomeIcon
-                  icon={faMicrophone}
-                  color="white"
-                  size="3x"
-                ></FontAwesomeIcon>
-              )}
-            </button>
-            <button
-              className="btn rounded btn-success"
-              onClick={submitAudio}
-              style={{ width: "100px" }}
-            >
-              SUBMIT
-            </button>
-          </div>
-        )}
+        {isLoading ?
+          (
+            <center><h5>Please Wait...</h5></center>
+          ) :
+          !score ? (
+            <div className="d-flex flex-row mt-3 justify-content-center">
+              <button
+                style={{
+                  width: "70px",
+                  height: "70px",
+                  background: "#f4133e",
+                  borderRadius: "2000px",
+                  border: "none",
+                  marginRight: "15px",
+                }}
+                onClick={onClick}
+              >
+                {recordState === RecordState.START ? (
+                  <FontAwesomeIcon
+                    icon={faStop}
+                    color="white"
+                    size="3x"
+                  ></FontAwesomeIcon>
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faMicrophone}
+                    color="white"
+                    size="3x"
+                  ></FontAwesomeIcon>
+                )}
+              </button>
+              <button
+                className="btn rounded btn-success"
+                onClick={submitAudio}
+                style={{ width: "100px" }}
+              >
+                SUBMIT
+              </button>
+            </div>
+          ) : (
+            <div className="d-flex flex-row mt-3 justify-content-center">
+              <button
+                style={{
+                  width: "70px",
+                  height: "70px",
+                  background: "#f4133e",
+                  borderRadius: "2000px",
+                  border: "none",
+                  marginRight: "15px",
+                }}
+              >
+                {recordState === RecordState.START ? (
+                  <FontAwesomeIcon
+                    icon={faStop}
+                    color="white"
+                    size="3x"
+                  ></FontAwesomeIcon>
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faMicrophone}
+                    color="white"
+                    size="3x"
+                  ></FontAwesomeIcon>
+                )}
+              </button>
+              <button
+                className="btn rounded btn-success"
+                style={{ width: "100px" }}
+              >
+                SUBMIT
+              </button>
+            </div>
+          )
+        }
       </div>
+      {
+        noData ? <center><h5>Please record your voice</h5></center> : ''
+      }
       {score ? (
         <center>
           <h5>Your score is :{score}</h5>

@@ -17,7 +17,6 @@ export default function Header() {
   const location = useLocation();
   const id = Number(location.pathname.substr(7));
   const [value, setValue] = useState(location.pathname);
-  console.log("/tasks/" + id, location.pathname, value);
   const color = {
     backgroundColor: yellow[600],
     color: brown[700],

@@ -51,7 +51,7 @@ export function getScore(payload, question) {
       dispatch(setScoresIsLoading(true))
       const file = new File([payload.blob], `newData.wav`, { type: "audio/wav", lastModified: Date.now() });
       let form = new FormData()
-      form.append("audioBuffer", file)
+      form.append("file", file)
       form.append("question", question)
       ApiServer({
         url: 'http://localhost:4001/scores/get-score',
@@ -79,7 +79,7 @@ export function addScore(payload) {
       dispatch(setScoresIsLoading(true))
       const file = new File([payload.audioData.blob], "newData.wav", { type: "audio/wav", lastModified: Date.now() });
       let form = new FormData()
-      form.append("audio", file)
+      form.append("soundUrl", file)
       form.append("score", payload.scoreData)
       form.append("taskId", payload.taskId)
       ApiServer({

@@ -19,8 +19,7 @@ function StudentTask() {
   const [completed, setCompleted] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(state);
-  console.log(tasks);
+
   const checkCompletedTask = () => {
     let temp = 0;
     for (let i = 0; i < tasks.length; i++) {

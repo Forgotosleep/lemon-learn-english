@@ -15,8 +15,6 @@ function Ratings(props) {
   const [value, setValue] = React.useState(2);
   const [hover, setHover] = React.useState(-1);
   const { handleRate, tasks, score, status } = props;
-
-  console.log(tasks?.length === score?.length);
   return (
     <Box
       sx={{

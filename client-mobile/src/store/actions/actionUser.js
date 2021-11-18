@@ -25,7 +25,6 @@ export function getUser() {
         },
       });
 
-      console.log("get user:", data);
       dispatch(setUser(data));
     } catch (error) {
       console.log(error);
