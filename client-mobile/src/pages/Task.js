@@ -70,7 +70,7 @@ function StudentTask() {
       <div className="container fixed" style={{ color: brown[400] }}>
         <h1 className="mb-4">StudentTask</h1>
 
-        {tasks.tasks?.length === tasks.score?.length ? <Ratings tasks={tasks?.tasks} score={tasks?.score} state={state?.status} handleRate={handleRate} /> : ""}
+        {tasks.tasks?.length !== 0 && tasks.tasks?.length === tasks.score?.length ? <Ratings tasks={tasks?.tasks} score={tasks?.score} state={state?.status} handleRate={handleRate} /> : ""}
         <div className="row">
           {tasks.tasks?.map((task, idx) => (
             <div className="col-md-4">
