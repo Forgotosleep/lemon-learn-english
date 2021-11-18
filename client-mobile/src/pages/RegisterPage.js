@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { fetchRegister } from "../store/actions/actionUser";
 // import { fetchRegister } from "../store/action";
 
@@ -32,7 +32,7 @@ function RegisterPage() {
       .then((data) => {
         navigate('/login')
       })
-      .catch((err)=>{
+      .catch((err) => {
         console.log(err)
       })
   }
@@ -80,6 +80,12 @@ function RegisterPage() {
           </div>
           REGISTER WITH GOOGLE
         </div>
+      <footer className="footer py-3 position-relative" style={{ top: "4em" }}>
+        <hr />
+        <div className="container">
+          <span className="text-muted">Already have an account? <Link to="/login" style={{ textDecoration: "none", color: "black", fontWeight: "bolder" }}>Sign In.</Link> </span>
+        </div>
+      </footer>
       </div >
     </>
 

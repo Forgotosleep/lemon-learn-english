@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { fetchLogin, googleLogin } from "../store/actions/actionUser";
 import GoogleLogin from "react-google-login";
 function LoginPage() {
@@ -106,6 +106,28 @@ function LoginPage() {
             />
           </div>
         </div>
+
+        <footer
+          className="footer py-3"
+          style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+        >
+          <hr style={{ minWidth: "fit-content" }} />
+          <div className="container">
+            <span className="text-muted">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                style={{
+                  textDecoration: "none",
+                  color: "black",
+                  fontWeight: "bolder",
+                }}
+              >
+                Sign up.
+              </Link>{" "}
+            </span>
+          </div>
+        </footer>
       </div>
     </>
   );

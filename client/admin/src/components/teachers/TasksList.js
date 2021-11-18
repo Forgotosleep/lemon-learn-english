@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTasks, setTasks } from "../../store/actions/task";
+import { deleteTask, getTasks, setTasks } from "../../store/actions/task";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 
 export default function TasksList({ classId }) {
   const dispatch = useDispatch();
@@ -15,8 +16,25 @@ export default function TasksList({ classId }) {
 
   function onClickCard() {}
 
-  function onDelete() {
-    console.log("fuck yeah");
+  async function onDelete(id) {
+    console.log("onDelete()");
+    try {
+      const result = await Swal.fire({
+        title: "Delete task?",
+        // text: "Delete Task?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Delete",
+      });
+
+      if (result.isConfirmed) {
+        await dispatch(deleteTask(id));
+        dispatch(getTasks(`classId=${classId}`));
+        Swal.fire("Deleted!", "Task has been deleted.", "success");
+      }
+    } catch (error) {}
   }
 
   if (loading) return <></>;
@@ -39,7 +57,7 @@ export default function TasksList({ classId }) {
               class="card mt-4"
               style={{
                 width: "240px",
-                height: "9rem",
+                height: "10rem",
                 cursor: "pointer",
                 margin: "auto",
               }}
@@ -49,15 +67,24 @@ export default function TasksList({ classId }) {
                 <div class="">
                   <h5
                     class="card-title"
-                    style={{ height: "30px", textOverflow: "ellipsis" }}
+                    style={{
+                      height: "50px",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                    }}
                   >
                     {task.name}
                   </h5>
                 </div>
-                <div style={{ height: "60px", overflow: "hidden" }}>
+                <div
+                  style={{
+                    height: "50px",
+                    overflow: "hidden",
+                  }}
+                >
                   {task.description}
                 </div>
-                <div style={{ overflow: "hidden" }}>
+                <div style={{ overflow: "hidden", marginTop: "10px" }}>
                   <FontAwesomeIcon
                     style={{ float: "right" }}
                     icon={faTrash}

@@ -9,7 +9,7 @@ function BoxHome() {
     <>
       <Box bgcolor="white" sx={{ flexGrow: 1, borderRadius: "10px", color: brown[700] }}>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={12}>
             <p
               style={{
                 marginLeft: 20,
@@ -19,9 +19,6 @@ function BoxHome() {
               <br />
               are you ready to join a class ?
             </p>
-          </Grid>
-          <Grid item xs={6}>
-            <img src={pikachugif} className="my-photo" alt="pikachugif" />
           </Grid>
         </Grid>
       </Box>
