@@ -23,7 +23,7 @@ function Ratings(props) {
         alignItems: "center",
       }}
     >
-      {tasks?.length === score?.length && status !== "complete" ? (
+      {tasks?.length !== 0 && tasks?.length === score?.length && status !== "complete" ? (
         <Rating
           name="hover-feedback"
           value={value}

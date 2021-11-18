@@ -17,6 +17,8 @@ export default function Header() {
   const location = useLocation();
   const id = Number(location.pathname.substr(7));
   const [value, setValue] = useState(location.pathname);
+  const newId = Number(location.pathname.substr(10));
+
   const color = {
     backgroundColor: yellow[600],
     color: brown[700],
@@ -31,6 +33,8 @@ export default function Header() {
   useEffect(() => {
     if (location.pathname === "/") {
       setValue("Home");
+    } else if (location.pathname === "/speaking/" + newId) {
+      setValue("Task Speaking");
     } else if (location.pathname.substr(0, 8) === "/myclass") {
       setValue("My Class");
     } else if (location.pathname === "/tasks/" + id) {
@@ -94,6 +98,10 @@ export default function Header() {
               <ArrowBack />
             </IconButton>
           ) : value === "Listening Answer" ? (
+            <IconButton onClick={setEmpty} component={Link} to={`/tasks/${location.state?.id}`}>
+              <ArrowBack />
+            </IconButton>
+          ) : value === "Task Speaking" ? (
             <IconButton onClick={setEmpty} component={Link} to={`/tasks/${location.state?.id}`}>
               <ArrowBack />
             </IconButton>

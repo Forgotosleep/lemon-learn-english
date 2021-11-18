@@ -1,18 +1,21 @@
 import AudioReactRecorder, { RecordState } from "audio-react-recorder";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { getScore, addScore } from "../store/actions/actionScores";
 import { fetchTask, setTask, setTasks } from "../store/actions/actionTasks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone, faStop } from "@fortawesome/free-solid-svg-icons";
+import { alertSuccess } from "../assets/js/sweetalert2";
 
 function SpeakingStudent() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [recordState, setRecordState] = useState(null);
   const [audioData, setAudioData] = useState();
   const [score, setScore] = useState();
   const { id: taskId } = useParams();
+  const { state } = useLocation();
   const { task } = useSelector((state) => state.tasks);
   const { isLoading } = useSelector((state) => state.score);
   const [noData, setNoData] = useState(false)
@@ -29,13 +32,17 @@ function SpeakingStudent() {
     if (!audioData) setNoData(true)
     else {
       dispatch(getScore(audioData, task?.question))
-        .then((data) => {
-          setScore(data);
-          sendAudio({ audioData, scoreData: data, taskId });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .then((data) => {
+        setScore(data);
+        sendAudio({ audioData, scoreData: data, taskId });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        navigate("/class");
+        alertSuccess("your task is complete");
+      });
     }
   };
 
@@ -54,8 +61,7 @@ function SpeakingStudent() {
   };
 
   function onClick() {
-    let state =
-      recordState === RecordState.START ? RecordState.STOP : RecordState.START;
+    let state = recordState === RecordState.START ? RecordState.STOP : RecordState.START;
     setRecordState(state);
   }
 
