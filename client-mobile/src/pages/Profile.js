@@ -6,14 +6,19 @@ import { setScore, setScores } from "../store/actions/actionScores";
 import { setTask, setTasks } from "../store/actions/actionTasks";
 import { useEffect } from "react";
 import { Avatar, Button } from "@mui/material";
+import { fetchMyClasses } from "../store/actions/actionMyClasses";
 
 function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, isLoading, isError } = useSelector((state) => state.user);
+  const { myClasses, isLoading: myClassLoading } = useSelector(
+    (state) => state.myClasses
+  );
 
   useEffect(() => {
     dispatch(getUser());
+    dispatch(fetchMyClasses());
   }, []);
 
   const logout = () => {
@@ -66,9 +71,31 @@ function Profile() {
           Logout
         </Button> */}
       </div>
-      <div style={{ display: "flex" }}>
-        <p>Total enrolled class</p>
-        <p></p>
+      <hr
+        style={{
+          border: "3px solid #000",
+          width: "100%",
+          marginTop: "20px",
+        }}
+      ></hr>
+      <div
+        style={{
+          marginTop: "30px",
+          backgroundColor: "#efefef",
+          padding: "15px",
+          width: "300px",
+          borderRadius: "6px",
+          textAlign: "center",
+        }}
+      >
+        <p
+          style={{ fontWeight: "bold", fontSize: "20px", marginBottom: "5px" }}
+        >
+          Total Enrolled class
+        </p>
+        <p style={{ fontWeight: "bold", fontSize: "30px" }}>
+          {myClasses?.length}
+        </p>
       </div>
     </>
   );

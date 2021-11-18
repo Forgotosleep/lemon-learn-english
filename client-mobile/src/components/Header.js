@@ -6,18 +6,13 @@ import { ArrowBack } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import psyduck from "../assets/icon/psyduck.svg";
 import { useDispatch } from "react-redux";
-<<<<<<< HEAD
 import { getUser, setUser } from "../store/actions/actionUser";
 import { setScore, setScores } from "../store/actions/actionScores";
 import { setTask, setTasks } from "../store/actions/actionTasks";
 import { setClasses } from "../store/actions/actionClasses";
-import { useNavigate } from "react-router-dom";
-=======
-import { setTask } from "../store/actions/actionTasks";
->>>>>>> 0832f195c82b7b7626d85cc96981ae22913d7840
 
 export default function Header() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const location = useLocation();
   const [value, setValue] = useState(location.pathname);
   const color = {
@@ -29,8 +24,8 @@ export default function Header() {
   }
 
   const setEmpty = () => {
-    dispatch(setTask({}))
-  }
+    dispatch(setTask({}));
+  };
   useEffect(() => {
     if (location.pathname === "/") {
       setValue("Home");
@@ -91,7 +86,11 @@ export default function Header() {
               <ArrowBack />
             </IconButton>
           ) : value === "Listening Answer" ? (
-            <IconButton onClick={setEmpty} component={Link} to={`/tasks/${location.state?.id}`}>
+            <IconButton
+              onClick={setEmpty}
+              component={Link}
+              to={`/tasks/${location.state?.id}`}
+            >
               <ArrowBack />
             </IconButton>
           ) : (
@@ -116,13 +115,9 @@ export default function Header() {
 
   return (
     <header>
-<<<<<<< HEAD
-      <AppBar style={color}>{DisplayDesktop()}</AppBar>
-=======
       <AppBar position="static" style={color}>
-        {displayDesktop()}
+        {DisplayDesktop()}
       </AppBar>
->>>>>>> 0832f195c82b7b7626d85cc96981ae22913d7840
     </header>
   );
 }

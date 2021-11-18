@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { getScore, addScore } from "../store/actions/actionScores";
-import { fetchTask } from "../store/actions/actionTasks";
+import { fetchTask, setTasks } from "../store/actions/actionTasks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone, faStop } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,7 +17,7 @@ function SpeakingStudent() {
   useEffect(() => {
     dispatch(fetchTask(taskId));
     return () => {
-      dispatch(setTask({}));
+      dispatch(setTasks({}));
     };
   }, []);
 
