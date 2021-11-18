@@ -73,12 +73,14 @@ class TaskController {
         throw { name: "TaskNotFound", id };
       }
 
-      if (task.soundUrl) {
-        task.question = JSON.parse(task.question);
-      }
+      // if (task.soundUrl) {
+      //   // console.log("xddd", task.question);
+      //   task.question = JSON.parse(task.question);
+      // }
 
       res.status(200).json(task);
     } catch (err) {
+      console.log("xderror", err);
       next(err);
     }
   }

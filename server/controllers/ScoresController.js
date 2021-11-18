@@ -18,7 +18,6 @@ class ScoresController {
       if (!resp) throw { name: "ScoreNotFound", id };
       res.status(200).json(resp);
     } catch (err) {
-      console.log("score ayaya", err);
       next(err);
     }
   }
@@ -39,8 +38,6 @@ class ScoresController {
         soundUrl,
         answer,
       });
-      console.log("resp nice", resp);
-      console.log("soundUrl", soundUrl);
       res.status(201).json(resp);
     } catch (err) {
       next(err);

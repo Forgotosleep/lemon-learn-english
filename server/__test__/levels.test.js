@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../app");
 
 let token;
+let teacherToken;
 const { closeRedis } = require("../helpers/redis");
 afterAll((done) => {
   closeRedis();
@@ -18,6 +19,14 @@ beforeAll((done) => {
     .then((response) => {
       const { body } = response;
       token = body.access_token;
+      return request(app).post("/login").send({
+        email: "mason@mail.com",
+        password: "password",
+      });
+    })
+    .then((response) => {
+      const { body } = response;
+      teacherToken = body.access_token;
       done();
     })
     .catch((err) => {
@@ -42,6 +51,26 @@ describe("POSTS /levels", () => {
           "message",
           "Successfully added a new Level"
         );
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+
+  test("403 failed create level", (done) => {
+    request(app)
+      .post("/levels")
+      .send({
+        name: "very very hard",
+      })
+      .set({
+        access_token: teacherToken,
+      })
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(403);
+        expect(body).toHaveProperty("message");
         done();
       })
       .catch((err) => {
