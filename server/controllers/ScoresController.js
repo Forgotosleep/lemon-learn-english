@@ -8,6 +8,7 @@ class ScoresController {
       const resp = await Score.findAll();
       res.status(200).json(resp);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }
@@ -31,6 +32,7 @@ class ScoresController {
       }
 
       const { score, taskId, answer } = req.body;
+
       const resp = await Score.create({
         score,
         studentId: id, //: 1, // harcode req.user.id (student)

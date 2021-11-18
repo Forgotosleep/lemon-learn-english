@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+
 const { Task, Class, Score } = require("../models");
 const { initRedis } = require("../helpers/redis");
 const redis = initRedis();
@@ -45,7 +46,9 @@ class TaskController {
   static async getTaskByClass(req, res, next) {
     try {
       const { classId } = req.params;
+
       const studentId = req.user.id;
+
       if (!Number(classId)) throw { name: "InvalidMaterialId" };
       const classData = await Class.findByPk(classId);
       if (!classData) throw { name: "ClassNotFound", id: classId };
@@ -99,8 +102,8 @@ class TaskController {
   }
 
   static async update(req, res, next) {
-    const id = req.params.id;
     try {
+      const id = req.params.id;
       const { name, description, question, soundUrl, classId } = req.body;
       const input = { name, description, question, soundUrl, classId };
 
@@ -121,7 +124,6 @@ class TaskController {
     try {
       const { artist, title } = req.query;
       const songs = await searchSongs(artist, title);
-
       res.status(200).json(songs);
     } catch (err) {
       next(err);
@@ -189,9 +191,9 @@ class TaskController {
   }
 
   static async getListeningScore(req, res, next) {
+    // Still uses Redis to transport the 'song' atm
     try {
       const { answer, index, id, song } = req.body;
-
       const checkCache = await redis.get(id);
       if (checkCache) {
         const cachedSong = JSON.parse(checkCache);

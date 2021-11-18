@@ -78,6 +78,33 @@ export function fetchLogin(payload) {
   };
 }
 
+export function googleLogin(payload) {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setIsLoading(true));
+      // console.log(payload);
+      ApiServer({
+        url: "/google",
+        method: "POST",
+        data: {
+          token: payload,
+        },
+      })
+        .then(({ data }) => {
+          localStorage.setItem("access_token", data.access_token);
+          dispatch(setIsLoggedIn(true));
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
+    });
+  };
+}
+
 export function fetchRegister(payload) {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
